@@ -34,6 +34,19 @@ const PATTERNS = [
   [/Dr\. (Madman|Lessmad|Moremad|Goodman)/i, 'demo author name']
 ]
 
+/**
+ * Legitimate occurrences. Each needs a reason: an allowlist without one
+ * becomes the place where real findings go to be forgotten.
+ */
+const ALLOW = [
+  // The theme module import. Required for the site to build at all, and the
+  // reason `hugo-toha` will keep appearing in this repo forever.
+  /github\.com\/hugo-toha\/toha\/v4/,
+  // Commented-out Matomo placeholder shipped by the theme, under a disabled
+  // feature. Inert documentation, not our configuration.
+  /#\s*instance:\s*matomo\.example\.com/
+]
+
 // hugo.yaml is scanned; generated and vendored trees are not.
 const ROOTS = ['data', 'content', 'static', '.github', 'archetypes']
 const FILES = ['hugo.yaml', 'README.md']
@@ -55,6 +68,7 @@ for (const rel of targets) {
   for (const [re, label] of PATTERNS) {
     // Per-line so the report points at something actionable.
     lines.forEach((line, i) => {
+      if (ALLOW.some((a) => a.test(line))) return
       const flags = re.flags.replace('m', '').replace('g', '')
       if (new RegExp(re.source, flags).test(line)) {
         hits++

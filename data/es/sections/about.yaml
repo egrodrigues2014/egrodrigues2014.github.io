@@ -59,9 +59,11 @@ socialLinks:
 
 # You can put custom buttons to link your relevant resources.
 # For example, you can put link for your resume.
-resourceLinks:
-- title: "My Resume"
-  url: "files/resume.pdf"
+# Restored in F5 once the curated per-language CVs exist as
+# static/files/cv-elton-rodrigues-<lang>.pdf. Left empty rather than pointing
+# at the deleted demo PDF, because a 404 behind a "My Resume" button is worse
+# than no button.
+resourceLinks: []
 
 # Show your badges
 # You can show your verifiable certificates from https://www.credly.com.
