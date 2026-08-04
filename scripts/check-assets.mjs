@@ -84,6 +84,25 @@ for (const rel of walk(path.join(REPO, 'content'))) {
   }
 }
 
+// --- openGraph.image must be a PUBLISHED static path --------------------
+// The theme's opengraph.html does `{{ . | absURL }}` with no resources.Get, so
+// the string has to resolve to a file Hugo actually publishes. An assets/ path
+// silently 404s: Hugo only publishes the processed derivative under a hashed
+// name. Worse, the theme falls back to author.image when openGraph.image is
+// unset, so simply adding a profile photo introduces a broken social-card URL.
+// Only the directories mounted in hugo.yaml are served — static/files is,
+// static/images is not.
+for (const lang of LANGS) {
+  const ref = loadLang(lang)['site.yaml']?.openGraph?.image
+  if (!ref || isExternal(ref)) continue
+  const clean = String(ref).replace(/^\//, '')
+  if (!fs.existsSync(path.join(REPO, 'static', clean))) {
+    r.error(`data/${lang}/site.yaml openGraph.image -> "${ref}" is not under static/. ` +
+      'The theme passes it straight to absURL, so an assets/ path publishes nothing and the ' +
+      'social card 404s. Put the file in static/files/ (mounted) and point here.')
+  }
+}
+
 // --- orphans -------------------------------------------------------------
 // Limited to the directories we curate. static/flags, static/fonts and
 // static/files/mulish-* come from node_modules via module.mounts and are

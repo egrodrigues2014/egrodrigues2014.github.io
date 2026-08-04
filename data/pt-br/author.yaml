@@ -6,10 +6,11 @@ name: Elton Rodrigues                 # FIXED
 nickname: Elton                       # FIXED (a nickname is a proper noun)
 greeting: "Olá, eu sou"
 
-# TODO F5.T1: add `image: images/author/elton.jpg` once a square photo of at
-# least 400x400 exists. Left out rather than pointing at a missing file: the
-# theme falls back to its default avatar, and a dangling path fails the asset
-# checker.
+# Path without a leading slash, matching this file's own convention; Hugo
+# resolves it from assets/ and runs it through the image pipeline.
+# Source was a 1600x1600 PNG at 797 KB, downscaled to 800x800 JPEG at quality
+# 82 -> 44 KB. The alpha channel was verified unused, so JPEG costs nothing.
+image: images/author/elton.jpg        # FIXED
 
 # The KEYS below are lookup keys, never labels. Translating one silently drops
 # its icon, which is the exact defect the upstream Bengali file had. FIXED.

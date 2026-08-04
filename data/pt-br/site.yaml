@@ -19,6 +19,10 @@ openGraph:
   title: "Elton Rodrigues — Engenheiro de Dados"
   type: website                       # FIXED
   description: "Lead Data Engineer em Barcelona. Construo plataformas de dados no Azure e no Microsoft Fabric: ETL/ELT, dbt, Airflow e modelos semânticos de Power BI."
-  # TODO F5.T1: add `image:` once branding exists. A 1200x630 card is what
-  # LinkedIn and Slack render; without it they fall back to a bare link.
+  # Must be a path under static/, not assets/. The theme runs this through
+  # absURL with no image processing, so an assets/ path publishes nothing and
+  # 404s. static/files is mounted in hugo.yaml, static/images is not.
+  # Interim: the 800x800 profile photo. Replace with a 1200x630 card when
+  # branding lands — that is the shape LinkedIn and Slack actually render.
+  image: files/og-elton-rodrigues.jpg   # FIXED
   url: "https://egrodrigues2014.github.io/pt-br/"          # per-language canonical, so NOT fixed
