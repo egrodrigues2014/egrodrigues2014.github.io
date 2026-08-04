@@ -9,41 +9,104 @@ section:
   weight: 60                            # FIXED
   showOnNavbar: true                    # FIXED
 
-# Division of labour with about.yaml, so nothing is listed twice — a repeated
-# credential makes the portfolio look thinner than it is:
-#   about.badges -> the three spoken languages (soft-skill-indicator)
-#   this file     -> every certification and training course
+# Eleven credentials, every one with a working verification link. Each was
+# opened and identified, not inferred from its URL.
 #
-# Only achieved credentials. DP-900 (in progress) and DP-700 (planned) are out by
-# decision: stated intentions without a date read as filler.
+# Order is by relevance to a data engineering profile. The two SAS courses come
+# last on purpose: 2021, and no longer part of the current stack.
 #
-# Two entries carry no `organization` because the issuer is not confirmed yet.
-# Better an honest gap than an invented issuer.
+# Dropped by decision: the DataCamp "Associate Data Engineer" track (30 h). Its
+# name is almost identical to the certification at the top, and two consecutive
+# near-homonyms read as counting the same thing twice.
+#
+# DEA and AZ-900 also appear as visual badges in about.yaml. Deliberate: the
+# badge is proof at a glance, this entry carries the date, expiry, hours and
+# description that a badge image cannot show.
 accomplishments:
-- name: "Microsoft Certified: Azure Fundamentals (AZ-900)"
-  timeline: "06/2026"                # FIXED
+- name: "Data Engineer Associate"
   organization:
-    name: "Microsoft"       # FIXED
-    url: "https://learn.microsoft.com"   # FIXED
-  courseOverview: "Conceptos de cloud, servicios principales de Azure, seguridad, gobierno y gestión de costes — la base sobre la que se apoya el trabajo de plataforma. Credencial E5511530DA2F13EF."
-  certificateURL: "https://learn.microsoft.com/users/eltonguilhermerodrigues-9591/credentials/e5511530da2f13ef"  # FIXED
+    name: "DataCamp"
+    url: "https://www.datacamp.com"
+  timeline: "01/2025"
+  courseOverview: "Certificación con exámenes cronometrados y una entrega práctica, no un curso completado. Cubre ingesta, modelado y diseño de pipelines. Válida hasta 01/2027."
+  certificateURL: "https://www.datacamp.com/certificate/DEA0018012967900"
 
-- name: "SQL Server Database Performance Monitoring and Tuning"
-  timeline: "11/2021"                # FIXED
-  # organization: issuer not confirmed yet
-  courseOverview: "Planes de ejecución, estrategia de indexación, estadísticas de espera y reescritura de consultas — a lo que recurro cuando una ventana de carga empieza a crecer."
-  # certificateURL: no verification link available yet
+- name: "Microsoft Certified: Azure Fundamentals (AZ-900)"
+  organization:
+    name: "Microsoft"
+    url: "https://learn.microsoft.com"
+  timeline: "06/2026"
+  courseOverview: "Conceptos de cloud, servicios principales de Azure, seguridad, gobierno y gestión de costes — la base sobre la que se apoya el trabajo de plataforma. Credencial E5511530DA2F13EF."
+  certificateURL: "https://learn.microsoft.com/users/eltonguilhermerodrigues-9591/credentials/e5511530da2f13ef"
 
 - name: "Microsoft Power BI Desktop for Business Intelligence"
-  timeline: "05/2024"                # FIXED
-  # organization: issuer not confirmed yet
-  courseOverview: "Modelado, DAX y diseño de informes en Power BI Desktop, partiendo del modelo de datos y no del visual."
-  # certificateURL: no verification link available yet
-
-- name: "SAS Viya — Visual Analytics, Self-Service Data Preparation and Platform Administration"
-  timeline: "08/2021"                # FIXED
   organization:
-    name: "SAS Institute"       # FIXED
-    url: "https://www.sas.com"   # FIXED
-  courseOverview: "Las tres vías de Viya que usaba a diario en seguros y banca: construir análisis, preparar datos sin depender de un desarrollador, y mantener la plataforma en marcha."
-  # certificateURL: no verification link available yet
+    name: "Udemy"
+    url: "https://www.udemy.com"
+  timeline: "05/2024"
+  courseOverview: "16,5 horas de modelado, DAX y diseño de informes, trabajado desde el modelo de datos hacia fuera y no desde el visual hacia dentro."
+  certificateURL: "https://www.udemy.com/certificate/UC-f2ae9f9e-d590-4ba7-80f0-9f507d5e9c1b/"
+
+- name: "CS50's Introduction to Programming with Python"
+  organization:
+    name: "Harvard University"
+    url: "https://cs50.harvard.edu"
+  timeline: "2023"
+  courseOverview: "CS50P de Harvard: nueve conjuntos de problemas y un proyecto final, evaluados por corrección y estilo, no por asistencia."
+  certificateURL: "https://cs50.harvard.edu/certificates/e49acce9-e4cc-479e-acf2-2f68296d025e"
+
+- name: "Data Engineer"
+  organization:
+    name: "DataCamp"
+    url: "https://www.datacamp.com"
+  # timeline omitted: a DataCamp/DeepLearning.AI statement carries no date
+  courseOverview: "El itinerario de 40 horas y 18 cursos en Python: ingesta, data warehousing, orquestación con Airflow y streaming."
+  certificateURL: "https://www.datacamp.com/completed/statement-of-accomplishment/track/bd00f7d0c090b0dfd4bf13084d18952482c666bc"
+
+- name: "SQL Server Database Performance Monitoring and Tuning"
+  organization:
+    name: "Udemy"
+    url: "https://www.udemy.com"
+  timeline: "11/2021"
+  courseOverview: "Planes de ejecución, estrategia de indexación, estadísticas de espera y reescritura de consultas — a lo que recurro cuando una ventana de carga empieza a crecer."
+  certificateURL: "https://www.udemy.com/certificate/UC-501b2b09-23d0-4fa6-8b43-1c101594717f/"
+
+- name: "AI Fluency: Framework & Foundations"
+  organization:
+    name: "Anthropic"
+    url: "https://www.anthropic.com"
+  timeline: "04/2026"
+  courseOverview: "Un marco práctico para delegar en un LLM y verificar su salida, más que trucos de prompting."
+  certificateURL: "https://verify.skilljar.com/c/z3rbof2ohvpf"
+
+- name: "Claude 101"
+  organization:
+    name: "Anthropic"
+    url: "https://www.anthropic.com"
+  timeline: "04/2026"
+  courseOverview: "Uso práctico de Claude para análisis y código, incluido dónde no conviene confiar sin verificar."
+  certificateURL: "https://verify.skilljar.com/c/tfkyg59a9zkj"
+
+- name: "ChatGPT Prompt Engineering for Developers"
+  organization:
+    name: "DeepLearning.AI"
+    url: "https://www.deeplearning.ai"
+  # timeline omitted: a DataCamp/DeepLearning.AI statement carries no date
+  courseOverview: "Estructurar prompts como parte de una aplicación, con iteración y evaluación en lugar de tanteo."
+  certificateURL: "https://learn.deeplearning.ai/accomplishments/44b83620-4d6c-494d-be72-d8488efd6721"
+
+- name: "SAS Visual Analytics 2 for SAS Viya: Advanced"
+  organization:
+    name: "SAS"
+    url: "https://www.sas.com"
+  timeline: "08/2021"
+  courseOverview: "Preparación de datos, descubrimiento y creación de informes avanzados en SAS Visual Analytics, usados a diario en seguros y banca."
+  certificateURL: "https://www.credly.com/badges/48170d02-ea44-4aff-8c3d-6e78b6e7ee9f"
+
+- name: "SAS Programming 3: Advanced Techniques"
+  organization:
+    name: "SAS"
+    url: "https://www.sas.com"
+  timeline: "08/2021"
+  courseOverview: "DATA step y procedimientos avanzados en Base SAS, la base del ETL de alertas de fraude del que fui responsable."
+  certificateURL: "https://www.credly.com/badges/4f04656f-9b23-4914-82d9-a7b270a4208c"
