@@ -1,6 +1,15 @@
+This repository holds two different things under two different terms.
+
+--------------------------------------------------------------------------------
+1. THE CODE — MIT
+--------------------------------------------------------------------------------
+
+Applies to the site's own machinery: hugo.yaml, mise.toml, the layout overrides
+under layouts/, the QA checkers under scripts/, and the GitHub Actions workflows.
+
 MIT License
 
-Copyright (c) 2020 hugo-toha
+Copyright (c) 2026 Elton Rodrigues
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +28,25 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+--------------------------------------------------------------------------------
+2. THE CONTENT — ALL RIGHTS RESERVED
+--------------------------------------------------------------------------------
+
+Content © 2026 Elton Rodrigues. All rights reserved.
+
+Applies to everything under data/ and content/, the profile photograph, the CVs
+under static/files/, and the prose of the site in all three languages.
+
+This is a personal professional record. Reuse of the career history, the wording,
+or the photograph is not granted — MIT on the code is not an invitation to
+republish someone's CV. Quoting for commentary or review is of course fine.
+
+--------------------------------------------------------------------------------
+3. WORK BY OTHERS
+--------------------------------------------------------------------------------
+
+The Toha theme, the landing page background, the icon sets, the credential badges
+and the fonts are covered by their own licences, reproduced in full in
+THIRD-PARTY-NOTICES.md. Notably, this repository contains two partials copied
+verbatim from Toha, which is MIT licensed and whose notice is retained there.

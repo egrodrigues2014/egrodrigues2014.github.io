@@ -16,7 +16,9 @@ const r = new Report('no demo data')
 const PATTERNS = [
   [/John Doe|John's|\bJessica\b/i, 'demo person'],
   [/johndoe|john[.-]doe/i, 'demo handle'],
-  [/Example Co\.?|example\.com|example@gmail\.com/i, 'demo company or contact'],
+  // \b after "Co" matters: without it this matched "example content" in prose
+  // and reported the README as carrying demo data.
+  [/\bExample Co\.?\b|example\.com|example@gmail\.com/i, 'demo company or contact'],
   [/Lorem ipsum/i, 'filler text'],
   [/hugo-toha|hugo-themes|hossainemruz/i, "theme author's identity"],
   [/toha-preview|toha-example-site|toha-docs/i, "theme author's sites"],
