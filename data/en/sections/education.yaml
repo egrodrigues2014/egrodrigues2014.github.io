@@ -25,6 +25,18 @@ degrees:
   institution:
     name: Universidade Federal do ABC         # FIXED
     url: "https://www.ufabc.edu.br"  # FIXED
+    logo: images/sections/education/ufabc.png
+    # Same file for both: dark artwork on an opaque white background, so
+    # inverting it for dark mode would wreck the brand colours. The white
+    # background blends into the white card in light mode and reads as a
+    # deliberate chip in dark mode, brand intact either way.
+    #
+    # darkLogo is defensive, not required. The theme ships CSS that hides
+    # .light-logo and shows .dark-logo under html[data-theme=dark], but in
+    # v4.16.0 those rules never reach the page — measured: with darkLogo removed
+    # the light logo still renders in real dark mode. Setting it anyway means the
+    # logo will not vanish if a future version starts applying that swap.
+    darkLogo: images/sections/education/ufabc.png
   customSections:
   - name: Final project
     content: "Publication: *Landslide Detection System: Design and Development*"
@@ -35,6 +47,18 @@ degrees:
   institution:
     name: Universidade Federal do ABC         # FIXED
     url: "https://www.ufabc.edu.br"  # FIXED
+    logo: images/sections/education/ufabc.png
+    # Same file for both: dark artwork on an opaque white background, so
+    # inverting it for dark mode would wreck the brand colours. The white
+    # background blends into the white card in light mode and reads as a
+    # deliberate chip in dark mode, brand intact either way.
+    #
+    # darkLogo is defensive, not required. The theme ships CSS that hides
+    # .light-logo and shows .dark-logo under html[data-theme=dark], but in
+    # v4.16.0 those rules never reach the page — measured: with darkLogo removed
+    # the light logo still renders in real dark mode. Setting it anyway means the
+    # logo will not vanish if a future version starts applying that swap.
+    darkLogo: images/sections/education/ufabc.png
 
 - name: Exchange programme — Electrical & Computer Engineering
   icon: fa-plane                       # FIXED
@@ -42,3 +66,15 @@ degrees:
   institution:
     name: Florida Atlantic University         # FIXED
     url: "https://www.fau.edu"  # FIXED
+    logo: images/sections/education/florida-atlantic.png
+    # Same file for both: dark artwork on an opaque white background, so
+    # inverting it for dark mode would wreck the brand colours. The white
+    # background blends into the white card in light mode and reads as a
+    # deliberate chip in dark mode, brand intact either way.
+    #
+    # darkLogo is defensive, not required. The theme ships CSS that hides
+    # .light-logo and shows .dark-logo under html[data-theme=dark], but in
+    # v4.16.0 those rules never reach the page — measured: with darkLogo removed
+    # the light logo still renders in real dark mode. Setting it anyway means the
+    # logo will not vanish if a future version starts applying that swap.
+    darkLogo: images/sections/education/florida-atlantic.png
