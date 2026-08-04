@@ -1,7 +1,11 @@
+# Pinned on purpose. With 'latest', a release of Hugo, Node or Go can break
+# the build without a single line changing in this repo, and you cannot tell
+# your own mistake from a toolchain regression. Bump these deliberately
+# (see the maintenance section of the README).
 [tools]
-hugo-extended = 'latest'
-node = 'latest'
-go = 'latest'
+hugo-extended = '0.164.0'  # extended is required: the theme compiles SCSS
+node = '24.19.0'           # only supplies the theme's front-end assets via npm
+go = '1.26.5'              # only used by Hugo Modules to fetch the theme
 
 [tasks.install]
 description = "Install dependencies"
@@ -21,12 +25,3 @@ run = "hugo server -w"
 description = "Update the theme to latest release"
 run = "hugo mod get -u"
 depends_post = "install"
-
-[tasks.update-to-main]
-description = "Update the theme to main branch"
-run = "hugo mod get github.com/hugo-toha/toha/v4@main"
-depends_post = "install"
-
-[tasks.fix-security]
-description = "Run npm audit fix"
-run = "npm audit fix --force"
