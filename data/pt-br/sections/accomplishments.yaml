@@ -1,46 +1,49 @@
 # section information
+#
+# Fields marked FIXED must be byte-identical in data/en, data/es and
+# data/pt-br. `mise run verify` enforces it.
 section:
-  name: Accomplishments
-  id: accomplishments
-  enable: true
-  weight: 60
-  showOnNavbar: true
-  # Can optionally hide the title in sections
-  # hideTitle: true
+  name: Certificações
+  id: accomplishments                   # FIXED
+  enable: true                          # FIXED
+  weight: 60                            # FIXED
+  showOnNavbar: true                    # FIXED
 
-
-# Your accomplishments
+# Division of labour with about.yaml, so nothing is listed twice — a repeated
+# credential makes the portfolio look thinner than it is:
+#   about.badges -> the three spoken languages (soft-skill-indicator)
+#   this file     -> every certification and training course
+#
+# Only achieved credentials. DP-900 (in progress) and DP-700 (planned) are out by
+# decision: stated intentions without a date read as filler.
+#
+# Two entries carry no `organization` because the issuer is not confirmed yet.
+# Better an honest gap than an invented issuer.
 accomplishments:
-- name: Linux Foundation System Administrator
-  timeline: "March 2018 - March 2019"
+- name: "Microsoft Certified: Azure Fundamentals (AZ-900)"
+  timeline: "06/2026"                # FIXED
   organization:
-    name: Linux Foundation
-    url: https://www.linuxfoundation.org
-  courseOverview: This course helps to understand the key concepts such as networking, storage, security, maintenance, logging and monitoring, application lifecycle, troubleshooting, API object primitives etc. It also help to grow the ability to establish basic use-cases for end users.
-  certificateURL: "https://example.com"
+    name: "Microsoft"       # FIXED
+    url: "https://learn.microsoft.com"   # FIXED
+  courseOverview: "Conceitos de cloud, serviços principais do Azure, segurança, governança e gestão de custos — a base sobre a qual se apoia o trabalho de plataforma. Credencial E5511530DA2F13EF."
+  certificateURL: "https://learn.microsoft.com/users/eltonguilhermerodrigues-9591/credentials/e5511530da2f13ef"  # FIXED
 
-- name: Machine Learning
-  timeline: "Jun 2020 - Jan 2021"
+- name: "SQL Server Database Performance Monitoring and Tuning"
+  timeline: "11/2021"                # FIXED
+  # organization: issuer not confirmed yet
+  courseOverview: "Planos de execução, estratégia de indexação, estatísticas de espera e reescrita de consultas — o que uso quando uma janela de carga começa a crescer."
+  # certificateURL: no verification link available yet
+
+- name: "Microsoft Power BI Desktop for Business Intelligence"
+  timeline: "05/2024"                # FIXED
+  # organization: issuer not confirmed yet
+  courseOverview: "Modelagem, DAX e design de relatórios no Power BI Desktop, partindo do modelo de dados e não do visual."
+  # certificateURL: no verification link available yet
+
+- name: "SAS Viya — Visual Analytics, Self-Service Data Preparation and Platform Administration"
+  timeline: "08/2021"                # FIXED
   organization:
-    name: Coursera
-    url: https://www.coursera.org
-  courseOverview: "This course provides a broad introduction to machine learning, datamining, and statistical pattern recognition. Topics include: (i) Supervised learning (parametric/non-parametric algorithms, support vector machines, kernels, neural networks). (ii) Unsupervised learning (clustering, dimensionality reduction, recommender systems, deep learning). (iii) Best practices in machine learning (bias/variance theory; innovation process in machine learning and AI)."
-  certificateURL: "https://example.com"
-
-- name: Grokking the System Design Interview
-  timeline: "Jan 2018 - Sept 2018"
-  organization:
-    name: educative
-    url: https://www.educative.io
-  courseOverview: This course is a complete guide to master the SDIs. It is created by hiring managers who’ve been working at Google, Facebook, Microsoft, and Amazon. We've carefully chosen a set of questions that have not only been repeatedly asked at top companies, but also provide a thorough experience to handle any system design problem.
-  certificateURL: "https://example.com"
-
-- name: Mastering Multithreading Programming with Go (Golang)
-  timeline: "Nov 2017 - Mar 2018"
-  organization:
-    name: Udemy
-    url: https://www.udemy.com
-  courseOverview: Discover how to create responsive and high performance software. Develop programs with Golang that are highly Concurrent and Parallel. Improve your programming skills in Go with more advanced, multithreading topics.
-  certificateURL: "https://example.com"
- 
-
+    name: "SAS Institute"       # FIXED
+    url: "https://www.sas.com"   # FIXED
+  courseOverview: "As três frentes do Viya que usava diariamente em seguros e bancos: construir análises, preparar dados sem depender de um desenvolvedor, e manter a plataforma em operação."
+  # certificateURL: no verification link available yet
