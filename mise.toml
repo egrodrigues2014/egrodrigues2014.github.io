@@ -9,12 +9,35 @@ go = '1.26.5'              # only used by Hugo Modules to fetch the theme
 
 [tasks.install]
 description = "Install dependencies"
-run = ["hugo mod tidy", "hugo mod npm pack", "npm install"]
+run = ["hugo mod tidy", "hugo mod npm pack", "npm install", "npm install --prefix scripts"]
 
 [tasks.build]
 description = "Build Hugo site"
 depends = ["install"]
-run = "hugo --gc --minify"
+# --cleanDestinationDir matters: without it Hugo leaves stale output behind, so
+# a deleted section keeps being served locally and a removal looks like it did
+# not work (or worse, looks like it did when it did not).
+run = "hugo --gc --minify --cleanDestinationDir"
+
+# The gate to run before every commit. Also what CI runs, so that a green
+# local run means something.
+#
+# check-demo is deliberately NOT here: it stays red until the content phase
+# finishes, and a permanently red gate is one you learn to ignore. Run it on
+# its own as a progress counter, and fold it in once it reaches zero.
+[tasks.verify]
+description = "Run all QA checks"
+run = [
+  "node scripts/check-i18n.mjs",
+  "node scripts/check-assets.mjs",
+  "node scripts/check-pii.mjs",
+  "hugo --gc --minify --cleanDestinationDir --printPathWarnings",
+  "node scripts/check-render.mjs",
+]
+
+[tasks."check-demo"]
+description = "Count remaining traces of the theme's example site"
+run = "node scripts/check-demo.mjs"
 
 [tasks.server]
 description = "Run hugo server"
