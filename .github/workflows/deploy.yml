@@ -1,0 +1,80 @@
+name: Deploy to GitHub Pages
+
+# Replaces the inherited workflow, which pushed a built site to a gh-pages
+# branch with peaceiris/actions-gh-pages and, critically, never passed
+# --baseURL. It would have published this site under the theme author's domain.
+#
+# The official Pages flow is used instead because configure-pages exposes
+# steps.pages.outputs.base_url. Feeding that to Hugo makes the wrong-baseURL
+# class of bug structurally impossible rather than dependent on hugo.yaml being
+# right. That matters here: `hugo server` serves from the root, so baseURL and
+# asset-path bugs do not reproduce locally.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# No workflow in the inherited setup declared permissions at all, which is why
+# it needed repo-wide "Read and write" to function. These are the least it needs.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deployment at a time, and never cancel one midway: a cancelled deploy can
+# leave Pages serving a half-published site.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # enableGitInfo needs real history, otherwise <lastmod> comes out empty.
+          fetch-depth: 0
+
+      # Reads mise.toml, so CI uses the same pinned hugo-extended, node and go as
+      # local. The inherited workflow hardcoded Node 18 and hugo 'latest', which
+      # let CI and local drift apart silently.
+      - uses: jdx/mise-action@v4
+
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v6
+
+      - name: Install dependencies
+        run: mise run install
+
+      - name: Build
+        # base_url comes from Pages itself, so it cannot be wrong.
+        run: hugo --gc --minify --cleanDestinationDir --printPathWarnings --baseURL "${{ steps.pages.outputs.base_url }}/"
+
+      # The same gates that run locally via `mise run verify`. Without that
+      # symmetry a green CI means nothing. check-demo is excluded on purpose: it
+      # stays red until the content phase finishes, and a permanently red gate is
+      # one people learn to ignore.
+      - name: QA checks
+        run: |
+          node scripts/check-i18n.mjs
+          node scripts/check-assets.mjs
+          node scripts/check-pii.mjs
+          node scripts/check-overrides.mjs
+          node scripts/check-render.mjs
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: ./public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

@@ -1,23 +1,53 @@
 name: PR Workflows
 
-# Run action on pull request event
+# Runs exactly the same gates as `mise run verify` does locally. That symmetry is
+# the point: if CI checked something different, neither a green run here nor a
+# green run locally would tell you much.
+
 on: [pull_request]
 
+permissions:
+  contents: read
+
 jobs:
-  # Verify the site builds
-  build:
+  verify:
     runs-on: ubuntu-latest
     steps:
-      # checkout to the commit that has been pushed
       - uses: actions/checkout@v7
+        with:
+          # enableGitInfo needs real history for <lastmod>.
+          fetch-depth: 0
 
-      # Setup mise
-      - uses: jdx/mise-action@v3
+      # Reads mise.toml, so the pinned hugo-extended, node and go match local.
+      - uses: jdx/mise-action@v4
 
       - name: Install dependencies
-        run: |
-          mise run install # install theme dependency
+        run: mise run install
+
+      # Data-level gates first: fast, and they catch defects a build renders
+      # happily anyway — a language missing its data tree produces an empty page
+      # with a green build.
+      - name: Cross-language parity
+        run: node scripts/check-i18n.mjs
+
+      - name: Asset references
+        run: node scripts/check-assets.mjs
+
+      - name: No personal data
+        run: node scripts/check-pii.mjs
+
+      - name: Theme overrides in sync
+        run: node scripts/check-overrides.mjs
 
       - name: Build
-        run: |
-          hugo --minify
+        run: hugo --gc --minify --cleanDestinationDir --printPathWarnings
+
+      - name: Rendered output
+        run: node scripts/check-render.mjs
+
+      # Red by design until the content phase finishes, so it reports without
+      # failing the run. The continue-on-error comes off in F6, and from then on a
+      # demo-data regression breaks the build.
+      - name: No demo data (informational until F6)
+        continue-on-error: true
+        run: node scripts/check-demo.mjs
