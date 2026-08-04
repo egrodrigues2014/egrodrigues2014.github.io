@@ -1,71 +1,156 @@
 # section information
+#
+# Fields marked FIXED must be byte-identical in data/en, data/es and
+# data/pt-br. `mise run verify` enforces it.
 section:
-  name: Skills
-  id: skills
-  enable: true
-  weight: 20
-  showOnNavbar: true
-  filter: true
-  # Can optionally hide the title in sections
-  # hideTitle: true
+  name: Competências
+  id: skills                            # FIXED
+  enable: true                          # FIXED
+  weight: 20                            # FIXED
+  showOnNavbar: true                    # FIXED
+  filter: true                          # FIXED
 
-# filter buttons
+# Filter buttons. `filter` is a CSS/JS token, never a label: translating one
+# detaches it from every skill's `categories` and the button then empties the
+# section. The checker asserts that each button matches at least one skill.
 buttons:
-- name: All
-  filter: "all"
-- name: Basic
-  filter: "basic"
-- name: Language
-  filter: "language"
-- name: Container
-  filter: "container"
-- name: Others
-  filter: "others"
+- name: Tudo
+  filter: "all"                    # FIXED
+- name: Cloud e Plataformas
+  filter: "cloud"                    # FIXED
+- name: Linguagens
+  filter: "languages"                    # FIXED
+- name: Engenharia de Dados
+  filter: "data-engineering"                    # FIXED
+- name: BI e Analytics
+  filter: "bi"                    # FIXED
+- name: Bancos de Dados
+  filter: "databases"                    # FIXED
+- name: Forma de Trabalhar
+  filter: "ways-of-working"                    # FIXED
 
-# Your Skills.
-# Give a summary of you each skill in the summary section.
+# WARNING: cards/skill.html is the theme's only resources.Get without a nil
+# guard. A `logo:` pointing at a file that does not exist fails the entire build
+# with "nil pointer evaluating resource.Resource.MediaType" — verified. `icon:`
+# is the guarded fallback, so anything without a real asset uses an icon. To
+# move one to a logo: add the file first, then switch, then build.
 skills:
-- name: Kubernetes
-  logo: /images/sections/skills/kubernetes.png
-  summary: "Capable of deploying, managing application on Kubernetes. Experienced in writing Kubernetes controllers for CRDs."
-  categories: ["container"]
-  url: "https://kubernetes.io/"
+- name: Microsoft Fabric                          # FIXED
+  icon: "fab fa-microsoft"          # FIXED
+  summary: "OneLake, Lakehouse e Warehouse para plataformas end-to-end."
+  categories: ["cloud", "data-engineering"]  # FIXED
 
-- name: Go Development
-  logo: /images/sections/skills/go.png
-  summary: "Using as the main language for professional development. Capable of writing scalable, testable, and maintainable program."
-  categories: ["basic", "language"]
-  url: "https://golang.org/"
+- name: Azure Data Factory                          # FIXED
+  icon: "fab fa-microsoft"          # FIXED
+  summary: "Ingestão orquestrada de ERP/CRM, APIs REST e bancos de dados."
+  categories: ["cloud", "data-engineering"]  # FIXED
 
-- name: Cloud Computing
-  logo: /images/sections/skills/cloud.png
-  summary: "Worked with most of the major clouds such as GCP, AWS, Azure etc."
-  categories: ["others"]
+- name: Azure Data Lake Storage Gen2                          # FIXED
+  icon: "fab fa-microsoft"          # FIXED
+  summary: "Camadas medallion com políticas de ciclo de vida para controlar custo."
+  categories: ["cloud"]  # FIXED
 
-- name: Docker
-  logo: /images/sections/skills/docker.svg
-  summary: "Write most of the programs as dockerized container. Experienced with multi-stage, multi-arch build process."
-  categories: ["container"]
-  url: "https://www.docker.com/"
+- name: Azure SQL Database                          # FIXED
+  icon: "fab fa-microsoft"          # FIXED
+  summary: "Camada de serviço e arquiteturas dimensionadas para a carga."
+  categories: ["cloud", "databases"]  # FIXED
 
-- name: Prometheus
-  logo: /images/sections/skills/prometheus.png
-  summary: "Capable of setup, configure Prometheus metrics. Experienced with PromQL, AlertManager. Also, experienced with writing metric exporters."
-  categories: ["basic"]
-  url: "https://prometheus.io/"
+- name: Python                          # FIXED
+  icon: "fab fa-python"             # FIXED
+  summary: "pandas para pipelines, Prophet e scikit-learn para forecasting."
+  categories: ["languages", "data-engineering"]  # FIXED
 
-- name: Linux
-  logo: /images/sections/skills/linux.png
-  summary: "Using as the main operating system. Capable of writing bash/shell scripts."
-  categories: ["others"]
+- name: SQL                          # FIXED
+  icon: "fas fa-database"           # FIXED
+  summary: "T-SQL e PL/pgSQL, do ETL baseado em conjuntos a funções de janela."
+  categories: ["languages", "databases"]  # FIXED
 
-- name: Git
-  logo: /images/sections/skills/git.png
-  summary: "Experienced with git-based development. Mostly, use Github. Also, have experience in working with GitLab."
-  categories: ["basic"]
-  url: "https://git-scm.com/"
+- name: Bash / Shell                          # FIXED
+  icon: "fas fa-terminal"           # FIXED
+  summary: "Automação de processos, depuração de logs e monitoramento."
+  categories: ["languages", "ways-of-working"]  # FIXED
 
-- name: C++
-  logo: /images/sections/skills/c++.png
-  summary: "Know basic C/C++ programming. Used for contest programming and problem solving."
-  categories: ["basic", "language"]
+- name: DAX                          # FIXED
+  icon: "fas fa-calculator"         # FIXED
+  summary: "Time intelligence, análise de desvios e pontes M:N."
+  categories: ["languages", "bi"]  # FIXED
+
+- name: Power Query / M                          # FIXED
+  icon: "fas fa-code"               # FIXED
+  summary: "Transformação e query folding na origem quando compensa."
+  categories: ["languages", "bi"]  # FIXED
+
+- name: dbt                          # FIXED
+  icon: "fas fa-cubes"              # FIXED
+  summary: "Modelos em camadas com testes, documentação e linhagem."
+  categories: ["data-engineering"]  # FIXED
+
+- name: Apache Airflow                          # FIXED
+  icon: "fas fa-diagram-project"    # FIXED
+  summary: "Agendamento, dependências, alertas e recuperação automática."
+  categories: ["data-engineering"]  # FIXED
+
+- name: ETL / ELT design                          # FIXED
+  icon: "fas fa-arrows-spin"        # FIXED
+  summary: "Cargas incrementais e parametrizadas que reduzem janela e custo."
+  categories: ["data-engineering"]  # FIXED
+
+- name: Medallion architecture                          # FIXED
+  icon: "fas fa-layer-group"        # FIXED
+  summary: "Camadas bronze, silver e gold com contratos entre elas."
+  categories: ["data-engineering", "cloud"]  # FIXED
+
+- name: Dimensional modelling                          # FIXED
+  icon: "fas fa-table-columns"      # FIXED
+  summary: "Esquemas estrela, SCD tipo 2 e fatos snapshot."
+  categories: ["data-engineering", "databases"]  # FIXED
+
+- name: Power BI                          # FIXED
+  icon: "fas fa-chart-column"       # FIXED
+  summary: "Modelos compostos Import + DirectQuery, RLS, refresh incremental."
+  categories: ["bi"]  # FIXED
+
+- name: SAS Viya                          # FIXED
+  icon: "fas fa-chart-line"         # FIXED
+  summary: "Visual Analytics, preparação de dados e administração da plataforma."
+  categories: ["bi"]  # FIXED
+
+- name: SAS Visual Analytics                          # FIXED
+  icon: "fas fa-chart-line"         # FIXED
+  summary: "Painéis com indicadores-chave para seguros e bancos."
+  categories: ["bi"]  # FIXED
+
+- name: SQL Server                          # FIXED
+  icon: "fas fa-server"             # FIXED
+  summary: "Data warehousing, particionamento, indexação e pré-agregação."
+  categories: ["databases"]  # FIXED
+
+- name: PostgreSQL                          # FIXED
+  icon: "fas fa-database"           # FIXED
+  summary: "Azure PostgreSQL gerenciado como origem e camada de serviço."
+  categories: ["databases"]  # FIXED
+
+- name: Query optimisation                          # FIXED
+  icon: "fas fa-bolt"               # FIXED
+  summary: "Planos de execução e reescritas que reduzem tempos de forma mensurável."
+  categories: ["databases"]  # FIXED
+
+- name: Git                          # FIXED
+  logo: /images/sections/skills/git.png # FIXED
+  summary: "Estratégia de branches, padrões de repositório e onboarding."
+  categories: ["ways-of-working"]  # FIXED
+
+- name: CI/CD                          # FIXED
+  icon: "fas fa-code-branch"        # FIXED
+  summary: "Testes automáticos e pipelines de deploy para ativos de dados."
+  categories: ["ways-of-working"]  # FIXED
+
+- name: Linux                          # FIXED
+  logo: /images/sections/skills/linux.png # FIXED
+  summary: "Scripting de shell, agendamento e monitoramento de serviços."
+  categories: ["ways-of-working"]  # FIXED
+
+- name: Agile                          # FIXED
+  icon: "fas fa-people-group"       # FIXED
+  summary: "Levantamento de requisitos, refinamento e gestão de stakeholders."
+  categories: ["ways-of-working"]  # FIXED
