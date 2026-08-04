@@ -1,0 +1,60 @@
+{{/*
+  LOCAL OVERRIDE of the theme's layouts/partials/cards/accomplishments.html.
+
+  Copied verbatim from github.com/hugo-toha/toha/v4 @ THEME-VERSION: v4.16.0,
+  with one addition: an issuer mark before the organisation name. The upstream
+  card renders organization.name as plain link text and supports no icon at all.
+
+  Two fields, both optional and nil-guarded so entries without either still
+  render exactly as before:
+
+    organization.logo  an SVG under assets/, INLINED so that fill="currentColor"
+                       takes the surrounding text colour. Simple Icons files ship
+                       with no fill and default to black, which would make them
+                       invisible against the dark theme if served through an
+                       <img>. A raster falls back to an <img> at 1em.
+    organization.icon  a Font Awesome class, which inherits colour on its own.
+
+  `resources.Get` returns nil for a missing file, and reading .MediaType on nil
+  crashes the build — that is exactly how cards/skill.html fails upstream — so
+  every access sits inside a `with`.
+
+  MAINTENANCE: on a theme upgrade, diff against the new upstream file.
+  scripts/check-overrides.mjs fails the build when go.mod's theme version stops
+  matching THEME-VERSION above.
+*/}}
+<div class="col-md-12 col-lg-6 p-2">
+  <div class="card mt-3">
+    <div class="card-header">
+      <h5 class="card-title mb-0">{{ .name }}</h5>
+      <div class="sub-title">
+        <span>
+          {{/* ---- LOCAL ADDITION: issuer mark ---- */}}
+          {{- with .organization.logo -}}
+            {{- with resources.Get . -}}
+              {{- if eq .MediaType.SubType "svg" -}}
+                {{ .Content | safeHTML }}
+              {{- else -}}
+                <img src="{{ .RelPermalink }}" alt="" aria-hidden="true" style="width:1em;height:1em;object-fit:contain" />
+              {{- end -}}
+            {{- end -}}
+          {{- else -}}
+            {{- with .organization.icon -}}
+              <i class="{{ . }}" aria-hidden="true"></i>
+            {{- end -}}
+          {{- end }}
+          <a href="{{ .organization.url }}" title="{{ .organization.name }}" target="_blank" rel="noopener">{{ .organization.name }}</a>
+        </span>
+        <span class="ms-2">{{ .timeline }}</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <p>{{ .courseOverview | markdownify }}</p>
+    </div>
+    <div class="card-footer">
+      {{ if .certificateURL }}
+        <a class="btn btn-outline-info ms-1 ps-2 mb-2" href="{{ .certificateURL }}" target="_blank" rel="noopener" role="button">{{ i18n "view_certificate"}}</a>
+      {{ end }}
+    </div>
+  </div>
+</div>

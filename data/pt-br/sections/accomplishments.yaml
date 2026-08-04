@@ -26,6 +26,7 @@ accomplishments:
 - name: "Data Engineer Associate"
   organization:
     name: "DataCamp"
+    logo: icons/datacamp.svg               # FIXED
     url: "https://www.datacamp.com"
   timeline: "01/2025"
   courseOverview: "Certificação com provas cronometradas e uma entrega prática, não um curso concluído. Cobre ingestão, modelagem e design de pipelines. Válida até 01/2027."
@@ -34,6 +35,7 @@ accomplishments:
 - name: "Microsoft Certified: Azure Fundamentals (AZ-900)"
   organization:
     name: "Microsoft"
+    icon: "fab fa-microsoft"               # FIXED
     url: "https://learn.microsoft.com"
   timeline: "06/2026"
   courseOverview: "Conceitos de cloud, serviços principais do Azure, segurança, governança e gestão de custos — a base sobre a qual se apoia o trabalho de plataforma. Credencial E5511530DA2F13EF."
@@ -42,6 +44,7 @@ accomplishments:
 - name: "Microsoft Power BI Desktop for Business Intelligence"
   organization:
     name: "Udemy"
+    logo: icons/udemy.svg               # FIXED
     url: "https://www.udemy.com"
   timeline: "05/2024"
   courseOverview: "16,5 horas de modelagem, DAX e design de relatórios, trabalhado do modelo de dados para fora e não do visual para dentro."
@@ -50,6 +53,7 @@ accomplishments:
 - name: "CS50's Introduction to Programming with Python"
   organization:
     name: "Harvard University"
+    icon: "fas fa-graduation-cap"               # FIXED
     url: "https://cs50.harvard.edu"
   timeline: "2023"
   courseOverview: "CS50P de Harvard: nove conjuntos de problemas e um projeto final, avaliados por correção e estilo, não por presença."
@@ -58,6 +62,7 @@ accomplishments:
 - name: "Data Engineer"
   organization:
     name: "DataCamp"
+    logo: icons/datacamp.svg               # FIXED
     url: "https://www.datacamp.com"
   # timeline omitted: a DataCamp/DeepLearning.AI statement carries no date
   courseOverview: "A trilha de 40 horas e 18 cursos em Python: ingestão, data warehousing, orquestração com Airflow e streaming."
@@ -66,6 +71,7 @@ accomplishments:
 - name: "SQL Server Database Performance Monitoring and Tuning"
   organization:
     name: "Udemy"
+    logo: icons/udemy.svg               # FIXED
     url: "https://www.udemy.com"
   timeline: "11/2021"
   courseOverview: "Planos de execução, estratégia de indexação, estatísticas de espera e reescrita de consultas — o que uso quando uma janela de carga começa a crescer."
@@ -74,6 +80,7 @@ accomplishments:
 - name: "AI Fluency: Framework & Foundations"
   organization:
     name: "Anthropic"
+    logo: icons/anthropic.svg               # FIXED
     url: "https://www.anthropic.com"
   timeline: "04/2026"
   courseOverview: "Um framework prático para delegar a um LLM e verificar sua saída, mais do que truques de prompting."
@@ -82,6 +89,7 @@ accomplishments:
 - name: "Claude 101"
   organization:
     name: "Anthropic"
+    logo: icons/anthropic.svg               # FIXED
     url: "https://www.anthropic.com"
   timeline: "04/2026"
   courseOverview: "Uso prático do Claude para análise e código, incluindo onde não convém confiar sem verificar."
@@ -90,6 +98,7 @@ accomplishments:
 - name: "ChatGPT Prompt Engineering for Developers"
   organization:
     name: "DeepLearning.AI"
+    icon: "fas fa-certificate"               # FIXED
     url: "https://www.deeplearning.ai"
   # timeline omitted: a DataCamp/DeepLearning.AI statement carries no date
   courseOverview: "Estruturar prompts como parte de uma aplicação, com iteração e avaliação em vez de tentativa e erro."
@@ -98,6 +107,7 @@ accomplishments:
 - name: "SAS Visual Analytics 2 for SAS Viya: Advanced"
   organization:
     name: "SAS"
+    icon: "fas fa-certificate"               # FIXED
     url: "https://www.sas.com"
   timeline: "08/2021"
   courseOverview: "Preparação de dados, descoberta e criação de relatórios avançados no SAS Visual Analytics, usados diariamente em seguros e bancos."
@@ -106,6 +116,7 @@ accomplishments:
 - name: "SAS Programming 3: Advanced Techniques"
   organization:
     name: "SAS"
+    icon: "fas fa-certificate"               # FIXED
     url: "https://www.sas.com"
   timeline: "08/2021"
   courseOverview: "DATA step e procedimentos avançados em Base SAS, a base do ETL de alertas de fraude do qual fui responsável."
