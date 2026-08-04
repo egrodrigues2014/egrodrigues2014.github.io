@@ -31,6 +31,7 @@ run = [
   "node scripts/check-i18n.mjs",
   "node scripts/check-assets.mjs",
   "node scripts/check-pii.mjs",
+  "node scripts/check-overrides.mjs",
   "hugo --gc --minify --cleanDestinationDir --printPathWarnings",
   "node scripts/check-render.mjs",
 ]

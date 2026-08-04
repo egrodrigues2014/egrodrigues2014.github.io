@@ -13,7 +13,7 @@
  */
 import fs from 'node:fs'
 import path from 'node:path'
-import { LANGS, REPO, Report, loadLang } from './lib.mjs'
+import { LANGS, REPO, Report, loadLang, readYaml } from './lib.mjs'
 
 const r = new Report('rendered output')
 const PUBLIC = path.join(REPO, 'public')
@@ -66,6 +66,58 @@ for (const lang of LANGS) {
   const want = LOCALE[lang]
   const got = html.match(/<html[^>]*\blang=["']?([^\s"'>]+)/)?.[1]
   if (want && got !== want) r.error(`public/${rel} has <html lang="${got}">, expected "${want}"`)
+}
+
+// --- hreflang and the pre-launch gate ------------------------------------
+// The theme emits no hreflang of its own, and it renders the home through a
+// standalone template that bypasses baseof — so the override that adds these has
+// to be checked on the built output, per language, or a regression is invisible.
+//
+// The gate assertions cut both ways on purpose: at launch, params.prelaunch flips
+// to false and these confirm the noindex actually disappeared, rather than
+// trusting that one line did what it said.
+{
+  const cfg = readYaml(path.join(REPO, 'hugo.yaml'))
+  const prelaunch = Boolean(cfg.params?.prelaunch)
+  const expectedLocales = LANGS.map((l) => cfg.languages?.[l]?.locale ?? l)
+
+  for (const lang of LANGS) {
+    const rel = lang === LANGS[0] ? 'index.html' : `${lang}/index.html`
+    const abs = path.join(PUBLIC, rel)
+    if (!fs.existsSync(abs)) continue
+    const html = fs.readFileSync(abs, 'utf8')
+
+    for (const loc of expectedLocales) {
+      if (!new RegExp(`hreflang=["']?${loc}["']?[\\s>]`).test(html)) {
+        r.error(`public/${rel} is missing hreflang="${loc}". All language versions must list each other ` +
+          'reciprocally, otherwise a search engine treats them as unrelated or duplicate pages.')
+      }
+    }
+    if (!/hreflang=["']?x-default["']?[\s>]/.test(html)) {
+      r.error(`public/${rel} is missing hreflang="x-default"`)
+    }
+
+    const hasNoindex = /content=["']?noindex/.test(html)
+    if (prelaunch && !hasNoindex) {
+      r.error(`params.prelaunch is true but public/${rel} has no noindex meta. robots.txt alone does not ` +
+        'prevent indexing of a URL discovered by another route.')
+    }
+    if (!prelaunch && hasNoindex) {
+      r.error(`params.prelaunch is false but public/${rel} still carries a noindex meta — the site would ` +
+        'stay invisible to search engines after launch.')
+    }
+  }
+
+  const robots = path.join(PUBLIC, 'robots.txt')
+  if (!fs.existsSync(robots)) {
+    r.error('public/robots.txt was not generated — is enableRobotsTXT true in hugo.yaml?')
+  } else {
+    const txt = fs.readFileSync(robots, 'utf8')
+    const disallows = /^\s*Disallow:\s*\/\s*$/m.test(txt)
+    if (prelaunch && !disallows) r.error('params.prelaunch is true but robots.txt does not Disallow: /')
+    if (!prelaunch && disallows) r.error('params.prelaunch is false but robots.txt still has Disallow: /')
+    if (!prelaunch && !txt.includes('Sitemap:')) r.error('robots.txt should advertise the sitemap once launched')
+  }
 }
 
 // The root sitemap is an index pointing at one sitemap per language.

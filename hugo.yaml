@@ -77,8 +77,22 @@ outputs:
 # Enable global emoji support
 enableEmoji: true
 
+# The theme ships no robots.txt, so this enables ours at layouts/robots.txt.
+enableRobotsTXT: true
+
 # Site parameters
 params:
+  # PRE-LAUNCH GATE. While true the site is deployed but deliberately not
+  # indexable: layouts/robots.txt serves "Disallow: /" and seo-extra.html emits
+  # <meta name="robots" content="noindex,nofollow">. Both are needed — robots.txt
+  # stops crawling, but a URL discovered another way can still be listed, and the
+  # meta is what actually prevents indexing.
+  #
+  # Deploying early is deliberate: the baseURL and asset-path bugs of this stack
+  # do not reproduce locally, because `hugo server` serves from the root. The
+  # broken og:image found earlier is the proof. Launching is this one line.
+  prelaunch: true
+
   # Background image of the landing page
   background: /images/site/background.jpg
   # Background image of the landing page for dark theme

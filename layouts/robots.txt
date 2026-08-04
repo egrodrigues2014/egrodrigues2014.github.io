@@ -1,0 +1,20 @@
+{{- /*
+  Requires enableRobotsTXT: true in hugo.yaml. Hugo emits this once, at the site
+  root, for the default language.
+
+  Driven by the same params.prelaunch switch as the noindex meta in
+  seo-extra.html. Keep the two together: robots.txt stops crawling, but a URL
+  discovered by another route can still appear in results, so the meta tag is
+  what actually prevents indexing. One without the other is a half measure.
+*/ -}}
+{{- if site.Params.prelaunch -}}
+# Pre-launch: the site is deployed but deliberately not indexable.
+# Flip params.prelaunch to false in hugo.yaml to open it up.
+User-agent: *
+Disallow: /
+{{- else -}}
+User-agent: *
+Allow: /
+
+Sitemap: {{ "sitemap.xml" | absURL }}
+{{- end }}

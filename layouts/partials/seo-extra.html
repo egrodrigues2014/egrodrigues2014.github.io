@@ -1,0 +1,47 @@
+{{/*
+  Head additions the theme does not provide. Called from the local baseof
+  override; see layouts/_default/baseof.html for why that override exists.
+
+  1. hreflang. Toha v4.16.0 emits none at all — verified, zero occurrences in
+     all three languages — while getting <html lang> right. For a trilingual
+     site that is a real SEO gap: without it a search engine treats the three
+     versions as unrelated pages, or as duplicates.
+
+     Built from .AllTranslations, which lists only versions that actually exist
+     and includes the current page, so the set is reciprocal as the spec
+     requires. The value uses the same expression as <html lang> in baseof
+     (.Language.Locale falling back to .Language.Lang) so the two can never
+     disagree: en, es-ES, pt-BR.
+
+     Skipped entirely on pages with a single version — a blog post with no
+     translation gets nothing, which is correct.
+
+  2. Pre-launch noindex. Paired with layouts/robots.txt and driven by the single
+     switch params.prelaunch, so launching is a one-line change rather than a
+     hunt for references. Both are needed: robots.txt stops crawling, but a URL
+     discovered another way can still be listed; this meta is what actually
+     prevents indexing.
+*/}}
+
+{{- /*
+  x-default is identified by an empty .Site.LanguagePrefix, which is true only
+  for the default content language — the one served at the site root. There is
+  no site.DefaultContentLanguage in Hugo's API (tried it; the build fails with
+  "can't evaluate field DefaultContentLanguage"), and hardcoding "en" here would
+  silently diverge the day hugo.yaml changes. Note this depends on
+  defaultContentLanguageInSubdir staying false, which is our configuration.
+*/ -}}
+{{- if gt (len .AllTranslations) 1 }}
+  {{- range .AllTranslations }}
+  <link rel="alternate" hreflang="{{ .Language.Locale | default .Language.Lang }}" href="{{ .Permalink }}" />
+  {{- end }}
+  {{- range .AllTranslations }}
+    {{- if not .Site.LanguagePrefix }}
+  <link rel="alternate" hreflang="x-default" href="{{ .Permalink }}" />
+    {{- end }}
+  {{- end }}
+{{- end }}
+
+{{- if site.Params.prelaunch }}
+  <meta name="robots" content="noindex,nofollow" />
+{{- end }}

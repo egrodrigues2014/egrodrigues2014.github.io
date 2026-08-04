@@ -1,0 +1,45 @@
+{{/*
+  LOCAL OVERRIDE of the theme's layouts/partials/opengraph.html.
+
+  Copied verbatim from github.com/hugo-toha/toha/v4 @ THEME-VERSION: v4.16.0,
+  with exactly one line added at the end.
+
+  Why here, of all places: the theme has no extension point for <head>, and it
+  renders pages through TWO standalone templates — layouts/index.html has its own
+  DOCTYPE and head and does not use baseof at all. Overriding baseof therefore
+  covers every page EXCEPT the home, which is the one page that actually has three
+  language versions. Verified the hard way: with only a baseof override, the home
+  emitted no hreflang and no noindex while section pages did.
+
+  Both standalone templates call this partial, and it is the smallest of the
+  shared ones — 19 lines against 50 for baseof plus 72 for index.html. Owning it
+  covers everything at a fraction of the upgrade risk. The upstream body below is
+  untouched so the diff on a theme upgrade stays readable, and the additions live
+  in their own partial.
+
+  MAINTENANCE: on a theme upgrade, diff this against the new upstream file.
+  scripts/check-overrides.mjs fails the build when go.mod's theme version stops
+  matching THEME-VERSION above, which turns a silent drift into a loud failure.
+*/}}
+{{ $title := .Params.title | default (index hugo.Data site.Language.Lang).site.openGraph.title | default site.Title }}
+{{ $type := .Params.type | default (index hugo.Data site.Language.Lang).site.openGraph.type | default "website" }}
+{{ $description := .Params.description | default (index hugo.Data site.Language.Lang).site.openGraph.description |
+default (index hugo.Data site.Language.Lang).site.description }}
+{{ $url := .Permalink | default (index hugo.Data site.Language.Lang).site.openGraph.url | default site.BaseURL }}
+
+<!-- ============ open graph tags ========== -->
+<meta property="og:title" content="{{ $title }}" />
+<meta property="og:type" content="{{ $type }}" />
+<meta property="og:description" content="{{ $description }}" />
+{{- with .Params.images -}}
+  <meta property="og:image" content="{{ index . 0 | absURL }}">
+{{- else -}}
+  {{- $image := (index hugo.Data site.Language.Lang).site.openGraph.image | default (index hugo.Data site.Language.Lang).author.image }}
+  {{- with $image }}
+    <meta property="og:image" content="{{ . | absURL }}">
+  {{ end -}}
+{{- end -}}
+<meta property="og:url" content="{{ $url }}">
+
+{{/* ---- LOCAL ADDITION: hreflang + pre-launch noindex ---- */}}
+{{- partial "seo-extra.html" . -}}
