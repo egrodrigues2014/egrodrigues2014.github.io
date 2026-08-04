@@ -1,73 +1,94 @@
 # section information
+#
+# Fields marked FIXED must be byte-identical in data/en, data/es and
+# data/pt-br. `mise run verify` enforces it, including the number of bullets
+# per position — a translation one bullet short is invisible otherwise.
 section:
-  name: Experiences
-  id: experiences
-  enable: true
-  weight: 30
-  showOnNavbar: true
-  # Can optionally hide the title in sections
-  # hideTitle: true 
+  name: Experiencia
+  id: experiences                       # FIXED
+  enable: true                          # FIXED
+  weight: 30                            # FIXED
+  showOnNavbar: true                    # FIXED
 
-# Your experiences
+# Dates are MM/YYYY and FIXED. Month names would need translating three times
+# ("Mar 2022" reads wrong in Spanish and Portuguese) — 39 more strings and 39
+# more chances to misalign a month. Omitting `end` makes the theme insert its
+# own localised [present] key, so never write "Present" by hand.
+#
+# No company logos yet: those fields are nil-guarded in the theme, so the cards
+# render without them. Adding one is safe at any time.
 experiences:
 - company:
-    name: Example Co.
-    url: "https://www.example.com"
-    location: Dhaka Branch
-    logo: /images/sections/experiences/company1.jpg
-    # Can optionally show a different logo for dark theme
-    # darkLogo: /images/sections/experiences/company1.jpg
-    # company overview
-    overview: Example Co. is a widely recognized company for cloud-native development. It builds tools for Kubernetes.
+    name: MOD — Makers of Digital
+    url: "https://mod.es"
+    location: Barcelona, España
+    overview: Consultora digital en Barcelona que construye productos de datos y software.
   positions:
-  - designation: Senior Software Engineer
-    start: Nov 2019
-    # don't provide end date if you are currently working there. It will be replaced by "Present"
-    # end: Dec 2020
-    # give some points about what was your responsibilities at the company.
+  - designation: Lead Data Engineer
+    start: "02/2026"
+    # end omitted on purpose -> localised [present]
     responsibilities:
-    - Design and develop XYZ tool for ABC task
-    - Design, develop and manage disaster recovery tool [Xtool](https://www.example.com) that backup Kubernetes volumes, databases, and cluster's resource definition.
-    - Lead backend team.
-
-  - designation: Junior Software Engineer
-    start: Nov 2017
-    end: Oct 2019
-    responsibilities:
-    - Implement and test xyz feature for abc tool.
-    - Support client for abc tool.
-    - Learn k,d,w technology for xyz.
+    - "Diseño capas de lakehouse **medallion** (bronze/silver/gold) sobre Azure Data Lake Storage Gen2, Azure SQL y Microsoft Fabric, dimensionando cada arquitectura a la carga real y no a una plantilla."
+    - "Construyo y mantengo pipelines ETL/ELT en Python, Azure Data Factory y Airflow, con ingesta desde bases relacionales, APIs REST y sistemas ERP/CRM; los patrones de carga **incremental y parametrizada** reducen la ventana de proceso y el coste de cómputo."
+    - "Modelo el data warehouse en [dbt](https://www.getdbt.com/) — esquemas en estrella, SCD tipo 2 y hechos snapshot — con control de versiones, tests automáticos y linaje documentado, optimizado con particionado, indexación y preagregación."
+    - "Diseño modelos semánticos corporativos de Power BI, incluidos compuestos Import + DirectQuery, con DAX avanzado (inteligencia de tiempo, análisis de desviaciones, puentes M:N) y gobierno: seguridad a nivel de fila, refresco incremental, gateways on-premises y pipelines de despliegue."
+    - "Soy responsable del CI/CD con Git y defino la estrategia de ramas, la estructura de repositorios y los estándares de onboarding del departamento de datos; llevo a producción modelos de forecasting (Prophet, scikit-learn) que alimentan la planificación de demanda y las recomendaciones de compra por local."
 
 - company:
-    name: PreExample Co.
-    url: "https://www.example.com"
-    location: Nowhere
-    logo: /images/sections/experiences/company2.jpg
-    # Can optionally show a different logo for dark theme
-    # darkLogo: /images/sections/experiences/company2.jpg
-    overview: PreExample Co. is a gateway company to enter into Example co. So, nothing special here.
+    name: NTT DATA — Europe & Latam
+    url: "https://es.nttdata.com"
+    location: Barcelona, España
+    overview: Consultora y proveedor global de servicios de TI.
   positions:
-  - designation: Software Engineer
-    start: March 2016
-    end: May 2017
+  - designation: Senior Data Engineer
+    start: "01/2023"
+    end: "02/2026"
     responsibilities:
-    - Write lots of example codes.
-    - Read lots of examples.
-    - See lots of example videos.
+    - "Lideré sesiones de refinamiento de requisitos con clientes, convirtiendo necesidades de negocio en soluciones técnicas y manteniendo el alcance alineado entre stakeholders."
+    - "Diseñé e implementé arquitecturas de base de datos dimensionadas para escalabilidad, rendimiento y fiabilidad."
+    - "Construí el modelo de datos de análisis de Esfuerzo, Entrega, Productividad y Calidad, dando a los equipos de entrega una base común para decidir."
+    - "Diseñé y desarrollé informes interactivos de Power BI que responden la pregunta en la primera pantalla, no tras tres drill-downs."
 
 - company:
-    name: Intern Counting Company (ICC).
-    url: "https://www.example.com"
-    location: Intern Land
-    logo: /images/sections/experiences/company3.jpg
-    # Can optionally show a different logo for dark theme
-    # darkLogo: /images/sections/experiences/company3.jpg
-    overview: Intern counting Company (ICC) is responsible for counting worldwide intern Engineers.
+    name: PeRTICA Análisis Estadísticos S.L.
+    url: "https://www.pertica.es"
+    location: Madrid, España
+    overview: Partner de SAS en España; consultora analítica para seguros y banca.
   positions:
-  - designation: Intern
-    start: Jun 2015
-    end: Jan 2016
+  - designation: Consultor SAS
+    start: "01/2020"
+    end: "12/2022"
     responsibilities:
-    - Count lost of interns.
-    - Count more interns.
-    - Count me as an intern.
+    - "Fui responsable de extremo a extremo del proceso de generación de alertas de fraude en siniestros de auto, desde el dato de origen hasta la alerta sobre la que actúa el investigador."
+    - "Diseñé, desarrollé y mantuve los procesos ETL, planifiqué jobs y flujos, y optimicé consultas para reducir tiempos de ejecución."
+    - "Escribí scripts en Bash (Linux) y Shell (Windows) para automatizar procesos, depurar logs y monitorizar servicios y recursos de SAS."
+    - "Construí un sistema de reinicio automático que recupera el proceso ETL ante incidencias **sin intervención manual**."
+
+- company:
+    name: Banco Sabadell
+    url: "https://www.bancsabadell.com"
+    location: Sabadell, España
+    overview: Banco comercial español.
+  positions:
+  - designation: Analista de Datos SAS
+    start: "08/2019"
+    end: "01/2020"
+    responsibilities:
+    - "Gestioné el proceso de recepción de tasaciones de la Unidad de Garantías Hipotecarias."
+    - "Mantuve el proceso ETL y me encargué de la recogida, explotación e interpretación del dato."
+    - "Creé informes dinámicos sobre los indicadores clave por los que se medía la unidad."
+
+- company:
+    name: Itaú Unibanco
+    url: "https://www.itau.com.br"
+    location: São Paulo, Brasil
+    overview: El mayor banco privado de Brasil.
+  positions:
+  - designation: Analista de Riesgos (becario → junior → analista)
+    start: "07/2016"
+    end: "12/2018"
+    responsibilities:
+    - "Gestioné el riesgo de los procesos de adquirencia en Rede (pagos con tarjeta de crédito y débito): mapeé procesos de TI y de negocio y medí el impacto del riesgo frente al entorno de control."
+    - "Realicé el diagnóstico de riesgo operacional de procesos críticos y las pruebas de controles clave, incluida Sarbanes-Oxley (SOX)."
+    - "Desarrollé cuadros de mando de indicadores de riesgo para las principales líneas de negocio, analizando datos con SAS, SQL y Excel."
+    - "Fui responsable del reporte de resultados — alcance, diagramas de flujo, riesgos evaluados, controles probados, hallazgos y mejoras — y lideré las reuniones de resultados con stakeholders."

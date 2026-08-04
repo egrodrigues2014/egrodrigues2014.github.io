@@ -1,73 +1,94 @@
 # section information
+#
+# Fields marked FIXED must be byte-identical in data/en, data/es and
+# data/pt-br. `mise run verify` enforces it, including the number of bullets
+# per position — a translation one bullet short is invisible otherwise.
 section:
-  name: Experiences
-  id: experiences
-  enable: true
-  weight: 30
-  showOnNavbar: true
-  # Can optionally hide the title in sections
-  # hideTitle: true 
+  name: Experience
+  id: experiences                       # FIXED
+  enable: true                          # FIXED
+  weight: 30                            # FIXED
+  showOnNavbar: true                    # FIXED
 
-# Your experiences
+# Dates are MM/YYYY and FIXED. Month names would need translating three times
+# ("Mar 2022" reads wrong in Spanish and Portuguese) — 39 more strings and 39
+# more chances to misalign a month. Omitting `end` makes the theme insert its
+# own localised [present] key, so never write "Present" by hand.
+#
+# No company logos yet: those fields are nil-guarded in the theme, so the cards
+# render without them. Adding one is safe at any time.
 experiences:
 - company:
-    name: Example Co.
-    url: "https://www.example.com"
-    location: Dhaka Branch
-    logo: /images/sections/experiences/company1.jpg
-    # Can optionally show a different logo for dark theme
-    # darkLogo: /images/sections/experiences/company1.jpg
-    # company overview
-    overview: Example Co. is a widely recognized company for cloud-native development. It builds tools for Kubernetes.
+    name: MOD — Makers of Digital
+    url: "https://mod.es"
+    location: Barcelona, Spain
+    overview: Digital consultancy in Barcelona building data and software products.
   positions:
-  - designation: Senior Software Engineer
-    start: Nov 2019
-    # don't provide end date if you are currently working there. It will be replaced by "Present"
-    # end: Dec 2020
-    # give some points about what was your responsibilities at the company.
+  - designation: Lead Data Engineer
+    start: "02/2026"
+    # end omitted on purpose -> localised [present]
     responsibilities:
-    - Design and develop XYZ tool for ABC task
-    - Design, develop and manage disaster recovery tool [Xtool](https://www.example.com) that backup Kubernetes volumes, databases, and cluster's resource definition.
-    - Lead backend team.
-
-  - designation: Junior Software Engineer
-    start: Nov 2017
-    end: Oct 2019
-    responsibilities:
-    - Implement and test xyz feature for abc tool.
-    - Support client for abc tool.
-    - Learn k,d,w technology for xyz.
+    - "Architect **medallion** lakehouse layers (bronze/silver/gold) across Azure Data Lake Storage Gen2, Azure SQL and Microsoft Fabric, sizing each database architecture to the workload rather than to a template."
+    - "Build and maintain ETL/ELT pipelines in Python, Azure Data Factory and Airflow, ingesting from relational databases, REST APIs and ERP/CRM systems; **incremental, parameterised** load patterns cut both the refresh window and the compute bill."
+    - "Model the warehouse in [dbt](https://www.getdbt.com/) — star schemas, SCD Type 2 and snapshot facts — with version control, automated tests and documented lineage, tuned through partitioning, indexing and pre-aggregation."
+    - "Design enterprise Power BI semantic models, including composite Import + DirectQuery, with advanced DAX (time intelligence, variance analysis, many-to-many bridges) and governance: row-level security, incremental refresh, on-premises gateways and deployment pipelines."
+    - "Own CI/CD with Git and define the branching methodology, repository structure and onboarding standards for the data department; productionise forecasting models (Prophet, scikit-learn) that drive demand planning and per-location purchasing recommendations."
 
 - company:
-    name: PreExample Co.
-    url: "https://www.example.com"
-    location: Nowhere
-    logo: /images/sections/experiences/company2.jpg
-    # Can optionally show a different logo for dark theme
-    # darkLogo: /images/sections/experiences/company2.jpg
-    overview: PreExample Co. is a gateway company to enter into Example co. So, nothing special here.
+    name: NTT DATA — Europe & Latam
+    url: "https://es.nttdata.com"
+    location: Barcelona, Spain
+    overview: Global IT services and consulting firm.
   positions:
-  - designation: Software Engineer
-    start: March 2016
-    end: May 2017
+  - designation: Senior Data Engineer
+    start: "01/2023"
+    end: "02/2026"
     responsibilities:
-    - Write lots of example codes.
-    - Read lots of examples.
-    - See lots of example videos.
+    - "Led requirement refinement sessions with clients, turning business needs into technical solutions and keeping stakeholders aligned on scope."
+    - "Designed and implemented database architectures sized for scalability, performance and reliability."
+    - "Built the data model for Effort, Delivery, Productivity and Quality analysis, giving delivery teams a shared basis for decisions."
+    - "Designed and developed interactive Power BI reports that answer a question on the first screen rather than after three drill-downs."
 
 - company:
-    name: Intern Counting Company (ICC).
-    url: "https://www.example.com"
-    location: Intern Land
-    logo: /images/sections/experiences/company3.jpg
-    # Can optionally show a different logo for dark theme
-    # darkLogo: /images/sections/experiences/company3.jpg
-    overview: Intern counting Company (ICC) is responsible for counting worldwide intern Engineers.
+    name: PeRTICA Análisis Estadísticos S.L.
+    url: "https://www.pertica.es"
+    location: Madrid, Spain
+    overview: SAS partner in Spain; analytics consultancy for insurance and banking.
   positions:
-  - designation: Intern
-    start: Jun 2015
-    end: Jan 2016
+  - designation: SAS Consultant
+    start: "01/2020"
+    end: "12/2022"
     responsibilities:
-    - Count lost of interns.
-    - Count more interns.
-    - Count me as an intern.
+    - "Owned the fraud-alert generation process for auto insurance claims end to end, from source data to the alert the investigator acts on."
+    - "Designed, developed and maintained the ETL processes, planned jobs and workflows, and tuned queries to bring execution times down."
+    - "Wrote Bash (Linux) and Shell (Windows) scripts for process automation, log debugging and monitoring of SAS services and resources."
+    - "Built an automatic restart system that recovers the ETL process from incidents **without manual intervention**."
+
+- company:
+    name: Banco Sabadell
+    url: "https://www.bancsabadell.com"
+    location: Sabadell, Spain
+    overview: Spanish commercial bank.
+  positions:
+  - designation: SAS Data Analyst
+    start: "08/2019"
+    end: "01/2020"
+    responsibilities:
+    - "Managed the appraisal reception process for the Mortgage Guarantees Unit."
+    - "Maintained the ETL process and handled data collection, exploitation and interpretation."
+    - "Created dynamic reports on the key business indicators the unit was measured by."
+
+- company:
+    name: Itaú Unibanco
+    url: "https://www.itau.com.br"
+    location: São Paulo, Brazil
+    overview: Largest private-sector bank in Brazil.
+  positions:
+  - designation: Risk Analyst (Intern → Junior → Analyst)
+    start: "07/2016"
+    end: "12/2018"
+    responsibilities:
+    - "Managed risk for acquirer processes at Rede (credit and debit card payments): mapped IT and business processes and measured risk impact against the control environment."
+    - "Ran operational risk diagnosis for critical processes and key control testing, including Sarbanes-Oxley (SOX)."
+    - "Developed risk-indicator dashboards for the main business lines, analysing data with SAS, SQL and Excel."
+    - "Owned result reporting — scope, process flow charts, assessed risks, tested controls, findings and improvements — and led the results meetings with stakeholders."
