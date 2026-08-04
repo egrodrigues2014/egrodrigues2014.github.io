@@ -1,29 +1,24 @@
-# Copyright Notice
-copyright: © 2020 Copyright.
+# Fields marked FIXED must be byte-identical in data/en, data/es and
+# data/pt-br. The cross-language checker enforces it: run `mise run verify`.
+# Everything else is prose and should differ per language.
 
-# A disclaimer notice for the footer. Make sure you have set "params.footer.disclaimer.enable: true" in your `config.yaml` file.
-disclaimer: "This theme is under MIT license. So, you can use it for non-commercial, commercial, or private uses.
-You can modify or distribute the theme without requiring any permission from the theme author.
-However, the theme author does not provide any warranty or takes any liability for any issue with the theme."
+copyright: "© 2026 Elton Rodrigues"
 
-# Meta description for your site.  This will help the search engines to find your site.
-description: Portfolio and personal blog of John Doe.
+# Shown in the footer. Covers both the content licence and the attribution the
+# theme's MIT licence asks for.
+disclaimer: "Contenido © 2026 Elton Rodrigues. Todos los derechos reservados. Hecho con [Hugo](https://gohugo.io) y el tema [Toha](https://github.com/hugo-toha/toha) (MIT)."
 
-# specify the list of custom menus that you want to show in the top navbar.
-# they will be separated by a divider from the main menus.
-customMenus:
-- name: Docs
-  url: https://toha-docs.hugo-themes.com/posts/
-  # specify whether to hide the menu item from top navbar or not.
-  hideFromNavbar: false
-  # specify whether to show the menu item in footer or not.
-  # if you set it to true, make sure you have set `footer.navigation.customMenus: true` in your config.yaml
-  showOnFooter: false
+# Meta description. Keep it near 150-160 characters.
+description: "Lead Data Engineer en Barcelona. Construyo plataformas de datos en Azure y Microsoft Fabric: ETL/ELT, dbt, Airflow y modelos semánticos de Power BI."
 
-# Specify OpenGraph Headers
+# Extra navbar/footer entries. Empty: the inherited one pointed at the theme's
+# own documentation site.
+customMenus: []
+
 openGraph:
-  title: John's Blog
-  type: website
-  description: Portfolio and personal blog of John Doe.
-  image: images/author/john.png
-  url: https://toha-preview.hugo-themes.com
+  title: "Elton Rodrigues — Ingeniero de Datos"
+  type: website                       # FIXED
+  description: "Lead Data Engineer en Barcelona. Construyo plataformas de datos en Azure y Microsoft Fabric: ETL/ELT, dbt, Airflow y modelos semánticos de Power BI."
+  # TODO F5.T1: add `image:` once branding exists. A 1200x630 card is what
+  # LinkedIn and Slack render; without it they fall back to a bare link.
+  url: "https://egrodrigues2014.github.io/es/"          # per-language canonical, so NOT fixed

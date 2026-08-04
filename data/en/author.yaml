@@ -1,21 +1,27 @@
-# some information about you
-name: "John Doe"
-nickname: "John"
-# greeting message before your name. it will default to "Hi! I am" if not provided
-greeting: "Hi, I am"
-image: "images/author/john.png"
-# give your some contact information. they will be used in the footer
-contactInfo:
-  email: "johndoe@example.com"
-  phone: "+0123456789"
-  github: johndoe
-  linkedin: johndoe
-  researchgate: john-doe
+# Fields marked FIXED must be byte-identical in data/en, data/es and
+# data/pt-br. The cross-language checker enforces it: run `mise run verify`.
+# Everything else is prose and should differ per language.
 
-# some summary about what you do
+name: Elton Rodrigues                 # FIXED
+nickname: Elton                       # FIXED (a nickname is a proper noun)
+greeting: "Hi, I am"
+
+# TODO F5.T1: add `image: images/author/elton.jpg` once a square photo of at
+# least 400x400 exists. Left out rather than pointing at a missing file: the
+# theme falls back to its default avatar, and a dangling path fails the asset
+# checker.
+
+# The KEYS below are lookup keys, never labels. Translating one silently drops
+# its icon, which is the exact defect the upstream Bengali file had. FIXED.
+contactInfo:
+  linkedin: engineer-elton-rodrigues
+  github: egrodrigues2014
+# No `email` and no `phone` by decision: a mail address on an indexed page is a
+# permanent spam magnet, and LinkedIn is the channel a recruiter uses anyway.
+
+# Rotating lines for the typewriter effect on the landing page.
 summary:
-  - I am a Developer
-  - I am a Devops
-  - I love servers
-  - I work on open-source projects
-  - I love to work with some fun projects
+  - "Lead Data Engineer based in Barcelona"
+  - "I build data platforms on Azure and Microsoft Fabric"
+  - "From ERP ingestion to Power BI semantic models"
+  - "Trilingual: Português · Español · English"

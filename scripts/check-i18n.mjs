@@ -33,7 +33,6 @@ const RULES = [
   [/^section\.name$/, 'text'],
   [/^buttons\[\]\.name$/, 'text'],
   [/^greeting$/, 'text'],
-  [/^nickname$/, 'text'],
   [/^summary(\[\])?$/, 'text'],
   [/^designation$/, 'text'],
   [/^skills\[\]\.summary$/, 'text'],
@@ -50,7 +49,11 @@ const RULES = [
   [/^achievements\[\]\.(title|summary)$/, 'text'],
   [/^publications\[\]\.paper\.summary$/, 'text'],
   [/^resourceLinks\[\]\.title$/, 'text'],
-  [/^(copyright|disclaimer|description)$/, 'text'],
+  [/^(disclaimer|description)$/, 'text'],
+  // A nickname and a copyright line are the same in every language; leaving
+  // them as prose produced a warning that could never be resolved.
+  [/^nickname$/, 'fixed'],
+  [/^copyright$/, 'fixed'],
   [/^openGraph\.(title|description)$/, 'text'],
   [/^customMenus\[\]\.name$/, 'text'],
 

@@ -44,7 +44,10 @@ const ALLOW = [
   /github\.com\/hugo-toha\/toha\/v4/,
   // Commented-out Matomo placeholder shipped by the theme, under a disabled
   // feature. Inert documentation, not our configuration.
-  /#\s*instance:\s*matomo\.example\.com/
+  /#\s*instance:\s*matomo\.example\.com/,
+  // Footer attribution. The theme is MIT licensed, which requires crediting it,
+  // so "hugo-toha" appears here by obligation rather than by leftover.
+  /\[Toha\]\(https:\/\/github\.com\/hugo-toha\/toha\)/
 ]
 
 // hugo.yaml is scanned; generated and vendored trees are not.
