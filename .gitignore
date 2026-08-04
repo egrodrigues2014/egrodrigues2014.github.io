@@ -3,8 +3,8 @@
 /resources/
 .hugo_build.lock
 
-# Dependencies
-/node_modules/
+# Dependencies (unanchored: also covers scripts/node_modules/)
+node_modules/
 
 # Editor and local tooling
 .vscode/
