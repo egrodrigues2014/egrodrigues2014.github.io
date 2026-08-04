@@ -21,19 +21,40 @@ module:
 
 # Manage languages
 # For any more details, you can check the official documentation: https://gohugo.io/content-management/multilingual/
+#
+# Adding a language here WITHOUT creating its data/<lang>/ tree in the same
+# commit gives that language an empty home page and a green build. The theme
+# reads `index hugo.Data site.Language.Lang` and does NOT fall back to another
+# language. That is how the upstream `bn` tree ended up broken.
+#
+# The key must match a theme i18n bundle or the entire UI silently falls back
+# to the default language. v4.16.0 ships es.toml, pt-br.toml and pt-pt.toml
+# but no pt.toml, hence `pt-br` and not `pt`.
+#
+# Flags derive from the locale, not the key: en -> gb, es-ES -> es, pt-BR -> br.
+# No flagOverwrites required.
 languages:
   en:
     locale: en
     label: English
     title: "Elton Rodrigues — Data Engineer"
     weight: 1
-  bn:
-    locale: bn
-    label: বাংলা
-    title: জনের ব্লগ
+  es:
+    locale: es-ES
+    label: Español
+    title: "Elton Rodrigues — Ingeniero de Datos"
     weight: 2
-# default language for the content
+  pt-br:
+    locale: pt-BR
+    label: Português
+    title: "Elton Rodrigues — Engenheiro de Dados"
+    weight: 3
+# default language for the content; served at the site root
 defaultContentLanguage: en
+
+# Scaffolding, removed in F6: renders any missing i18n key as "[i18n] key" so
+# gaps show up on the page instead of silently falling back to English.
+enableMissingTranslationPlaceholders: true
 
 # Allow raw html in markdown file
 markup:
