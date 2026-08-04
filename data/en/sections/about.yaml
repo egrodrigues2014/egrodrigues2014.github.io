@@ -52,7 +52,30 @@ resourceLinks: []
 # The inherited file used this block for self-assigned "Leadership 85%" style
 # indicators, which is the single most common portfolio cliché and carries no
 # information.
+# Two blocks in one grid, in this order: the certifications that have official
+# issuer artwork, then the spoken languages. The theme puts both types in the same
+# col-6 col-lg-4 grid, so this is 3 tiles per row on desktop and 2 on mobile.
+#
+# Only DataCamp and Microsoft appear here because only they issue a badge image.
+# Power BI (Udemy) and CS50 (Harvard) issue document-style certificates; inventing
+# square artwork for them would read as inconsistent beside real badges, so they
+# lead the Certifications section instead.
+#
+# Both images are pre-sized to 150x150 to match the language rings: the theme sets
+# no width or height on .certificate-badge, so the intrinsic size is the rendered
+# size. Self-hosted under static/files/ rather than hotlinked — badge: is a raw
+# <img src> with no pipeline, and an issuer URL change would break this silently.
 badges:
+- type: "certification"                 # FIXED
+  name: "Data Engineer Associate"       # FIXED (credential name as issued)
+  url: "https://www.datacamp.com/certificate/DEA0018012967900"   # FIXED
+  badge: /files/badges/datacamp-data-engineer-associate.png      # FIXED
+
+- type: "certification"                 # FIXED
+  name: "Microsoft Certified: Azure Fundamentals (AZ-900)"       # FIXED
+  url: "https://learn.microsoft.com/users/eltonguilhermerodrigues-9591/credentials/e5511530da2f13ef"   # FIXED
+  badge: /files/badges/microsoft-certified-az-900.svg            # FIXED
+
 - type: "soft-skill-indicator"          # FIXED
   name: Portuguese (native)
   percentage: 100                        # FIXED
