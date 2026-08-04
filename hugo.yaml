@@ -240,8 +240,18 @@ params:
       #     countryCode: us
 
       # Enable this to use `embed-pdf` shortcode.
+      #
+      # DISABLED on purpose. The feature's script loads pdf.js from
+      # cdn.jsdelivr.net on EVERY page, whether or not a PDF is embedded —
+      # confirmed in production, and the demo post that used the shortcode is
+      # gone. That is a third-party request leaking every visitor's IP for a
+      # feature nobody uses, which also undercuts the reason we skipped
+      # analytics: no third parties, so no consent banner.
+      #
+      # Re-enable only alongside an actual embed-pdf shortcode, and decide then
+      # whether to accept the CDN or self-host pdf.js.
     embedpdf:
-      enable: true
+      enable: false
 
     # Enable this to create flowcharts using shortcodes.
     flowchart:
