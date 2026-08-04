@@ -1,106 +1,69 @@
 # section information
+#
+# Fields marked FIXED must be byte-identical in data/en, data/es and
+# data/pt-br. `mise run verify` enforces it.
 section:
-  name: About
-  id: about
-  enable: true
-  weight: 10
-  showOnNavbar: true
-  template: sections/about.html
+  name: Sobre mim
+  id: about                             # FIXED
+  enable: true                          # FIXED
+  weight: 10                            # FIXED
+  showOnNavbar: true                    # FIXED
+  template: sections/about.html         # FIXED
 
-# your designation
-designation: Software Engineer
-# your company information
+# Job title. Intentionally the same in all three languages: this is how the
+# role is named in the market, and "Lead" has no settled translation. The
+# per-language site title in site.yaml does localise the role, because that is
+# prose for a browser tab rather than a job title.
+designation: Lead Data Engineer
+
 company:
-  name: Example Co.
-  url: "https://www.example.com"
+  name: MOD — Makers of Digital         # FIXED (proper noun)
+  url: "https://mod.es"                 # FIXED
+  overview: Consultoria digital em Barcelona que constrói produtos de dados e software.
 
-# your resume. this file path should be relative to you "static" directory
-# Dreprecated. Use resourceLinks instead.
-# resume: "files/resume.pdf"
+# Markdown inline is allowed here, so the key technologies link out.
+summary: 'Lead Data Engineer com mais de 7 anos projetando e automatizando ETL/ELT, e transformando o resultado em produtos com os quais os times realmente decidem. Construo plataformas end-to-end em [Azure](https://azure.microsoft.com/) e [Microsoft Fabric](https://www.microsoft.com/microsoft-fabric) para agroalimentar, varejo e food service: ingestão de ERP/CRM, APIs e bancos de dados, camadas de lakehouse medallion, modelos [dbt](https://www.getdbt.com/) e modelos semânticos corporativos de Power BI. Antes disso, seguros, bancos e risco — onde qualidade e auditabilidade do dado não eram negociáveis.'
 
-# a summary about you
-summary: 'I am a passionate software engineer with x years of working experience. I built OSS tools for [Kubernetes](https://kubernetes.io/) using GO. My tools help people to deploy their workloads in Kubernetes. Sometimes, I work on some fun projects such as writing a theme, etc.'
-
-# your social links
-# give as many as you want. use font-awesome for the icons.
+# Only links that go somewhere. The inherited file had nine entries, five of
+# them pointing at "#", which reads as padding. No email icon by decision: an
+# address on an indexed page is a permanent spam magnet.
 socialLinks:
-- name: Email
-  icon: "fas fa-envelope"
-  url: "example@gmail.com"
-
-- name: Github
-  icon: "fab fa-github"
-  url: "https://www.github.com/example"
-
-- name: Stackoverflow
-  icon: "fab fa-stack-overflow"
-  url: "#"
-
 - name: LinkedIn
-  icon: "fab fa-linkedin"
-  url: "#"
+  icon: "fab fa-linkedin"               # FIXED
+  url: "https://www.linkedin.com/in/engineer-elton-rodrigues"   # FIXED
 
-- name: Twitter
-  icon: "fab fa-twitter"
-  url: "#"
+- name: GitHub
+  icon: "fab fa-github"                 # FIXED
+  url: "https://github.com/egrodrigues2014"                     # FIXED
 
-- name: Facebook
-  icon: "fab fa-facebook"
-  url: "#"
-
-- name: Mastadon
-  icon: "fab fa-mastodon"
-  url: "#"
-  rel: "me noopener"
-
-- name: ResearchGate
-  icon: "fab fa-researchgate"
-  url: "https://www.researchgate.net/profile/john-doe"
-
-# You can put custom buttons to link your relevant resources.
-# For example, you can put link for your resume.
 # Restored in F5 once the curated per-language CVs exist as
 # static/files/cv-elton-rodrigues-<lang>.pdf. Left empty rather than pointing
 # at the deleted demo PDF, because a 404 behind a "My Resume" button is worse
 # than no button.
 resourceLinks: []
 
-# Show your badges
-# You can show your verifiable certificates from https://www.credly.com.
-# You can also show a circular bar indicating the level of expertise on a certain skill
+# The badge grid holds languages rather than certifications. Only one vendor
+# certification is actually achieved (AZ-900), and a grid built for three or six
+# tiles looks broken with one; the certifications live in the Accomplishments
+# section instead, which scales to a list. Languages also earn their place here:
+# they are verifiable, useful to a recruiter, and they explain why this site
+# exists in three of them.
+#
+# The inherited file used this block for self-assigned "Leadership 85%" style
+# indicators, which is the single most common portfolio cliché and carries no
+# information.
 badges:
-- type: certification
-  name: Certified Kubernetes Security Specialist
-  url: "https://www.credly.com/org/the-linux-foundation/badge/exam-developer-certified-kubernetes-security-specialist"
-  badge: "https://images.credly.com/size/680x680/images/f4bf92ed-8985-40b2-bc07-2f9308780854/kubernetes-security-specialist-logo-examdev.png"
+- type: "soft-skill-indicator"          # FIXED
+  name: Português (nativo)
+  percentage: 100                        # FIXED
+  color: "#2e8b57"                  # FIXED
 
-- type: certification
-  name: Istio and IBM Cloud Kubernetes Service
-  url: "https://www.credly.com/org/the-linux-foundation/badge/exam-developer-certified-kubernetes-security-specialist"
-  badge: "https://images.credly.com/size/680x680/images/8d34d489-84bf-4861-a4a0-9e9d68318c5c/Beyond_basics_of_Istio_on_Cloud_v2.png"
+- type: "soft-skill-indicator"          # FIXED
+  name: Espanhol (profissional completo)
+  percentage: 90                        # FIXED
+  color: "#c8102e"                  # FIXED
 
-- type: certification
-  name: Artificial Intelligence and Machine Learning
-  url: "https://www.credly.com/org/grupo-bancolombia/badge/artificial-intelligence-and-machine-learning"
-  badge: "https://images.credly.com/size/680x680/images/e027514f-9d07-4b29-862f-fe21a8aaebf1/ae.png"
-
-- type: soft-skill-indicator
-  name: Leadership
-  percentage: 85
-  color: blue
-
-- type: soft-skill-indicator
-  name: Team Work
-  percentage: 90
-  color: yellow
-
-- type: soft-skill-indicator
-  name: Hard Working
-  percentage: 85
-  color: orange
-
-# you can also provide color code instead of the color name
-# - type: soft-skill-indicator
-#   name: Example 1
-#   percentage: 75
-#   color: "#00adb5"
+- type: "soft-skill-indicator"          # FIXED
+  name: Inglês (profissional)
+  percentage: 80                        # FIXED
+  color: "#1d4ed8"                  # FIXED

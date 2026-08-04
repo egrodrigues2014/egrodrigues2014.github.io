@@ -37,7 +37,12 @@ const RULES = [
   [/^designation$/, 'text'],
   [/^skills\[\]\.summary$/, 'text'],
   [/^experiences\[\]\.company\.location$/, 'text'],
-  [/^experiences\[\]\.company\.overview$/, 'text'],
+  [/^(experiences\[\]\.)?company\.overview$/, 'text'],
+  // Must precede the generic proper-noun rule for `name`. What sits here is a
+  // soft-skill-indicator label — currently the spoken languages — which is
+  // prose. A vendor certification name would be a proper noun, but those live
+  // in accomplishments.yaml, not here.
+  [/^badges\[\]\.name$/, 'text'],
   [/^experiences\[\]\.positions\[\]\.designation$/, 'text'],
   [/^experiences\[\]\.positions\[\]\.responsibilities\[\]$/, 'text'],
   [/^degrees\[\]\.name$/, 'text'], // "BSc in Computer Science" is prose, the institution is not
