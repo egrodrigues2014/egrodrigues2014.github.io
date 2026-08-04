@@ -2,6 +2,13 @@
 # data/pt-br. The cross-language checker enforces it: run `mise run verify`.
 # Everything else is prose and should differ per language.
 
+# Shown in the navbar only. The theme falls back to site.Title when this is
+# absent, so the browser tab and the OpenGraph card keep the longer form with
+# the localised role. Kept short because the full title consumed 32% of the
+# navbar container and made it wrap to two rows in Portuguese at 1200px.
+# Identical in all three languages: it is a brand, not prose. FIXED.
+navBarTitle: "Elton Rodrigues · Data Engineer"
+
 copyright: "© 2026 Elton Rodrigues"
 
 # Shown in the footer. Covers both the content licence and the attribution the

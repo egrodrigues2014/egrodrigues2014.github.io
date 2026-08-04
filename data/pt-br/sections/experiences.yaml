@@ -28,8 +28,8 @@ experiences:
     start: "02/2026"
     # end omitted on purpose -> localised [present]
     responsibilities:
-    - "Projeto camadas de lakehouse **medallion** (bronze/silver/gold) sobre Azure Data Lake Storage Gen2, Azure SQL e Microsoft Fabric, dimensionando cada arquitetura à carga real e não a um template."
-    - "Construo e mantenho pipelines ETL/ELT em Python, Azure Data Factory e Airflow, com ingestão de bancos relacionais, APIs REST e sistemas ERP/CRM; os padrões de carga **incremental e parametrizada** reduzem a janela de processamento e o custo de computação."
+    - "Projeto camadas de lakehouse medallion (bronze/silver/gold) sobre Azure Data Lake Storage Gen2, Azure SQL e Microsoft Fabric, dimensionando cada arquitetura à carga real e não a um template."
+    - "Construo e mantenho pipelines ETL/ELT em Python, Azure Data Factory e Airflow, com ingestão de bancos relacionais, APIs REST e sistemas ERP/CRM; os padrões de carga incremental e parametrizada reduzem a janela de processamento e o custo de computação."
     - "Modelo o data warehouse em [dbt](https://www.getdbt.com/) — esquemas estrela, SCD tipo 2 e fatos snapshot — com controle de versão, testes automatizados e linhagem documentada, otimizado com particionamento, indexação e pré-agregação."
     - "Projeto modelos semânticos corporativos de Power BI, incluindo compostos Import + DirectQuery, com DAX avançado (time intelligence, análise de desvios, pontes M:N) e governança: segurança em nível de linha, refresh incremental, gateways on-premises e pipelines de deploy."
     - "Sou responsável pelo CI/CD com Git e defino a estratégia de branches, a estrutura de repositórios e os padrões de onboarding do departamento de dados; levo a produção modelos de forecasting (Prophet, scikit-learn) que alimentam o planejamento de demanda e as recomendações de compra por unidade."
@@ -62,7 +62,7 @@ experiences:
     - "Fui responsável de ponta a ponta pelo processo de geração de alertas de fraude em sinistros de automóvel, do dado de origem até o alerta sobre o qual o investigador atua."
     - "Projetei, desenvolvi e mantive os processos ETL, planejei jobs e fluxos, e otimizei consultas para reduzir tempos de execução."
     - "Escrevi scripts em Bash (Linux) e Shell (Windows) para automatizar processos, depurar logs e monitorar serviços e recursos do SAS."
-    - "Construí um sistema de reinício automático que recupera o processo ETL diante de incidentes **sem intervenção manual**."
+    - "Construí um sistema de reinício automático que recupera o processo ETL diante de incidentes sem intervenção manual."
 
 - company:
     name: Banco Sabadell

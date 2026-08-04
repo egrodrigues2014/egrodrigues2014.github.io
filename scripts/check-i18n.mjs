@@ -59,6 +59,10 @@ const RULES = [
   // them as prose produced a warning that could never be resolved.
   [/^nickname$/, 'fixed'],
   [/^copyright$/, 'fixed'],
+  // The navbar brand. Deliberately identical in all three languages — it is a
+  // brand, not prose — and kept short because the localised site.Title made the
+  // navbar wrap to two rows in Spanish and Portuguese.
+  [/^navBarTitle$/, 'fixed'],
   [/^openGraph\.(title|description)$/, 'text'],
   [/^customMenus\[\]\.name$/, 'text'],
 

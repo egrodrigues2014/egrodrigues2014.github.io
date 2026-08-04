@@ -28,8 +28,8 @@ experiences:
     start: "02/2026"
     # end omitted on purpose -> localised [present]
     responsibilities:
-    - "Architect **medallion** lakehouse layers (bronze/silver/gold) across Azure Data Lake Storage Gen2, Azure SQL and Microsoft Fabric, sizing each database architecture to the workload rather than to a template."
-    - "Build and maintain ETL/ELT pipelines in Python, Azure Data Factory and Airflow, ingesting from relational databases, REST APIs and ERP/CRM systems; **incremental, parameterised** load patterns cut both the refresh window and the compute bill."
+    - "Architect medallion lakehouse layers (bronze/silver/gold) across Azure Data Lake Storage Gen2, Azure SQL and Microsoft Fabric, sizing each database architecture to the workload rather than to a template."
+    - "Build and maintain ETL/ELT pipelines in Python, Azure Data Factory and Airflow, ingesting from relational databases, REST APIs and ERP/CRM systems; incremental, parameterised load patterns cut both the refresh window and the compute bill."
     - "Model the warehouse in [dbt](https://www.getdbt.com/) — star schemas, SCD Type 2 and snapshot facts — with version control, automated tests and documented lineage, tuned through partitioning, indexing and pre-aggregation."
     - "Design enterprise Power BI semantic models, including composite Import + DirectQuery, with advanced DAX (time intelligence, variance analysis, many-to-many bridges) and governance: row-level security, incremental refresh, on-premises gateways and deployment pipelines."
     - "Own CI/CD with Git and define the branching methodology, repository structure and onboarding standards for the data department; productionise forecasting models (Prophet, scikit-learn) that drive demand planning and per-location purchasing recommendations."
@@ -62,7 +62,7 @@ experiences:
     - "Owned the fraud-alert generation process for auto insurance claims end to end, from source data to the alert the investigator acts on."
     - "Designed, developed and maintained the ETL processes, planned jobs and workflows, and tuned queries to bring execution times down."
     - "Wrote Bash (Linux) and Shell (Windows) scripts for process automation, log debugging and monitoring of SAS services and resources."
-    - "Built an automatic restart system that recovers the ETL process from incidents **without manual intervention**."
+    - "Built an automatic restart system that recovers the ETL process from incidents without manual intervention."
 
 - company:
     name: Banco Sabadell

@@ -52,19 +52,20 @@ resourceLinks: []
 # The inherited file used this block for self-assigned "Leadership 85%" style
 # indicators, which is the single most common portfolio cliché and carries no
 # information.
-# Two blocks in one grid, in this order: the certifications that have official
-# issuer artwork, then the spoken languages. The theme puts both types in the same
-# col-6 col-lg-4 grid, so this is 3 tiles per row on desktop and 2 on mobile.
+# Only certifications that carry official issuer artwork. Languages were tried
+# here and removed: five tiles read as a grab bag, and the grid is col-6 col-lg-4
+# so they never filled rows cleanly either. More certifications get added here as
+# they arrive.
 #
-# Only DataCamp and Microsoft appear here because only they issue a badge image.
-# Power BI (Udemy) and CS50 (Harvard) issue document-style certificates; inventing
-# square artwork for them would read as inconsistent beside real badges, so they
-# lead the Certifications section instead.
+# Power BI (Udemy) and CS50 (Harvard) stay out because their issuers publish
+# document-style certificates, not badges — inventing square artwork from a
+# product icon would look inconsistent beside real badges. They lead the
+# Certifications section instead.
 #
-# Both images are pre-sized to 150x150 to match the language rings: the theme sets
-# no width or height on .certificate-badge, so the intrinsic size is the rendered
-# size. Self-hosted under static/files/ rather than hotlinked — badge: is a raw
-# <img src> with no pipeline, and an issuer URL change would break this silently.
+# Both images are pre-sized to 150x150: the theme sets no width or height on
+# .certificate-badge, so the intrinsic size is the rendered size. Self-hosted
+# under static/files/ because badge: is a raw <img src> with no pipeline, and an
+# issuer URL change would break this silently.
 badges:
 - type: "certification"                 # FIXED
   name: "Data Engineer Associate"       # FIXED (credential name as issued)
@@ -75,18 +76,3 @@ badges:
   name: "Microsoft Certified: Azure Fundamentals (AZ-900)"       # FIXED
   url: "https://learn.microsoft.com/users/eltonguilhermerodrigues-9591/credentials/e5511530da2f13ef"   # FIXED
   badge: /files/badges/microsoft-certified-az-900.svg            # FIXED
-
-- type: "soft-skill-indicator"          # FIXED
-  name: Portugués (nativo)
-  percentage: 100                        # FIXED
-  color: "#2e8b57"                  # FIXED
-
-- type: "soft-skill-indicator"          # FIXED
-  name: Español (profesional completo)
-  percentage: 90                        # FIXED
-  color: "#c8102e"                  # FIXED
-
-- type: "soft-skill-indicator"          # FIXED
-  name: Inglés (profesional)
-  percentage: 80                        # FIXED
-  color: "#1d4ed8"                  # FIXED
