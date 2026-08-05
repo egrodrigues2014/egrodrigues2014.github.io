@@ -67,6 +67,14 @@ translatable: "SAS Consultant" does become "Consultor SAS".
 Every checker has been proven to fail against a deliberately injected defect. A
 test that has never been seen failing is not a test.
 
+**Do not run `verify` or `build` while `mise run server` is up.** The CLI rebuilds
+`public/` with fresh fingerprints while the dev server keeps serving the HTML it
+already rendered, so the page asks for a bundle hash that no longer exists: the
+script 404s, fails its `integrity` check and is blocked. Nothing says so — the
+symptom is JavaScript silently not running, which looks like a broken hamburger
+icon, a dead filter or a dropdown that will not open. Stop the server first, or
+restart it afterwards.
+
 ---
 
 ## Three languages
