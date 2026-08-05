@@ -46,8 +46,33 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import os from 'node:os'
+import { execFileSync } from 'node:child_process'
 import PDFDocument from 'pdfkit'
 import { REPO, LANGS, loadLang, green, yellow, red } from './lib.mjs'
+
+/**
+ * A deterministic /CreationDate, so regenerating without a content change
+ * produces byte-identical files.
+ *
+ * pdfkit defaults this to `new Date()`, which was the only difference between two
+ * consecutive runs — 8336 identical bytes and a timestamp. For an artefact that is
+ * committed to the repository that is worse than useless: every regeneration would
+ * dirty the tree with a diff that means nothing, and a real content change would
+ * be indistinguishable from having run the script twice.
+ *
+ * The date of the last commit touching data/ is both stable and honest: it says
+ * when the content this CV renders was last changed.
+ */
+function contentDate () {
+  try {
+    const iso = execFileSync('git', ['log', '-1', '--format=%cI', '--', 'data'],
+      { cwd: REPO, encoding: 'utf8' }).trim()
+    if (iso) return new Date(iso)
+  } catch { /* not a git checkout, or no git on PATH */ }
+  // Fixed fallback rather than `new Date()`: determinism matters more than
+  // accuracy here, and a wrong-but-stable date beats a churning one.
+  return new Date('2026-01-01T00:00:00Z')
+}
 
 const OUT_DIR = path.join(REPO, 'static/files')
 
@@ -246,7 +271,12 @@ function model (lang) {
 }
 
 function build (lang, m) {
-  const doc = new PDFDocument({ ...PAGE, autoFirstPage: true, bufferPages: true })
+  const doc = new PDFDocument({
+    ...PAGE,
+    autoFirstPage: true,
+    bufferPages: true,
+    info: { Title: `${m.name} — CV`, Author: m.name, CreationDate: contentDate() }
+  })
   const L = PAGE.margins.left
   const W = doc.page.width - PAGE.margins.left - PAGE.margins.right
   const bottom = () => doc.page.height - PAGE.margins.bottom

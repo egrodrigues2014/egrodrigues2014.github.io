@@ -24,6 +24,7 @@ mise install && mise run server
 | `mise run build` | Production build into `public/` |
 | `mise run verify` | **The gate.** Run this before every commit — see below |
 | `mise run check-demo` | Fails if any of the theme's example content is back |
+| `node scripts/make-cv.mjs` | Regenerates the three CV PDFs from `data/` |
 | `mise run update` | Updates the theme to its latest release |
 
 Versions are pinned in `mise.toml` rather than left on `latest`, and CI reads the
@@ -166,6 +167,40 @@ languages — `site.GetPage` is wrapped in a `with`, so a broken reference
 disappears without an error.
 
 ---
+
+## The CV
+
+`static/files/cv-elton-rodrigues-{en,es,pt-br}.pdf` are generated, not written:
+
+```bash
+node scripts/make-cv.mjs
+```
+
+It reads the same `data/` tree the site renders, through the same `loadLang` the
+checkers use, so **the CV cannot contradict the website** — there is no second copy
+of the career history to drift. Change a bullet in `experiences.yaml`, regenerate,
+and both are right. Forget to regenerate and the CV is merely stale, never wrong in
+a way that disagrees with a page next to it.
+
+That is also the privacy guarantee. `check-pii` skips `.pdf` by extension, so it
+never looks inside these files; what keeps them clean is that every string in them
+comes from `data/`, which **is** scanned. The CV's own labels therefore live in
+`data/<lang>/cv.yaml` rather than in the script.
+
+Output is byte-deterministic: `/CreationDate` is the date of the last commit
+touching `data/`, not `new Date()`, so regenerating without a content change leaves
+the tree clean.
+
+Two guards worth knowing about, both added after the output was read rather than
+assumed:
+
+- The PDF base-14 fonts encode WinAnsi. A character outside it — the `→` in "Intern
+  → Junior" was the first — makes pdfkit emit both halves of the code point as
+  separate bytes, which renders as garbage. `winAnsi()` substitutes the known cases
+  and **throws** on anything new.
+- The theme's `present` translation is read from the module and the lookup
+  **throws** if it cannot be resolved. Falling back to English there put "Present"
+  in the Spanish CV.
 
 ## Deployment
 
