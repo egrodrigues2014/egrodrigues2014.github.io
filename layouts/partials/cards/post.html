@@ -1,0 +1,61 @@
+{{/*
+  LOCAL OVERRIDE of the theme's layouts/partials/cards/post.html.
+
+  Copied from github.com/hugo-toha/toha/v4 @ THEME-VERSION: v4.16.0 with two fixes,
+  both of them defects in the upstream markup rather than changes of taste.
+
+  1. NESTED ANCHOR. Upstream opens the same <a class="post-card-link"> twice, on
+     consecutive lines, and closes it once:
+
+         <a href="..." class="post-card-link">
+           <a href="..." class="post-card-link">
+             <img ...>
+           </a>
+
+     Nested anchors are invalid HTML. The parser un-nests them, which leaves one
+     anchor wrapping the image and a second, empty one wrapping nothing — and an
+     anchor with no content has no accessible name. That is exactly what Lighthouse
+     reported as `link-name`, three times, one per card in the Recent Posts section.
+     A screen reader announces "link" with nothing after it.
+
+     Fixed by having one anchor, as intended.
+
+  2. alt="Hero Image" was a literal, identical on every card and describing nothing.
+     None of the posts ships its own hero, so the image is the theme's decorative
+     default. The honest markup for a decorative image inside a link that already
+     has a text label elsewhere is an empty alt: it removes the image from the
+     accessibility tree instead of making a screen reader read "Hero Image" before
+     every post title. The card's real name comes from the title anchor below.
+
+  Everything else — the card body, tags, date, reading time and the Read button — is
+  upstream, unchanged.
+*/}}
+<div class="post-card">
+  <div class="card">
+    <div class="card-head">
+      <a href="{{ .RelPermalink | relLangURL }}" class="post-card-link" tabindex="-1" aria-hidden="true">
+        {{ $hero := partial "helpers/get-hero.html" (dict "context" . "width" "500x") }}
+        <img class="card-img-top" src='{{ $hero.RelPermalink }}' alt="" loading="lazy">
+      </a>
+    </div>
+    <div class="card-body">
+      <a href="{{ .RelPermalink | relLangURL }}" class="post-card-link">
+        <h5 class="card-title">{{ .Title }}</h5>
+        <p class="card-text post-summary">{{ .Summary | plainify }}</p>
+      </a>
+      {{ if and site.Params.features.tags.enable site.Params.features.tags.on_card }}
+      {{ partial "misc/tags.html" .Params.tags }}
+      {{ end }}
+    </div>
+    <div class="card-footer">
+      {{ $showDate := site.Params.features.showDate.postCards | default true }}
+      {{ $showReadingTime := site.Params.features.readingTime.enable | default true }}
+      <span class="float-start">
+        {{ if $showDate }}{{ .Date | time.Format ":date_full" }}{{ end }}
+        {{ if and $showDate $showReadingTime }} | {{ end }}
+        {{ if $showReadingTime }}{{.ReadingTime}} {{ i18n "minute" .ReadingTime }}{{ end }}
+      </span>
+      <a href="{{ .RelPermalink | relLangURL }}" class="float-end btn btn-outline-info btn-sm">{{ i18n "read" }}</a>
+    </div>
+  </div>
+</div>

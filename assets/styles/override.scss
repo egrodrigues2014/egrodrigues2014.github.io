@@ -281,3 +281,172 @@ html[data-theme='dark'] {
     filter: invert(1);
   }
 }
+
+/* ---------------------------------------------------------------------------
+ * Content links: contrast and a non-colour affordance
+ *
+ * Lighthouse flagged 101 elements for colour-contrast and 12 for
+ * link-in-text-block, and every one was an inline link in prose. Both come from
+ * the same root cause.
+ *
+ * The theme paints links in its accent, #0891b2. Computed against white that is
+ * 3.60:1, and against the section background (slate-200) worse — WCAG AA wants
+ * 4.5:1 for body text. #155e75 measures 6.96:1 on white and 5.65:1 on the grey,
+ * so it clears both with room. It is the same hue, two steps darker.
+ *
+ * The underline fixes the second audit, which is not about contrast at all:
+ * a link distinguished only by colour is invisible to a reader who cannot
+ * separate those two hues. That is also why the underline applies in BOTH themes
+ * while the colour change is only needed in light — the dark accent #06b6d4 on
+ * the dark background already measures 7.14:1.
+ *
+ * Scoped to prose containers, and .btn is excluded: the theme uses bare <a> for
+ * whole-card links in Projects and for the tag chips and certificate buttons, and
+ * underlining those would be wrong.
+ * ------------------------------------------------------------------------- */
+$content-scopes: '.post-content, .about-section, .experiences-section, .education-section, .accomplishments-section';
+
+#{$content-scopes} {
+  a:not(.btn):not([class*='badge']) {
+    color: #155e75;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+}
+
+html[data-theme='dark'] {
+  #{$content-scopes} {
+    a:not(.btn):not([class*='badge']) {
+      /* Brighter than the theme's own dark accent, and measured well clear of
+       * the requirement on the dark background. */
+      color: #22d3ee;
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * The `-info` button and chip variants
+ *
+ * After the link fix, 74 of the original 101 contrast failures remained, and all
+ * of them were Bootstrap's `-info` variants, which the theme maps to its accent:
+ * the project tag chips (`span.btn.badge.btn-info`), the "Details" and
+ * "View certificate" buttons (`.btn-outline-info`), and the post tag buttons.
+ *
+ * Same root cause as the links — #0891b2 is 3.60:1 against white — and the same
+ * remedy, so the whole site stays on one hue. Bootstrap 5.3 drives buttons from
+ * `--bs-btn-*` custom properties, which is why this needs no `!important` and no
+ * selector gymnastics.
+ *
+ * Filled chips keep a solid background and white text, two steps darker: white on
+ * #155e75 is 6.96:1. The visual change is modest and deliberate — the alternative,
+ * a pale background with dark text, would have redesigned the chips rather than
+ * corrected them.
+ *
+ * Only the outline variant needs a dark-theme counterpart, because its colour is
+ * text on the page. The filled variant carries its own background, so its contrast
+ * is identical on any page.
+ * ------------------------------------------------------------------------- */
+.btn-info {
+  --bs-btn-bg: #155e75;
+  --bs-btn-border-color: #155e75;
+  --bs-btn-color: #fff;
+  --bs-btn-hover-bg: #104c5f;
+  --bs-btn-hover-border-color: #104c5f;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-active-bg: #104c5f;
+  --bs-btn-active-color: #fff;
+}
+
+.btn-outline-info {
+  --bs-btn-color: #155e75;
+  --bs-btn-border-color: #155e75;
+  --bs-btn-hover-bg: #155e75;
+  --bs-btn-hover-border-color: #155e75;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-active-bg: #155e75;
+  --bs-btn-active-color: #fff;
+}
+
+html[data-theme='dark'] .btn-outline-info {
+  --bs-btn-color: #67e8f9;
+  --bs-btn-border-color: #67e8f9;
+  --bs-btn-hover-bg: #67e8f9;
+  --bs-btn-hover-border-color: #67e8f9;
+  --bs-btn-hover-color: #083344;
+  --bs-btn-active-bg: #67e8f9;
+  --bs-btn-active-color: #083344;
+}
+
+/* ---------------------------------------------------------------------------
+ * Card titles inside whole-card links
+ *
+ * cards/project.html and cards/post.html wrap the entire card in an <a>, so the
+ * <h5> title inherits the link colour and fails contrast as a heading. It should
+ * not look like a link anyway: the whole card is the click target, and a title
+ * painted link-coloured inside an already-clickable card is a false affordance.
+ *
+ * --bs-body-color rather than a literal, so it follows the theme in both schemes.
+ * ------------------------------------------------------------------------- */
+.projects-section,
+.recent-posts-section,
+.post-card {
+  .card-title {
+    color: var(--bs-body-color);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Footer contrast in the LIGHT theme
+ *
+ * A theme bug, and a neat one. sections/footer.scss gives the footer
+ * `background-color: footer-color`, which is #0f172a — nearly black — in BOTH
+ * schemes, but sets its text to `muted-text-color`, which is only lightened for
+ * the dark scheme:
+ *
+ *   light   #64748b on #0f172a  =  3.93:1   fails AA
+ *   dark    #95aed1 on #0f172a  =  8.03:1   passes
+ *
+ * So the footer is unreadable in the DEFAULT theme and fine in the other one. It
+ * accounted for the last 13 contrast failures: the navigation links, the contact
+ * icons, the disclaimer and the "powered by" line.
+ *
+ * Fixed by lightening the light-scheme footer text rather than by changing the
+ * background, because a suddenly-pale footer would be a redesign. #cbd5e1 measures
+ * 12.3:1 and #67e8f9 for links 12.4:1, both on that same #0f172a.
+ *
+ * `!important` is not enthusiasm: the theme's own rule carries it
+ * (footer.scss:2), so it cannot be beaten without one.
+ * ------------------------------------------------------------------------- */
+html:not([data-theme='dark']) .footer {
+  color: #cbd5e1 !important;
+
+  a,
+  a span {
+    color: #cbd5e1;
+  }
+
+  a:not(#hugo) {
+    color: #67e8f9;
+  }
+
+  /* `#disclaimer` carries its own !important rule (footer.scss:47), separate from
+   * the one on `.footer`, so it needs its own override to match. */
+  #disclaimer {
+    color: #cbd5e1 !important;
+
+    > strong {
+      color: #f1f5f9 !important;
+    }
+
+    /* The disclaimer is a sentence with two links in it, so the same rule that
+     * applies to prose elsewhere applies here: colour alone is not an affordance.
+     * Recolouring them for contrast without this simply moved the failure from
+     * `color-contrast` to `link-in-text-block` — which it duly did, and this is
+     * the second half of the fix. The navigation and contact links above are not
+     * inside a text block, so they do not need it. */
+    a {
+      text-decoration: underline;
+      text-underline-offset: 0.15em;
+    }
+  }
+}
