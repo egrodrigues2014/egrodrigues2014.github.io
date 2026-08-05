@@ -35,6 +35,41 @@
 }
 
 /* ---------------------------------------------------------------------------
+ * Navbar: use the full width, and centre the items in it
+ *
+ * Two separate causes of wasted space, both in the theme.
+ *
+ * 1. `navigators/navbar.html:99` puts `ms-auto` on the <ul>, which is
+ *    `margin-left: auto` — so every pixel of slack piles into a single void on
+ *    the LEFT instead of being distributed. Measured at 1920px before this
+ *    rule: the row began 825px in, with only 305px left over on its right.
+ *
+ * 2. `navigators/navbar.scss:155` already sets `.container { max-width: 100% }`,
+ *    but only inside `@include media('<very-large')`, and `very-large` is 1280px
+ *    (`variables.scss:8`). So the theme frees the container BELOW 1280 and lets
+ *    Bootstrap cap it above: 1140px from 1280-1399, 1320px from 1400 up. At
+ *    1920px that left 293px dead outside the container on each side.
+ *
+ * Centring costs one declaration: `ms-auto` already supplies
+ * `margin-left: auto`, so its complement is enough. No `!important` needed —
+ * Bootstrap's utility only sets the left side, so there is no conflict.
+ *
+ * The two changes are independent, and it is worth knowing that the width one
+ * is NOT visible: with the row centred, a centred 1320px box puts the items in
+ * the same place a full-width container does. What the width buys is HEADROOM —
+ * it is what stops the "More" dropdown returning at 1366px if a seventh section
+ * is ever added. Widest row today is Portuguese at 934px, against 1116px of
+ * content width inside the 1140px container at 1280px.
+ * ------------------------------------------------------------------------- */
+#top-navbar > .container {
+  max-width: 100%;
+}
+
+#top-navbar .navbar-nav.ms-auto {
+  margin-right: auto;
+}
+
+/* ---------------------------------------------------------------------------
  * About: centre the badge grid
  *
  * The badges sit in a plain .row inside a col-sm-6, and each one is
