@@ -116,9 +116,26 @@ params:
   # Default branch of your Git repo
   gitBranch: main
 
-  # Configure the number of section title visible in the top navbar
+  # How many navbar entries before the rest fall into a "More" dropdown.
+  #
+  # The counter includes "Home" (navigators/navbar.html seeds $sectionCount := 1
+  # and Home is always rendered), so 7 shows Home plus the six data sections —
+  # not seven sections. At 6 it was hiding Certifications behind "More".
+  #
+  # Raised once the navbar brand was hidden, which freed 335 of the 1185px
+  # container. Measured at 1200px, the width where navbar-expand-xl is still
+  # expanded and therefore the tightest case; below it the whole bar collapses to
+  # a toggler. Items summed against container, single row in all three:
+  #
+  #   en     777 / 1185   408px spare
+  #   es     897 / 1185   288px spare
+  #   pt-br  937 / 1185   248px spare
+  #
+  # So the per-language maxVisibleSections overrides that an earlier round planned
+  # for Portuguese are not needed. Adding an eighth navbar section would want
+  # re-measuring in pt-br, which has the least room.
   topNavbar:
-    maxVisibleSections: 6
+    maxVisibleSections: 7
 
   # Configure various features of this theme
   features:
