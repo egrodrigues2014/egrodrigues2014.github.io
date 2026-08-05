@@ -6,7 +6,7 @@ because they require it, and because the credit is owed regardless.
 ## Toha theme
 
 The site is built with [Toha](https://github.com/hugo-toha/toha), consumed as a
-Hugo module and therefore not vendored into this repository. Two of its partials
+Hugo module and therefore not vendored into this repository. Three of its files
 *are* copied here verbatim, though, because the theme offers no extension point
 for what they needed to do:
 
@@ -15,8 +15,10 @@ for what they needed to do:
   theme renders through a standalone template that bypasses `baseof`.
 - `layouts/partials/cards/accomplishments.html` — copied to add an issuer mark
   before each organisation name.
+- `assets/scripts/sections/projects.js` — copied to drop an unconditional
+  `buttons.github.io/buttons.js` request the theme makes at module scope.
 
-Both carry a `THEME-VERSION` marker, and `scripts/check-overrides.mjs` fails the
+Each carries a `THEME-VERSION` marker, and `scripts/check-overrides.mjs` fails the
 build if the theme is upgraded without the copies being re-diffed.
 
 ```
@@ -57,6 +59,17 @@ goes with it.
 
 The site logo and favicon under `assets/images/site/` are likewise still the
 theme's, pending the same replacement.
+
+## Post hero images
+
+None of the posts ship a `hero.*` of their own, and the theme's
+`partials/helpers/get-hero.html` falls back to its own `images/default-hero.jpg`
+in that case. So that image is what appears on every post card and at the top of
+every post page. It comes from the theme and is covered by the MIT licence above.
+
+Like the background, it is on the list to replace: six custom heroes, or one
+shared image, would remove this dependency. Until then, a post that supplies its
+own `hero.jpg` beside its `index.md` overrides it automatically.
 
 ## Icons
 
