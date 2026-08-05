@@ -56,6 +56,12 @@ defaultContentLanguage: en
 # gaps show up on the page instead of silently falling back to English.
 enableMissingTranslationPlaceholders: true
 
+# Take each page's date from git rather than from the file system, so
+# <lastmod> in sitemap.xml carries the real commit date. This is what both
+# workflows' `fetch-depth: 0` is for: with a shallow clone Hugo sees no history
+# and the field comes out empty.
+enableGitInfo: true
+
 # Allow raw html in markdown file
 markup:
   goldmark:
