@@ -45,8 +45,10 @@ jobs:
       - name: Theme overrides in sync
         run: node scripts/check-overrides.mjs
 
+      # --panicOnWarning: a Hugo warning fails the run. --printPathWarnings alone
+      # printed and carried on, which in CI means nobody ever reads it.
       - name: Build
-        run: hugo --gc --minify --cleanDestinationDir --printPathWarnings
+        run: hugo --gc --minify --cleanDestinationDir --printPathWarnings --panicOnWarning
 
       - name: Rendered output
         run: node scripts/check-render.mjs

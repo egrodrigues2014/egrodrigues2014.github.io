@@ -71,7 +71,8 @@ jobs:
 
       - name: Build
         # base_url comes from Pages itself, so it cannot be wrong.
-        run: hugo --gc --minify --cleanDestinationDir --printPathWarnings --baseURL "${{ steps.pages.outputs.base_url }}/"
+        # --panicOnWarning: a Hugo warning fails the deploy rather than shipping.
+        run: hugo --gc --minify --cleanDestinationDir --printPathWarnings --panicOnWarning --baseURL "${{ steps.pages.outputs.base_url }}/"
 
       - name: Rendered output
         run: node scripts/check-render.mjs

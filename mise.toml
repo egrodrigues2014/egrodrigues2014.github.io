@@ -17,7 +17,10 @@ depends = ["install"]
 # --cleanDestinationDir matters: without it Hugo leaves stale output behind, so
 # a deleted section keeps being served locally and a removal looks like it did
 # not work (or worse, looks like it did when it did not).
-run = "hugo --gc --minify --cleanDestinationDir"
+#
+# --panicOnWarning turns Hugo's warnings into failures. It is safe to have here
+# because the build is verified clean under it; see the note on `verify`.
+run = "hugo --gc --minify --cleanDestinationDir --panicOnWarning"
 
 # The gate to run before every commit. Also what CI runs, so that a green
 # local run means something.
@@ -34,7 +37,11 @@ run = [
   "node scripts/check-pii.mjs",
   "node scripts/check-demo.mjs",
   "node scripts/check-overrides.mjs",
-  "hugo --gc --minify --cleanDestinationDir --printPathWarnings",
+  # --printPathWarnings surfaces duplicate target paths; --panicOnWarning makes
+  # every Hugo warning a failure instead of a line nobody reads. Added only after
+  # confirming the build is clean under it, and proved by injecting a warnf: the
+  # same warning exits 0 without the flag and 1 with it.
+  "hugo --gc --minify --cleanDestinationDir --printPathWarnings --panicOnWarning",
   "node scripts/check-render.mjs",
 ]
 

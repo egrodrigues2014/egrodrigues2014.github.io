@@ -44,7 +44,7 @@ locally means something.
 | `check-pii` | Phone numbers, national IDs, IBANs, postal addresses — anything from the CV that must not reach a public repo |
 | `check-demo` | The theme's example content coming back |
 | `check-overrides` | A theme upgrade leaving a copied partial stale |
-| *build* | `hugo --gc --minify --cleanDestinationDir --printPathWarnings` |
+| *build* | `hugo --gc --minify --cleanDestinationDir --printPathWarnings --panicOnWarning` |
 | `check-render` | The built pages: section anchors, `hreflang`, the pre-launch gate, a post in every language, no unresolved `[i18n]` keys |
 
 The data gates run **before** the build on purpose. `check-i18n` treats a dangling
