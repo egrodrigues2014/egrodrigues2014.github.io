@@ -51,6 +51,22 @@ run = [
 description = "Fail if any trace of the theme's example site is back"
 run = "node scripts/check-demo.mjs"
 
+# Deliberately NOT part of `verify`: it goes out to the network, so it is slow and
+# other people's uptime can fail your build. Run it before publishing, and after
+# adding any external link.
+#
+# The skip-list in scripts/linkinator.config.json is what makes it useful rather
+# than noise — every entry there is a host that answers a bot differently from a
+# browser, or a share-button URL that is not a content link at all. Without it the
+# run is ~90% false positives and gets ignored, which is the same as not having it.
+#
+# It has already earned its place: it caught https://www.nttdata.com/ returning 404
+# ten minutes after that URL was added.
+[tasks."check-links"]
+description = "Check every external link in the built site"
+depends = ["build"]
+run = "npx --yes linkinator@6 ./public --config scripts/linkinator.config.json"
+
 [tasks.server]
 description = "Run hugo server"
 depends = "install"

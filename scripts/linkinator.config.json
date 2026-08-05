@@ -1,0 +1,22 @@
+{
+  "recurse": true,
+  "silent": true,
+  "timeout": 20000,
+  "concurrency": 25,
+  "retry": true,
+  "skip": [
+    "^https://www\\.linkedin\\.com",
+    "^https://www\\.credly\\.com",
+    "^https://.*\\.accredible\\.com",
+    "^https://nttdatainc-emeal\\.digitalbadges-eu\\.skillsoft\\.com",
+    "^https://www\\.udemy\\.com",
+    "^https://www\\.pertica\\.es",
+    "^https://www\\.facebook\\.com/sharer",
+    "^https://twitter\\.com/intent",
+    "^https://x\\.com/intent",
+    "^https://www\\.reddit\\.com/submit",
+    "^https://api\\.whatsapp\\.com/send",
+    "^https://wa\\.me/",
+    "^mailto:"
+  ]
+}

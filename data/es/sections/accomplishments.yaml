@@ -111,7 +111,7 @@ accomplishments:
   organization:
     name: "NTT DATA"
     icon: "fas fa-certificate"               # FIXED
-    url: "https://www.nttdata.com"
+    url: "https://es.nttdata.com"
   timeline: "07/2025"
   courseOverview: "GenAI aplicada al trabajo de ingeniería: generación de código, depuración, migración, tests unitarios y documentación con Copilot y herramientas internas, más prompting avanzado y seguridad de sistemas de IA."
   certificateURL: "https://nttdatainc-emeal.digitalbadges-eu.skillsoft.com/c133380b-1d02-4074-b976-889dacca39dd"
@@ -120,7 +120,7 @@ accomplishments:
   organization:
     name: "NTT DATA"
     icon: "fas fa-certificate"               # FIXED
-    url: "https://www.nttdata.com"
+    url: "https://es.nttdata.com"
   timeline: "03/2025"
   courseOverview: "Conceptos de IA aplicados a contextos de negocio: dónde ayuda un modelo, dónde no, y cómo plantear un problema para que pueda ayudar."
   certificateURL: "https://nttdatainc-emeal.digitalbadges-eu.skillsoft.com/d9f37cfa-f390-4909-acde-e25a0b413664"
@@ -129,7 +129,7 @@ accomplishments:
   organization:
     name: "NTT DATA"
     icon: "fas fa-certificate"               # FIXED
-    url: "https://www.nttdata.com"
+    url: "https://es.nttdata.com"
   timeline: "01/2025"
   courseOverview: "El nivel de entrada de la academia: conceptos y vocabulario de IA, la base común sobre la que se apoyan los niveles siguientes."
   certificateURL: "https://nttdatainc-emeal.digitalbadges-eu.skillsoft.com/db1ebb97-ad86-41bd-8570-b23aaf0df68f"

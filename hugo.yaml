@@ -331,7 +331,7 @@ params:
 
     # Enable this to create mathematic expressions using `$$` blocks
     math:
-      enable: true
+      enable: false
       services:
         # https://katex.org/docs/autorender.html#api for more configurations
         katex:
@@ -370,7 +370,7 @@ params:
 
     # Enable to use `video-player` shortcode
     videoPlayer:
-      enable: true
+      enable: false
       services:
         # convert .js-player class into video player via https://plyr.io/
         # Can play HTML5 Video, Audio, Youtube, Vimeo.
