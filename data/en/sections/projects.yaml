@@ -17,6 +17,10 @@ section:
 # Five buttons rather than three: with these tokens every project is reachable
 # from a tab other than All. A card that only All can reach is not a bug the
 # checker can see, but it is still a card nobody finds.
+#
+# The "Power BI" label is identical in all three languages because it is a
+# product name. It is listed in INTENTIONALLY_IDENTICAL in
+# scripts/check-i18n.mjs so it does not read as a pending translation.
 buttons:
 - name: All
   filter: "all"                         # FIXED

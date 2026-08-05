@@ -15,6 +15,13 @@ section:
 # more chances to misalign a month. Omitting `end` makes the theme insert its
 # own localised [present] key, so never write "Present" by hand.
 #
+# "Lead Data Engineer" and "Senior Data Engineer" stay in English in all three
+# languages: that is how the roles are named in the market and "Lead" has no
+# settled equivalent. The older titles DO get translated — "SAS Consultant"
+# becomes "Consultor SAS" — so the field is translatable and only those two
+# values are exempt. Both are listed in INTENTIONALLY_IDENTICAL in
+# scripts/check-i18n.mjs, which is what stops them warning forever.
+#
 # No company logos yet: those fields are nil-guarded in the theme, so the cards
 # render without them. Adding one is safe at any time.
 experiences:

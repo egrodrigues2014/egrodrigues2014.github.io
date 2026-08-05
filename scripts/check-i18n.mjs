@@ -38,11 +38,14 @@ const RULES = [
   [/^skills\[\]\.summary$/, 'text'],
   [/^experiences\[\]\.company\.location$/, 'text'],
   [/^(experiences\[\]\.)?company\.overview$/, 'text'],
-  // Must precede the generic proper-noun rule for `name`. What sits here is a
-  // soft-skill-indicator label — currently the spoken languages — which is
-  // prose. A vendor certification name would be a proper noun, but those live
-  // in accomplishments.yaml, not here.
-  [/^badges\[\]\.name$/, 'text'],
+  // Reclassified as fixed. This rule was written when the badge grid held
+  // soft-skill indicators labelled with the spoken languages, which is prose.
+  // Since those were removed the grid holds vendor certifications only, and
+  // their names are proper nouns spelt as the issuer spells them — "Microsoft
+  // Certified: Azure Fundamentals (AZ-900)" is not translatable. It has to stay
+  // ahead of the generic `name` rule regardless, so the rule survives with the
+  // opposite verdict rather than being deleted.
+  [/^badges\[\]\.name$/, 'fixed'],
   [/^experiences\[\]\.positions\[\]\.designation$/, 'text'],
   [/^experiences\[\]\.positions\[\]\.responsibilities\[\]$/, 'text'],
   [/^degrees\[\]\.name$/, 'text'], // "BSc in Computer Science" is prose, the institution is not
@@ -89,6 +92,30 @@ const RULES = [
 ]
 
 const classify = (p) => RULES.find(([re]) => re.test(p))?.[1] ?? 'unknown'
+
+// Specific `text` values that are deliberately identical in all three languages.
+//
+// These exist because the untranslated-value heuristic is otherwise permanently
+// noisy, and a warning that cannot be resolved by doing the right thing is one
+// that teaches you to skip the whole list — the same argument that keeps
+// check-demo out of `verify` until it reaches zero.
+//
+// Keyed by value as well as path, because the field as a whole is genuinely
+// translatable: "SAS Consultant" becomes "Consultor SAS" and "Risk Analyst"
+// becomes "Analista de Riesgos", so reclassifying `designation` to fixed would
+// turn those translations into errors. Only the listed values are exempt.
+//
+// Adding an entry here is a claim that translating it would be wrong. Each one
+// is also explained in the data file it comes from.
+const INTENTIONALLY_IDENTICAL = new Set([
+  // Job titles left in English because that is how the roles are named in the
+  // market, and "Lead" has no settled Spanish or Portuguese equivalent.
+  'designation=Lead Data Engineer',
+  'experiences[].positions[].designation=Lead Data Engineer',
+  'experiences[].positions[].designation=Senior Data Engineer',
+  // A filter button labelled with a product name.
+  'buttons[].name=Power BI'
+])
 
 // ---------------------------------------------------------------------------
 const data = {}
@@ -210,7 +237,8 @@ for (const lang of LANGS.slice(1)) {
       if (kind === 'fixed' && JSON.stringify(refVal) !== JSON.stringify(value)) {
         r.error(`${file} ${p} must match across languages: ${REF}=${JSON.stringify(refVal)} vs ${lang}=${JSON.stringify(value)}`)
       }
-      if (kind === 'text' && refVal && refVal === value) {
+      if (kind === 'text' && refVal && refVal === value &&
+          !INTENTIONALLY_IDENTICAL.has(`${norm(p)}=${refVal}`)) {
         const key = `${lang}/${file}`
         untranslated.set(key, (untranslated.get(key) ?? 0) + 1)
       }
