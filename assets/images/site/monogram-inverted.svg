@@ -1,0 +1,15 @@
+<!--
+  Navbar brand mark for dark backgrounds — params.logo.inverted, used on the home
+  page, where the navbar is transparent over the hero.
+
+  PLACEHOLDER. See monogram.svg for why this is a separate file rather than one
+  mark tinted by CSS, and why it is currently inert.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="ER">
+  <g transform="translate(-2 0)" fill="none" stroke="#ffffff" stroke-width="7">
+    <path d="M30 21H17v22h13"/>
+    <path d="M17 32h10"/>
+    <path d="M40 43V21h11v11H40"/>
+    <path d="M43 32l8 11"/>
+  </g>
+</svg>

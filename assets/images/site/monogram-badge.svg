@@ -1,0 +1,34 @@
+<!--
+  Favicon: ER monogram on a filled badge.
+
+  PLACEHOLDER. Replace when real branding exists — but note what it replaced,
+  because two things about the theme's favicon handling decide this file's shape.
+
+  1. `partials/header.html` resizes a raster favicon to 42px wide and skips the
+     resize only for SVG. So the old advice of "make the favicon 512x512" was
+     pointless: the theme would have downscaled it regardless. SVG bypasses the
+     pipeline and stays sharp at every size a browser asks for.
+
+  2. The badge is filled rather than a bare glyph on transparency. A tab strip is
+     light in one theme and dark in the other, and a monochrome glyph disappears
+     into one of them. The cyan is the theme's own accent colour (#0891b2), so it
+     matches the site rather than fighting it.
+
+  Letterforms are stroked paths, not <text>. A favicon is rendered in contexts
+  with no guarantee about fonts, and a font substitution would shift the glyph.
+  Rectilinear on purpose: it survives being 16px across.
+
+  Known and accepted: `header.html` hardcodes type="image/png" on the <link> even
+  for an SVG. Browsers sniff the actual bytes, so it works; fixing it would mean
+  owning a fourth partial for an attribute nothing reads. Browsers with no SVG
+  favicon support (Safari below 16) show no icon rather than a wrong one.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="ER">
+  <rect width="64" height="64" rx="14" fill="#0891b2"/>
+  <g transform="translate(-2 0)" fill="none" stroke="#ffffff" stroke-width="7">
+    <path d="M30 21H17v22h13"/>
+    <path d="M17 32h10"/>
+    <path d="M40 43V21h11v11H40"/>
+    <path d="M43 32l8 11"/>
+  </g>
+</svg>
