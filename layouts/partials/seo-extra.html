@@ -29,6 +29,21 @@
      hunt for references. Both are needed: robots.txt stops crawling, but a URL
      discovered another way can still be listed; this meta is what actually
      prevents indexing.
+
+  3. og:image dimensions and alt. The theme emits og:image and nothing else about
+     it. Without width and height a consumer has to fetch and measure the file
+     before it can decide on a layout, and several skip the large card rather than
+     wait. Stating them lets LinkedIn commit to the 1.91:1 card immediately.
+
+  4. twitter:* on the home page. The theme calls twitter_cards.html only from
+     baseof.html, and the home page renders through layouts/index.html, which does
+     not use baseof — so the home, the one page with three language versions, had
+     no twitter card at all. Verified: zero twitter: matches in public/index.html,
+     while every other page got Hugo's embedded template with card=summary.
+
+     Emitted here only for .IsHome, so the embedded template still owns every other
+     page and nothing is duplicated. Elsewhere only twitter:image is added, which
+     the embedded template omits when a page has no image resource.
 */}}
 
 {{- /*
@@ -52,4 +67,40 @@
 
 {{- if site.Params.prelaunch }}
   <meta name="robots" content="noindex,nofollow" />
+{{- end }}
+
+{{- /*
+  The card image and its dimensions.
+
+  Resolved the same way the theme's opengraph.html resolves og:image, so the two
+  can never point at different files: page images first, then
+  site.openGraph.image, then the author photo.
+
+  The dimensions are hardcoded because they are a property of the generator, not
+  of the data: scripts/make-og-card.mjs asserts the PNG it writes is exactly
+  1200x630 and fails otherwise. Reading them from the file would mean an image
+  pipeline for a value that is fixed by contract.
+*/ -}}
+{{- $og := (index hugo.Data site.Language.Lang).site.openGraph -}}
+{{- $img := "" -}}
+{{- with .Params.images }}{{ $img = index . 0 }}{{ else }}
+  {{- $img = $og.image | default (index hugo.Data site.Language.Lang).author.image -}}
+{{- end }}
+{{- with $img }}
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="{{ $og.title | default site.Title }}" />
+{{- end }}
+
+{{- if .IsHome }}
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="{{ $og.title | default site.Title }}" />
+  <meta name="twitter:description" content="{{ $og.description | default (index hugo.Data site.Language.Lang).site.description }}" />
+  {{- with $img }}
+  <meta name="twitter:image" content="{{ . | absURL }}" />
+  {{- end }}
+{{- else }}
+  {{- with $img }}
+  <meta name="twitter:image" content="{{ . | absURL }}" />
+  {{- end }}
 {{- end }}
