@@ -50,7 +50,11 @@ if (!files.length) console.log('  no local overrides')
 
 for (const rel of files) {
   const text = fs.readFileSync(path.join(REPO, rel), 'utf8')
-  const marker = text.match(/THEME-VERSION:\s*(v[\d.]+)/)?.[1]
+  // `v\d+(\.\d+)*` and not `v[\d.]+`: the loose class swallows a sentence-ending
+  // period, so a marker written as "... @ THEME-VERSION: v4.16.0. The div..." was
+  // read as version "v4.16.0." and failed against a go.mod pinning "v4.16.0" — a
+  // confusing error where the two strings look identical in the message.
+  const marker = text.match(/THEME-VERSION:\s*(v\d+(?:\.\d+)*)/)?.[1]
 
   // Files written from scratch declare so; only copies need a marker.
   //

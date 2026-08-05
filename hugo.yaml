@@ -18,6 +18,19 @@ module:
       target: static/files
     - source: ./node_modules/katex/dist/fonts
       target: static/fonts
+    # THIS LINE IS LOAD-BEARING. Declaring any `assets` mount replaces Hugo's
+    # default one, exactly as declaring a `static` mount does — the behaviour this
+    # config already documents for static/. Without it, every resources.Get under
+    # assets/ returns nil and the build dies on
+    # `$favicon.RelPermalink: nil pointer`, because header.html dereferences the
+    # favicon without a guard. Found the hard way, one mount later.
+    - source: assets
+      target: assets
+    # Mermaid as a standalone file, loaded on demand by our own
+    # layouts/shortcodes/mermaid.html instead of being bundled into
+    # application.js for every page. See that file for why.
+    - source: ./node_modules/mermaid/dist
+      target: assets/js/mermaid
 
 # Manage languages
 # For any more details, you can check the official documentation: https://gohugo.io/content-management/multilingual/
@@ -322,12 +335,23 @@ params:
 
     # Enable this to create flowcharts using shortcodes.
     flowchart:
-      enable: true
+      # Disabled so esbuild tree-shakes mermaid out of application.js: it was 3133 KB
+      # of a 5974 KB bundle, paid for by every page including the home, which has no
+      # diagram. layouts/shortcodes/mermaid.html loads the standalone build instead,
+      # only where a diagram exists. The mermaid: settings below are still read from
+      # here by that shortcode, so this stays the single source for the theme names.
+      enable: false
       services:
         # Uncomment for `mermaid` shortcode.
         mermaid:
           # For config options, see: https://mermaid-js.github.io/mermaid/#/Setup?id=configuration
           theme: forest
+          # Explicit, though `dark` is also what both the theme's JS and our
+          # shortcode fall back to. Verified working: switching data-theme takes the
+          # node fill from light lavender to near-black and the labels from dark grey
+          # to light, so a diagram rendered in light mode does not stay light on a
+          # dark page.
+          darkTheme: dark
 
     # Enable this to create mathematic expressions using `$$` blocks
     math:

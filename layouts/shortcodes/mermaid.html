@@ -1,0 +1,100 @@
+{{/*
+  LOCAL OVERRIDE of the theme's layouts/shortcodes/mermaid.html.
+
+  Copied from github.com/hugo-toha/toha/v4 @ THEME-VERSION: v4.16.0 — the <div> it
+  emits is byte-identical to upstream, with the same class, the same align and
+  background arguments and the same safeHTML on the inner text, so the diagrams
+  render exactly as before. What is added is the loader below it.
+
+  WHY
+
+  The theme bundles mermaid into its single application.js, and measured, mermaid is
+  3133 KB of a 5974 KB bundle. There is no code splitting: esbuild is called without
+  `splitting`, so the dynamic import in features/flowchart/index.js is inlined. That
+  means every page paid for mermaid — the home page, which has no diagram, paid 3 MB
+  for it.
+
+  It is the whole performance story. Lighthouse mobile scored 54 with LCP at 35.9 s,
+  and the LCP element was the profile photo, starved of bandwidth behind the script
+  under simulated slow 4G.
+
+  HOW
+
+  features.flowchart is now disabled in hugo.yaml, which tree-shakes mermaid out of
+  the bundle entirely. This shortcode loads the standalone build instead, from
+  node_modules via a module mount, and only on pages that actually call it. The
+  `once` guard means a page with three diagrams still loads it once.
+
+  The init mirrors the theme's own features/flowchart/mermaid.js rather than
+  inventing behaviour: same startOnLoad:false plus explicit run(), same light/dark
+  theme selection from data-theme, and the same MutationObserver that restores the
+  original text and re-renders when the visitor flips the theme — without which a
+  diagram rendered in light mode stays light on a dark page.
+
+  TRADE-OFF, stated: post pages still download mermaid, as a separate cacheable file
+  rather than inside the bundle. Only the pages that show a diagram pay, which is the
+  point. Pre-rendering the diagrams to SVG at build time would remove the cost
+  everywhere and work without JavaScript, but needs a layout engine of its own —
+  noted as a future improvement, not done.
+*/}}
+{{- $alignment := .Get "align" | default "center" -}}
+{{- $background := .Get "background" | default "none" -}}
+
+<div class="mermaid" align="{{ $alignment }}" style="background-color: {{ $background }}; border-radius: 5px;">
+    {{- safeHTML .Inner -}}
+</div>
+
+{{- if not (.Page.Scratch.Get "mermaidLoaded") }}
+  {{- .Page.Scratch.Set "mermaidLoaded" true -}}
+  {{- $mermaid := resources.Get "js/mermaid/mermaid.min.js" -}}
+  {{- if not $mermaid -}}
+    {{- errorf "mermaid.min.js not found. hugo.yaml must mount ./node_modules/mermaid/dist to assets/js/mermaid, and `mise run install` must have run." -}}
+  {{- end -}}
+  {{- $mermaid = $mermaid | fingerprint -}}
+  {{/*  Config comes from the same place the theme reads it, so hugo.yaml stays the
+        single source for the mermaid theme names.
+
+        Note the path: features.flowchart.SERVICES.mermaid. The theme's own JS reads
+        `params.flowchart?.mermaid` because get-esbuild-options.html flattens
+        `services` away before handing params to esbuild — but from config the
+        `services` level is real. Getting this wrong is silent: the lookup returns
+        nothing, `default` wins, and the diagrams render in mermaid's default palette
+        instead of the configured one. Caught by measuring the rendered node fill,
+        which was lavender when the config says forest.  */}}
+  {{- $cfg := site.Params.features.flowchart.services.mermaid | default dict -}}
+  {{- $light := $cfg.theme | default "default" -}}
+  {{- $dark := $cfg.darkTheme | default "dark" -}}
+<script src="{{ $mermaid.RelPermalink }}" integrity="{{ $mermaid.Data.Integrity }}" defer></script>
+<script>
+  (function () {
+    var LIGHT = {{ $light | jsonify | safeJS }}, DARK = {{ $dark | jsonify | safeJS }};
+    var theme = function () {
+      return document.documentElement.getAttribute('data-theme') === 'dark' ? DARK : LIGHT;
+    };
+    var store = function () {
+      document.querySelectorAll('.mermaid').forEach(function (d) {
+        if (!d.hasAttribute('data-original-content')) d.setAttribute('data-original-content', d.textContent);
+      });
+    };
+    var render = function () {
+      if (!window.mermaid) return;
+      window.mermaid.initialize({ startOnLoad: false, theme: theme() });
+      window.mermaid.run();
+    };
+    var start = function () { store(); render(); };
+
+    // `defer` on the script above guarantees it has executed before DOMContentLoaded,
+    // so window.mermaid exists by the time this runs.
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
+    else start();
+
+    new MutationObserver(function () {
+      document.querySelectorAll('.mermaid').forEach(function (d) {
+        var original = d.getAttribute('data-original-content');
+        if (original) { d.textContent = original; d.removeAttribute('data-processed'); }
+      });
+      render();
+    }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  })();
+</script>
+{{- end }}
