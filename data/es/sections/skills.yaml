@@ -10,147 +10,163 @@ section:
   showOnNavbar: true                    # FIXED
   filter: true                          # FIXED
 
-# Filter buttons. `filter` is a CSS/JS token, never a label: translating one
-# detaches it from every skill's `categories` and the button then empties the
-# section. The checker asserts that each button matches at least one skill.
+# Five categories plus All. "Databases" was folded into Cloud & Data Platforms:
+# the split between it and Data Engineering was never clear and cost a click to
+# work out.
+#
+# `filter` is a CSS/JS token the theme writes into data-category, never a label.
+# Translating one detaches it from every card that claims it, and the button then
+# empties the section. The checker asserts each button matches at least one card.
 buttons:
 - name: Todo
-  filter: "all"                    # FIXED
-- name: Cloud y Plataformas
-  filter: "cloud"                    # FIXED
+  filter: "all"
+- name: Cloud y Plataformas de Datos
+  filter: "cloud"
 - name: Lenguajes
-  filter: "languages"                    # FIXED
+  filter: "languages"
 - name: Ingeniería de Datos
-  filter: "data-engineering"                    # FIXED
+  filter: "de"
 - name: BI y Analítica
-  filter: "bi"                    # FIXED
-- name: Bases de Datos
-  filter: "databases"                    # FIXED
+  filter: "bi"
 - name: Forma de Trabajar
-  filter: "ways-of-working"                    # FIXED
+  filter: "wow"
 
-# WARNING: cards/skill.html is the theme's only resources.Get without a nil
-# guard. A `logo:` pointing at a file that does not exist fails the entire build
-# with "nil pointer evaluating resource.Resource.MediaType" — verified. `icon:`
-# is the guarded fallback, so anything without a real asset uses an icon. To
-# move one to a logo: add the file first, then switch, then build.
+# Every card is icon + name + one sentence. All 25 use `logo:` rather than
+# `icon:` because that path renders the mark and the title as separate elements,
+# which is the layout we want; `icon:` puts the glyph inside the <h5>.
+#
+# The icons are 25 self-hosted monochrome SVGs, not a CDN — a CDN here would undo
+# the privacy work that removed jsDelivr from the site. Brand marks come from
+# Simple Icons (CC0); concepts and the whole Microsoft family come from Bootstrap
+# Icons (MIT), because Simple Icons has withdrawn every Microsoft mark. That also
+# avoids the spec's complaint about one icon repeated across four cards.
+#
+# CAUTION: cards/skill.html reads .MediaType on the result of resources.Get
+# WITHOUT a nil check, so a logo path that does not exist fails the whole build.
+# check-i18n treats a dangling skills[].logo as a fatal error and runs before the
+# build, in `verify` and in CI, which is what keeps that from biting.
 skills:
-- name: Microsoft Fabric                          # FIXED
-  icon: "fab fa-microsoft"          # FIXED
-  summary: "OneLake, Lakehouse y Warehouse para plataformas end-to-end."
-  categories: ["cloud", "data-engineering"]  # FIXED
+- name: Microsoft Azure
+  logo: /images/sections/skills/azure.svg
+  summary: "Data Factory, Azure SQL, ADLS Gen2 y PostgreSQL sosteniendo plataformas de datos en producción."
+  categories: ["cloud"]
 
-- name: Azure Data Factory                          # FIXED
-  icon: "fab fa-microsoft"          # FIXED
-  summary: "Ingesta orquestada desde ERP/CRM, APIs REST y bases de datos."
-  categories: ["cloud", "data-engineering"]  # FIXED
+- name: Microsoft Fabric
+  logo: /images/sections/skills/fabric.svg
+  summary: "OneLake, Lakehouse y Warehouse para plataformas end-to-end, en desarrollo activo en producción."
+  categories: ["cloud", "de"]
 
-- name: Azure Data Lake Storage Gen2                          # FIXED
-  icon: "fab fa-microsoft"          # FIXED
-  summary: "Capas medallion con políticas de ciclo de vida para controlar coste."
-  categories: ["cloud"]  # FIXED
+- name: Power BI
+  logo: /images/sections/skills/powerbi.svg
+  summary: "Modelos semánticos compuestos Import + DirectQuery, RLS, refresco incremental y gateways."
+  categories: ["bi"]
 
-- name: Azure SQL Database                          # FIXED
-  icon: "fab fa-microsoft"          # FIXED
-  summary: "Capa de servicio y arquitecturas dimensionadas para la carga."
-  categories: ["cloud", "databases"]  # FIXED
+- name: Python
+  logo: /images/sections/skills/python.svg
+  summary: "pandas para pipelines de datos, Prophet y scikit-learn para forecasting."
+  categories: ["languages", "de"]
 
-- name: Python                          # FIXED
-  icon: "fab fa-python"             # FIXED
-  summary: "pandas para pipelines, Prophet y scikit-learn para forecasting."
-  categories: ["languages", "data-engineering"]  # FIXED
+- name: SQL
+  logo: /images/sections/skills/sql.svg
+  summary: "T-SQL y PL/pgSQL, del ETL basado en conjuntos a las funciones de ventana."
+  categories: ["languages", "cloud"]
 
-- name: SQL                          # FIXED
-  icon: "fas fa-database"           # FIXED
-  summary: "T-SQL y PL/pgSQL, del ETL basado en conjuntos a funciones de ventana."
-  categories: ["languages", "databases"]  # FIXED
-
-- name: Bash / Shell                          # FIXED
-  icon: "fas fa-terminal"           # FIXED
-  summary: "Automatización de procesos, depuración de logs y monitorización."
-  categories: ["languages", "ways-of-working"]  # FIXED
-
-- name: DAX                          # FIXED
-  icon: "fas fa-calculator"         # FIXED
-  summary: "Inteligencia de tiempo, análisis de desviaciones y puentes M:N."
-  categories: ["languages", "bi"]  # FIXED
-
-- name: Power Query / M                          # FIXED
-  icon: "fas fa-code"               # FIXED
-  summary: "Transformación y query folding al origen cuando compensa."
-  categories: ["languages", "bi"]  # FIXED
-
-- name: dbt                          # FIXED
-  icon: "fas fa-cubes"              # FIXED
+- name: dbt
+  logo: /images/sections/skills/dbt.svg
   summary: "Modelos por capas con tests, documentación y linaje."
-  categories: ["data-engineering"]  # FIXED
+  categories: ["de"]
 
-- name: Apache Airflow                          # FIXED
-  icon: "fas fa-diagram-project"    # FIXED
-  summary: "Planificación, dependencias, alertas y recuperación automática."
-  categories: ["data-engineering"]  # FIXED
+- name: Apache Airflow
+  logo: /images/sections/skills/airflow.svg
+  summary: "Orquestación en producción: planificación, dependencias, alertas y recuperación automática."
+  categories: ["de"]
 
-- name: ETL / ELT design                          # FIXED
-  icon: "fas fa-arrows-spin"        # FIXED
-  summary: "Cargas incrementales y parametrizadas que reducen ventana y coste."
-  categories: ["data-engineering"]  # FIXED
+- name: ETL / ELT Pipelines
+  logo: /images/sections/skills/etl.svg
+  summary: "Ingesta orquestada desde ERP/CRM, APIs REST y bases de datos, con cargas incrementales y parametrizadas."
+  categories: ["de"]
 
-- name: Medallion architecture                          # FIXED
-  icon: "fas fa-layer-group"        # FIXED
-  summary: "Capas bronze, silver y gold con contratos entre ellas."
-  categories: ["data-engineering", "cloud"]  # FIXED
+- name: Medallion Lakehouse
+  logo: /images/sections/skills/medallion.svg
+  summary: "Capas bronze, silver y gold con contratos claros entre ellas."
+  categories: ["de", "cloud"]
 
-- name: Dimensional modelling                          # FIXED
-  icon: "fas fa-table-columns"      # FIXED
-  summary: "Esquemas en estrella, SCD tipo 2 y hechos snapshot."
-  categories: ["data-engineering", "databases"]  # FIXED
+- name: Dimensional Modelling
+  logo: /images/sections/skills/dimensional.svg
+  summary: "Esquemas en estrella, SCD tipo 2 y tablas de hechos snapshot."
+  categories: ["de"]
 
-- name: Power BI                          # FIXED
-  icon: "fas fa-chart-column"       # FIXED
-  summary: "Modelos compuestos Import + DirectQuery, RLS, refresco incremental."
-  categories: ["bi"]  # FIXED
+- name: DAX
+  logo: /images/sections/skills/dax.svg
+  summary: "Inteligencia de tiempo, análisis de desviaciones y patrones de segmentación de KPI."
+  categories: ["languages", "bi"]
 
-- name: SAS Viya                          # FIXED
-  icon: "fas fa-chart-line"         # FIXED
-  summary: "Visual Analytics, preparación de datos y administración de plataforma."
-  categories: ["bi"]  # FIXED
+- name: Power Query (M)
+  logo: /images/sections/skills/powerquery.svg
+  summary: "Transformaciones y query folding al origen cuando compensa."
+  categories: ["languages", "bi"]
 
-- name: SAS Visual Analytics                          # FIXED
-  icon: "fas fa-chart-line"         # FIXED
-  summary: "Cuadros de mando con indicadores clave para seguros y banca."
-  categories: ["bi"]  # FIXED
+- name: SQL Server
+  logo: /images/sections/skills/sqlserver.svg
+  summary: "Data warehousing, particionado, indexación y preagregación para la capa de servicio."
+  categories: ["cloud"]
 
-- name: SQL Server                          # FIXED
-  icon: "fas fa-server"             # FIXED
-  summary: "Data warehousing, particionado, indexación y preagregación."
-  categories: ["databases"]  # FIXED
+- name: PostgreSQL
+  logo: /images/sections/skills/postgresql.svg
+  summary: "Azure PostgreSQL gestionado como origen y como capa de servicio."
+  categories: ["cloud"]
 
-- name: PostgreSQL                          # FIXED
-  icon: "fas fa-database"           # FIXED
-  summary: "Azure PostgreSQL gestionado como origen y capa de servicio."
-  categories: ["databases"]  # FIXED
-
-- name: Query optimisation                          # FIXED
-  icon: "fas fa-bolt"               # FIXED
+- name: Query Performance Tuning
+  logo: /images/sections/skills/tuning.svg
   summary: "Planes de ejecución y reescrituras que reducen tiempos de forma medible."
-  categories: ["databases"]  # FIXED
+  categories: ["cloud", "de"]
 
-- name: Git                          # FIXED
-  logo: /images/sections/skills/git.png # FIXED
-  summary: "Estrategia de ramas, estándares de repositorio y onboarding."
-  categories: ["ways-of-working"]  # FIXED
+- name: Data Quality & Testing
+  logo: /images/sections/skills/quality.svg
+  summary: "Perfilado, validación y conciliación para cifras auditables."
+  categories: ["de"]
 
-- name: CI/CD                          # FIXED
-  icon: "fas fa-code-branch"        # FIXED
-  summary: "Tests automáticos y pipelines de despliegue para activos de datos."
-  categories: ["ways-of-working"]  # FIXED
+- name: Forecasting & ML
+  logo: /images/sections/skills/forecasting.svg
+  summary: "Modelos Prophet y scikit-learn en producción para planificación de demanda y compras."
+  categories: ["bi", "languages"]
 
-- name: Linux                          # FIXED
-  logo: /images/sections/skills/linux.png # FIXED
-  summary: "Scripting de shell, planificación y monitorización de servicios."
-  categories: ["ways-of-working"]  # FIXED
+- name: LLM Integration
+  logo: /images/sections/skills/llm.svg
+  summary: "API de Claude y servidores MCP conectados a modelos semánticos para analítica en lenguaje natural."
+  categories: ["bi", "de"]
 
-- name: Agile                          # FIXED
-  icon: "fas fa-people-group"       # FIXED
-  summary: "Toma de requisitos, refinamiento y gestión de stakeholders."
-  categories: ["ways-of-working"]  # FIXED
+- name: FastAPI & Automation
+  logo: /images/sections/skills/fastapi.svg
+  summary: "Servicios en Python y bots de Slack/Telegram que llevan los productos de datos a quien decide con ellos."
+  categories: ["de", "languages"]
+
+- name: Executive Dashboards
+  logo: /images/sections/skills/dashboards.svg
+  summary: "KPI de stock, rentabilidad y operación sobre los que dirección decide de verdad."
+  categories: ["bi"]
+
+- name: SAS Viya
+  logo: /images/sections/skills/sasviya.svg
+  summary: "Visual Analytics, preparación de datos self-service y administración de plataforma."
+  categories: ["bi"]
+
+- name: Git & CI/CD
+  logo: /images/sections/skills/git.svg
+  summary: "Estrategia de ramas, estándares de repositorio y despliegue automático de activos de datos."
+  categories: ["wow"]
+
+- name: Bash & Linux
+  logo: /images/sections/skills/linux.svg
+  summary: "Scripting de shell, planificación, depuración de logs y monitorización de servicios."
+  categories: ["languages", "wow"]
+
+- name: Agile & Stakeholder Management
+  logo: /images/sections/skills/agile.svg
+  summary: "Toma de requisitos, refinamiento y convertir preguntas de negocio en productos de datos."
+  categories: ["wow"]
+
+- name: Cloud Cost Optimisation
+  logo: /images/sections/skills/cost.svg
+  summary: "Políticas de ciclo de vida, dimensionado de cómputo y gobierno de recursos."
+  categories: ["wow"]

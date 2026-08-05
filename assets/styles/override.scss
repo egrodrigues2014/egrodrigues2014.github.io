@@ -56,3 +56,42 @@
     justify-content: center;
   }
 }
+
+/* ---------------------------------------------------------------------------
+ * Skills: icon spacing and dark theme
+ *
+ * The theme sizes .card-img-xs at 24px but only gives it a right margin inside
+ * the projects section, so in skills the mark sat flush against the title.
+ *
+ * All 25 marks are monochrome black SVGs, served through <img>, where
+ * currentColor has nothing to inherit from — so they cannot follow the text
+ * colour the way the inlined issuer marks do. Inverting them under the dark
+ * theme is the cheap equivalent.
+ *
+ * NOTE: that inversion is only correct while every mark is monochrome. A colour
+ * logo added here would come out as its negative.
+ * ------------------------------------------------------------------------- */
+.skills-section {
+  .card-img-xs {
+    margin-right: 0.5rem;
+  }
+
+  /* Equal heights, the only way available here.
+   *
+   * The theme drives this grid with Filterizr, which absolutely positions each
+   * item with a transform and sets neither width nor height — so `align-items:
+   * stretch` and `height: 100%` have nothing to act on. Measured, the cards take
+   * exactly two heights in every language: 106px for a one-line description and
+   * 130px for two. Pinning the minimum to the taller of the two levels the grid.
+   *
+   * Costs ~24px of whitespace on the shorter cards. Cards never get clipped: a
+   * longer description simply grows past this, which is also what happens at
+   * narrower viewports where the rule becomes inert. */
+  .card {
+    min-height: 130px;
+  }
+}
+
+html[data-theme='dark'] .skills-section .card-img-xs {
+  filter: invert(1);
+}
