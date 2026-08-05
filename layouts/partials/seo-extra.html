@@ -1,6 +1,11 @@
 {{/*
-  Head additions the theme does not provide. Called from the local baseof
-  override; see layouts/_default/baseof.html for why that override exists.
+  Head additions the theme does not provide. Called from the local override of
+  layouts/partials/opengraph.html, which is the cheapest seam available: Toha has
+  no head.html, no custom-head hook and no hooks/ directory, and it emits <head>
+  from two independent standalone templates — layouts/index.html (the home page,
+  which does NOT use baseof) and layouts/_default/baseof.html. opengraph.html is
+  19 lines and is called by both, so owning it covers every page at a third of
+  the surface of owning the two templates.
 
   1. hreflang. Toha v4.16.0 emits none at all — verified, zero occurrences in
      all three languages — while getting <html lang> right. For a trilingual
