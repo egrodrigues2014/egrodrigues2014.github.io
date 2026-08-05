@@ -1,0 +1,75 @@
+{{/*
+  LOCAL OVERRIDE of the theme's layouts/_default/sitemap.xml.
+
+  Based on github.com/hugo-toha/toha/v4 @ THEME-VERSION: v4.16.0, but the page
+  set comes from Hugo's own default template rather than the theme's.
+
+  WHY THIS EXISTS
+
+  The theme builds its sitemap from `.Site.RegularPages` (its line 6). In Hugo
+  that term excludes home, section list pages and taxonomies — it means "content
+  files only". On a single-page portfolio, where the home page *is* the site,
+  that dropped everything: measured before this override, public/en/sitemap.xml
+  contained exactly one URL, /search/, carrying a 2010 date inherited from the
+  theme's own content file.
+
+  Hugo's built-in sitemap template uses the full page set. So this is not a
+  clever addition — it is a restoration, keeping the one thing the theme did add
+  that is worth having: the xhtml:link alternates.
+
+  WHAT IS IN, AND WHAT IS NOT
+
+  In: home, section lists (/posts/), and regular pages (the six case studies, and
+  the theme's search page).
+
+  Out: taxonomies and their terms — /tags/azure/, /categories/data-engineering/
+  and the rest. They hold no content of their own, only lists of the same posts,
+  and adding twenty term pages to an eight-URL sitemap inverts the signal about
+  which pages matter. Excluding them from the sitemap does not deindex them; it
+  just stops us nominating them.
+
+  Also out: anything with `hidden: true` in front matter, matching the theme's
+  behaviour and the recent-posts section.
+
+  HREFLANG
+
+  Built from `.AllTranslations`, which includes the page itself, so the set is
+  reciprocal as the spec requires. The language code uses the SAME expression as
+  layouts/partials/seo-extra.html and as <html lang> —
+  `.Language.Locale | default .Language.Lang`, giving en / es-ES / pt-BR. That
+  matters: a sitemap advertising different codes from the ones in <head> is a
+  contradiction a crawler has to resolve on its own.
+
+  The theme emitted only `.Translations`, which omits the page itself, and no
+  x-default. Both are added here. x-default is identified by an empty
+  `.Site.LanguagePrefix`, true only for the language served at the site root —
+  the same test seo-extra.html uses, and it depends on
+  defaultContentLanguageInSubdir staying false.
+*/ -}}
+{{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  {{- $pages := where site.Pages "Kind" "in" (slice "home" "section" "page") -}}
+  {{- $pages = where $pages "Params.hidden" "!=" true -}}
+  {{- range $pages }}
+  <url>
+    <loc>{{ .Permalink }}</loc>
+    {{- if not .Lastmod.IsZero }}
+    <lastmod>{{ .Lastmod.Format "2006-01-02T15:04:05-07:00" }}</lastmod>
+    {{- end }}
+    {{- with .Sitemap.ChangeFreq }}
+    <changefreq>{{ . }}</changefreq>
+    {{- end }}
+    {{- if ge .Sitemap.Priority 0.0 }}
+    <priority>{{ .Sitemap.Priority }}</priority>
+    {{- end }}
+    {{- range .AllTranslations }}
+    <xhtml:link rel="alternate" hreflang="{{ .Language.Locale | default .Language.Lang }}" href="{{ .Permalink }}" />
+    {{- end }}
+    {{- range .AllTranslations }}
+      {{- if not .Site.LanguagePrefix }}
+    <xhtml:link rel="alternate" hreflang="x-default" href="{{ .Permalink }}" />
+      {{- end }}
+    {{- end }}
+  </url>
+  {{- end }}
+</urlset>

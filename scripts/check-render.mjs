@@ -130,6 +130,39 @@ else {
   }
 }
 
+// --- each per-language sitemap lists its home page ------------------------
+// The theme's own template built from .Site.RegularPages, which in Hugo excludes
+// home and section pages. On a single-page portfolio that left one URL in the
+// whole sitemap — /search/ — and the home page, which IS the site, was absent in
+// all three languages. Nothing failed: a sitemap can be valid and useless.
+//
+// robots.txt starts advertising the sitemap the moment params.prelaunch flips, so
+// this has to hold before launch, not after.
+for (const lang of LANGS) {
+  const rel = `${lang}/sitemap.xml`
+  const abs = path.join(PUBLIC, rel)
+  if (!fs.existsSync(abs)) {
+    r.error(`public/${rel} was not generated`)
+    continue
+  }
+  const xml = fs.readFileSync(abs, 'utf8')
+  const locs = [...xml.matchAll(/<loc>(.*?)<\/loc>/g)].map((m) => m[1])
+  // The home URL is the shortest one: every other page hangs off it.
+  const home = [...locs].sort((a, b) => a.length - b.length)[0]
+  const wantSuffix = lang === LANGS[0] ? '/' : `/${lang}/`
+  if (!locs.length) {
+    r.error(`public/${rel} contains no <loc> at all`)
+  } else if (!home?.endsWith(wantSuffix)) {
+    r.error(`public/${rel} does not list the ${lang} home page (shortest URL found: ${home}). ` +
+      'The theme builds its sitemap from .Site.RegularPages, which excludes home and section pages.')
+  }
+  const missingLastmod = locs.length - (xml.match(/<lastmod>\d/g) ?? []).length
+  if (missingLastmod > 0) {
+    r.error(`public/${rel} has ${missingLastmod} URL(s) with no dated <lastmod> — enableGitInfo needs ` +
+      'real git history, which is why both workflows check out with fetch-depth: 0')
+  }
+}
+
 // --- the blog index carries posts in every language -----------------------
 // The theme selects posts with site.RegularPages, which is language scoped, and
 // section.enable for recent-posts is FIXED across languages. So a post written
