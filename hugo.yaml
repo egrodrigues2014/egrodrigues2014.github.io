@@ -52,9 +52,17 @@ languages:
 # default language for the content; served at the site root
 defaultContentLanguage: en
 
-# Scaffolding, removed in F6: renders any missing i18n key as "[i18n] key" so
-# gaps show up on the page instead of silently falling back to English.
-enableMissingTranslationPlaceholders: true
+# enableMissingTranslationPlaceholders is deliberately NOT set here.
+#
+# It renders any missing i18n key as "[i18n] key", which is exactly what you want
+# while building the site and exactly what you do not want a visitor to read. So
+# it lives in the `server` task in mise.toml as
+# HUGO_ENABLEMISSINGTRANSLATIONPLACEHOLDERS=true: placeholders in development,
+# where they are visible to the person who can fix them, and a plain English
+# fallback in anything published.
+#
+# Verified rather than assumed — Hugo resolves that variable, and with it absent
+# the key does not appear in `hugo config` at all.
 
 # Take each page's date from git rather than from the file system, so
 # <lastmod> in sitemap.xml carries the real commit date. This is what both

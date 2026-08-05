@@ -54,9 +54,15 @@ run = "node scripts/check-demo.mjs"
 [tasks.server]
 description = "Run hugo server"
 depends = "install"
+# Missing i18n keys render as "[i18n] key" here and nowhere else. Setting it as an
+# env var rather than in hugo.yaml is what keeps it out of the published site,
+# where the placeholder would be worse for a visitor than an English fallback.
+# Hugo maps HUGO_<UPPERCASED KEY> onto config; confirmed with `hugo config`.
+env = { HUGO_ENABLEMISSINGTRANSLATIONPLACEHOLDERS = "true" }
 run = "hugo server -w"
 
 [tasks.update]
 description = "Update the theme to latest release"
 run = "hugo mod get -u"
 depends_post = "install"
+

@@ -20,7 +20,7 @@ mise install && mise run server
 | Command | What it does |
 |---|---|
 | `mise run install` | Fetches the theme module, packs its npm deps, installs the checkers' deps |
-| `mise run server` | Local dev server on :1313 |
+| `mise run server` | Local dev server on :1313, with missing i18n keys shown as `[i18n] key` |
 | `mise run build` | Production build into `public/` |
 | `mise run verify` | **The gate.** Run this before every commit — see below |
 | `mise run check-demo` | Fails if any of the theme's example content is back |
@@ -127,6 +127,17 @@ only what exists for it.
 Dates use `MM/YYYY` on purpose. Month names would need translating three times,
 "Mar 2022" reads wrong in Spanish and Portuguese, and every one is a chance to
 misalign a month against its year.
+
+### Missing i18n keys
+
+`mise run server` sets `HUGO_ENABLEMISSINGTRANSLATIONPLACEHOLDERS=true`, so a key
+the theme does not ship renders as `[i18n] key` — visible to the person who can
+fix it. It is **not** set in `hugo.yaml`, so a published build falls back to
+English instead of showing that to a visitor.
+
+`check-render` still greps the built output for `[i18n]`. It can no longer catch a
+gap by itself; it is a sentinel that fires if the flag is ever moved back into
+`hugo.yaml`.
 
 ### Writing a section
 

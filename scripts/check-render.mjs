@@ -57,10 +57,19 @@ for (const lang of LANGS) {
     }
   }
 
+  // This assertion changed character once enableMissingTranslationPlaceholders
+  // moved out of hugo.yaml and into the `server` task's environment. A production
+  // build no longer emits "[i18n] key" for a missing key — it falls back to
+  // English — so this can no longer catch a gap on its own; the dev server is
+  // where you see those.
+  //
+  // Kept as a sentinel, and worth keeping: if the flag is ever put back into
+  // hugo.yaml, this fires and says why that is wrong.
   const gaps = html.match(/\[i18n\]/g)?.length ?? 0
   if (gaps) {
-    r.error(`public/${rel} has ${gaps} unresolved i18n key(s). The theme bundle for "${lang}" is not ` +
-      'resolving; check that the language key matches a shipped i18n file.')
+    r.error(`public/${rel} has ${gaps} unresolved i18n key(s). Production builds should never show these: ` +
+      'enableMissingTranslationPlaceholders belongs in the `server` task in mise.toml, not in hugo.yaml, ' +
+      'because a visitor reading "[i18n] key" is worse than an English fallback.')
   }
 
   const want = LOCALE[lang]
