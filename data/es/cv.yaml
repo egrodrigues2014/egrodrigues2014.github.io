@@ -1,0 +1,37 @@
+# Cadenas que solo existen en el CV descargable.
+#
+# Viven aqui y no dentro de scripts/make-cv.mjs por dos razones:
+#
+#   1. `check-i18n` obliga a la paridad de todo lo que hay bajo data/, asi que un
+#      encabezado traducido en dos idiomas de tres falla el build en lugar de
+#      publicarse a medias.
+#   2. `check-pii` escanea data/ — y salta los .pdf por extension, asi que nunca
+#      puede mirar dentro del CV generado. La garantia de que el CV no lleva
+#      telefono ni direccion no es un escaneo del PDF: es que todas sus cadenas
+#      vienen de data/, que si esta escaneado.
+#
+# Todo lo demas del CV — puestos, fechas, bullets, titulaciones, certificaciones —
+# se lee directamente de los YAML de la seccion correspondiente.
+#
+# Los campos marcados FIXED deben ser identicos byte a byte en los tres idiomas.
+
+headline: "Lead Data Engineer · Azure & Microsoft Fabric · Python · SQL · dbt · Airflow · Power BI"
+
+headings:
+  summary: Perfil profesional
+  skills: Competencias técnicas
+  experience: Experiencia profesional
+  education: Formación
+  certifications: Certificaciones
+  languages: Idiomas
+
+languages:
+  - "Portugués — nativo"
+  - "Español — profesional pleno"
+  - "Inglés — profesional"
+
+certificationsNote: "Lista completa de once credenciales, cada una con enlace de verificación, en egrodrigues2014.github.io"
+
+footer: "Generado desde egrodrigues2014.github.io — el sitio es la fuente de verdad de este documento."
+
+publicationLabel: Publicación

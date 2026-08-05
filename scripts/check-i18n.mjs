@@ -69,6 +69,17 @@ const RULES = [
   [/^openGraph\.(title|description)$/, 'text'],
   [/^customMenus\[\]\.name$/, 'text'],
 
+  // --- cv.yaml: strings that exist only in the downloadable CV -------------
+  // The rest of the CV is read from the section files, so only its own labels
+  // need classifying here.
+  [/^headings\./, 'text'], // Professional summary / Perfil profesional / ...
+  [/^languages\[\]$/, 'text'], // "Portuguese — native" and its translations
+  [/^(certificationsNote|footer|publicationLabel)$/, 'text'],
+  // The strapline under the name. Every token in it is a product name or the
+  // job title that is deliberately left in English, so it is identical in all
+  // three languages by construction rather than by oversight.
+  [/^headline$/, 'fixed'],
+
   // --- structural: must be byte-identical across languages ---
   [/^section\./, 'fixed'], // id, weight, enable, showOnNavbar, template, hideTitle, filter
   [/^buttons\[\]\.filter$/, 'fixed'], // CSS/JS token, not a label

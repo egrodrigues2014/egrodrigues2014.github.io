@@ -1,0 +1,48 @@
+# Strings that exist only in the downloadable CV.
+#
+# They live here rather than inside scripts/make-cv.mjs for two reasons, and both
+# are load-bearing:
+#
+#   1. `check-i18n` enforces parity for anything under data/, so a heading
+#      translated in two languages out of three fails the build instead of
+#      shipping.
+#   2. `check-pii` scans data/ — and it SKIPS .pdf by extension, so it can never
+#      look inside the generated CV. The guarantee that the CV carries no phone
+#      number or address is not a scan of the PDF; it is that every string in it
+#      comes from data/, which is scanned. Putting these here keeps that true.
+#
+# Everything else in the CV — roles, dates, bullets, degrees, certifications —
+# is read straight from author.yaml, sections/about.yaml, sections/experiences.yaml,
+# sections/education.yaml, sections/skills.yaml and sections/accomplishments.yaml.
+# The CV cannot contradict the site because it is generated from it.
+#
+# Fields marked FIXED must be byte-identical in data/en, data/es and data/pt-br.
+
+# Shown under the name, above the contact line.
+headline: "Lead Data Engineer · Azure & Microsoft Fabric · Python · SQL · dbt · Airflow · Power BI"
+
+# Section headings, in the order the CV renders them.
+headings:
+  summary: Professional summary
+  skills: Technical skills
+  experience: Professional experience
+  education: Education
+  certifications: Certifications
+  languages: Languages
+
+# Spoken languages. Not on the website: they were tried in the About badge grid
+# and removed because five tiles read as a grab bag. On a CV they belong.
+languages:
+  - "Portuguese — native"
+  - "Spanish — full professional"
+  - "English — professional working"
+
+# The CV lists six certifications, not the eleven the site does: on two pages the
+# other five dilute the ones that carry weight. This line points at the full set.
+certificationsNote: "Full list of eleven credentials, each with a verification link, at egrodrigues2014.github.io"
+
+# Printed once at the foot of the last page.
+footer: "Generated from egrodrigues2014.github.io — the site is the source of truth for this document."
+
+# Label for the education entry's publication line.
+publicationLabel: Publication

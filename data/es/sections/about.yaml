@@ -36,11 +36,14 @@ socialLinks:
   icon: "fab fa-github"                 # FIXED
   url: "https://github.com/egrodrigues2014"                     # FIXED
 
-# Restored in F5 once the curated per-language CVs exist as
-# static/files/cv-elton-rodrigues-<lang>.pdf. Left empty rather than pointing
-# at the deleted demo PDF, because a 404 behind a "My Resume" button is worse
-# than no button.
-resourceLinks: []
+# La unica lista de data/ donde la URL difiere legitimamente por idioma, que es
+# por lo que check-i18n clasifica resourceLinks[].url como `varies`.
+#
+# Sin barra inicial: sections/about.html lo pasa por relURL, asi que una barra
+# inicial resolveria desde la raiz y serviria el CV en ingles tambien aqui.
+resourceLinks:
+- title: Mi currículum
+  url: files/cv-elton-rodrigues-es.pdf
 
 # The badge grid holds languages rather than certifications. Only one vendor
 # certification is actually achieved (AZ-900), and a grid built for three or six
