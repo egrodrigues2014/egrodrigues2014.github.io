@@ -36,6 +36,12 @@ jobs:
       - name: No personal data
         run: node scripts/check-pii.mjs
 
+      # Was continue-on-error while it counted down from 118 hits. It reached
+      # zero when the demo projects were replaced, so it is now a hard gate: the
+      # theme's example data coming back fails the run.
+      - name: No demo data
+        run: node scripts/check-demo.mjs
+
       - name: Theme overrides in sync
         run: node scripts/check-overrides.mjs
 
@@ -44,10 +50,3 @@ jobs:
 
       - name: Rendered output
         run: node scripts/check-render.mjs
-
-      # Red by design until the content phase finishes, so it reports without
-      # failing the run. The continue-on-error comes off in F6, and from then on a
-      # demo-data regression breaks the build.
-      - name: No demo data (informational until F6)
-        continue-on-error: true
-        run: node scripts/check-demo.mjs

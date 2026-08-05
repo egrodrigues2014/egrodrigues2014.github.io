@@ -1,6 +1,9 @@
 {{/*
-  Head additions the theme does not provide. Called from the local override of
-  layouts/partials/opengraph.html, which is the cheapest seam available: Toha has
+  Head additions the theme does not provide. Written from scratch, so it carries
+  no THEME-VERSION marker — nothing here is copied from the theme.
+
+  Called from this project's copy of layouts/partials/opengraph.html, which is
+  the cheapest seam available: Toha has
   no head.html, no custom-head hook and no hooks/ directory, and it emits <head>
   from two independent standalone templates — layouts/index.html (the home page,
   which does NOT use baseof) and layouts/_default/baseof.html. opengraph.html is

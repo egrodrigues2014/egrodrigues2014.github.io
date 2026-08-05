@@ -23,7 +23,7 @@ mise install && mise run server
 | `mise run server` | Local dev server on :1313 |
 | `mise run build` | Production build into `public/` |
 | `mise run verify` | **The gate.** Run this before every commit — see below |
-| `mise run check-demo` | Counts leftovers of the theme's example site |
+| `mise run check-demo` | Fails if any of the theme's example content is back |
 | `mise run update` | Updates the theme to its latest release |
 
 Versions are pinned in `mise.toml` rather than left on `latest`, and CI reads the
@@ -34,21 +34,35 @@ changing here, and you cannot tell your own mistake from a toolchain regression.
 
 ## `mise run verify`
 
-Six gates, in order. The same set runs in CI, so a green run locally means
-something.
+Seven gates, in order. The same set runs in CI, in the same order, so a green run
+locally means something.
 
 | Checker | Catches |
 |---|---|
 | `check-i18n` | Cross-language drift: a missing file, a diverged `weight`, a translated lookup key, a translation one bullet short |
 | `check-assets` | Dangling asset references and orphans, plus `openGraph.image` pointing outside `static/` |
 | `check-pii` | Phone numbers, national IDs, IBANs, postal addresses — anything from the CV that must not reach a public repo |
+| `check-demo` | The theme's example content coming back |
 | `check-overrides` | A theme upgrade leaving a copied partial stale |
 | *build* | `hugo --gc --minify --cleanDestinationDir --printPathWarnings` |
-| `check-render` | The built pages: section anchors, `hreflang`, the pre-launch gate, no unresolved `[i18n]` keys |
+| `check-render` | The built pages: section anchors, `hreflang`, the pre-launch gate, a post in every language, no unresolved `[i18n]` keys |
 
-`check-demo` is deliberately **not** in `verify`. It stays red until the last of
-the example content is gone, and a permanently red gate is one you learn to
-ignore. It gets folded in once it reaches zero.
+The data gates run **before** the build on purpose. `check-i18n` treats a dangling
+`skills[].logo` as fatal because `cards/skill.html` dereferences the result of
+`resources.Get` with no nil check — running it first turns a nil-pointer crash
+into a named file and a reason.
+
+`check-demo` was held out of `verify` while it was still counting down from the
+118 hits the inherited example site left behind; a permanently red gate is one you
+learn to ignore. It reached zero when the demo projects were replaced with real
+case studies, and it is now a one-way door.
+
+`check-i18n` also passes with **zero warnings**, not just zero errors. Its
+untranslated-value heuristic flags any `es`/`pt-br` string byte-identical to the
+English one, and the handful that are deliberately identical — job titles kept in
+English, a filter button named after a product — are listed by path *and value* in
+`INTENTIONALLY_IDENTICAL`. Keyed by value because the fields themselves are
+translatable: "SAS Consultant" does become "Consultor SAS".
 
 Every checker has been proven to fail against a deliberately injected defect. A
 test that has never been seen failing is not a test.

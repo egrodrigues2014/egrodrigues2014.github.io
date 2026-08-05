@@ -41,7 +41,15 @@ for (const rel of layouts) {
   const marker = text.match(/THEME-VERSION:\s*(v[\d.]+)/)?.[1]
 
   // Files written from scratch declare so; only copies need a marker.
-  const isCopy = /LOCAL OVERRIDE/i.test(text)
+  //
+  // Case-sensitive: the declaration is a token, not a phrase. Matching it
+  // case-insensitively meant a comment in a from-scratch partial that mentioned
+  // "the local override of ..." in passing was read as a declaration, and the
+  // file was then reported for missing a marker it correctly does not have.
+  //
+  // A copy that declares itself in mixed case is still caught, just by the other
+  // error: it has a marker but no recognised declaration.
+  const isCopy = text.includes('LOCAL OVERRIDE')
 
   if (!isCopy) {
     if (marker) r.error(`layouts/${rel} carries a THEME-VERSION marker but is not declared a LOCAL OVERRIDE`)
