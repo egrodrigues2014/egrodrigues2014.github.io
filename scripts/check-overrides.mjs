@@ -33,11 +33,23 @@ if (!pinned) {
   r.finish()
 }
 
-const layouts = walk(path.join(REPO, 'layouts')).filter((f) => f.endsWith('.html'))
-if (!layouts.length) console.log('  no local layout overrides')
+// Templates are not the only thing that can be copied from the theme. The
+// project's assets/ shadows the theme's for an identical path — the mechanism
+// assets/styles/override.scss already relies on — so a copied script drifts on
+// upgrade in exactly the same silent way a copied partial does.
+const ROOTS = [
+  ['layouts', '.html'],
+  ['assets', '.js'],
+  ['assets', '.scss']
+]
 
-for (const rel of layouts) {
-  const text = fs.readFileSync(path.join(REPO, 'layouts', rel), 'utf8')
+const files = ROOTS.flatMap(([root, ext]) =>
+  walk(path.join(REPO, root)).filter((f) => f.endsWith(ext)).map((f) => `${root}/${f}`))
+
+if (!files.length) console.log('  no local overrides')
+
+for (const rel of files) {
+  const text = fs.readFileSync(path.join(REPO, rel), 'utf8')
   const marker = text.match(/THEME-VERSION:\s*(v[\d.]+)/)?.[1]
 
   // Files written from scratch declare so; only copies need a marker.
@@ -52,18 +64,18 @@ for (const rel of layouts) {
   const isCopy = text.includes('LOCAL OVERRIDE')
 
   if (!isCopy) {
-    if (marker) r.error(`layouts/${rel} carries a THEME-VERSION marker but is not declared a LOCAL OVERRIDE`)
+    if (marker) r.error(`${rel} carries a THEME-VERSION marker but is not declared a LOCAL OVERRIDE`)
     continue
   }
   if (!marker) {
-    r.error(`layouts/${rel} is declared a LOCAL OVERRIDE but has no "THEME-VERSION: vX.Y.Z" marker, ` +
+    r.error(`${rel} is declared a LOCAL OVERRIDE but has no "THEME-VERSION: vX.Y.Z" marker, ` +
       'so an upgrade could not be detected')
     continue
   }
   if (marker !== pinned) {
-    r.error(`layouts/${rel} was copied from theme ${marker}, but go.mod now pins ${pinned}. ` +
-      'Diff it against the new upstream file — if the theme added anything to <head>, this copy is ' +
-      `silently dropping it — then update the marker to ${pinned}.`)
+    r.error(`${rel} was copied from theme ${marker}, but go.mod now pins ${pinned}. ` +
+      'Diff it against the new upstream file — anything the theme added, this copy is silently ' +
+      `dropping — then update the marker to ${pinned}.`)
   }
 }
 

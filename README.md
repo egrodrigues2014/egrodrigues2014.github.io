@@ -172,9 +172,20 @@ directions, so flipping it is verified rather than assumed.
 
 ## Maintaining the theme
 
-Two partials are copied verbatim from Toha into `layouts/`, because the theme
-offers no `<head>` extension point and no issuer icon on certification cards.
-Each carries a `THEME-VERSION` marker.
+Three files are copied verbatim from Toha, because the theme offers no `<head>`
+extension point, no issuer icon on certification cards, and no way to stop one
+third-party script:
+
+| Copy | Why |
+|---|---|
+| `layouts/partials/opengraph.html` | The only seam both `<head>`-emitting templates share, used to add `hreflang` and the pre-launch `noindex` |
+| `layouts/partials/cards/accomplishments.html` | Adds an issuer mark; upstream renders the organisation as plain text |
+| `assets/scripts/sections/projects.js` | Drops an unconditional `buttons.github.io/buttons.js` request that fired on every page whether or not any project used `repo:` |
+
+Each carries a `THEME-VERSION` marker. `check-overrides` scans `layouts/` and
+`assets/` — the project's `assets/` shadows the theme's for an identical path (the
+mechanism `assets/styles/override.scss` relies on), so a copied script rots on
+upgrade exactly like a copied partial.
 
 **On every theme upgrade:**
 

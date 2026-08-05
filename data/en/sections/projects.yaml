@@ -39,10 +39,16 @@ buttons:
 # the blog its content. The employer and the sector are named, the end client
 # never is, and every figure in the posts is relative.
 #
-# `repo:` is deliberately unused. cards/project.html renders it as a GitHub star
-# button, and sections/projects.js then loads buttons.github.io/buttons.js —
-# a third-party request, which is exactly what disabling the embedpdf feature
-# was meant to avoid. `url:` produces a plain "Details" button and no request.
+# `repo:` is unused: cards/project.html renders it as a GitHub star button, and
+# every project here is private anyway. `url:` gives a plain "Details" button.
+#
+# Correction to what this comment first claimed: choosing `url:` over `repo:` did
+# NOT avoid the third-party request. The theme calls
+# insertScript('github-buttons', 'https://buttons.github.io/buttons.js') at module
+# scope in assets/scripts/sections/projects.js, and application.js imports
+# './sections' unconditionally — so the request went out on every page of the
+# site regardless. That is now removed by the local copy of that script; see the
+# header of assets/scripts/sections/projects.js.
 #
 # `url` is root-relative on purpose: the theme puts it straight into the href
 # without relURL, so a path without the leading slash resolves differently

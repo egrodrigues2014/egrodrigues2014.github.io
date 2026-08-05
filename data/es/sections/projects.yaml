@@ -30,9 +30,14 @@ buttons:
 # que da contenido al blog. Se nombra al empleador y al sector, nunca al cliente
 # final, y todas las cifras de los posts son relativas.
 #
-# `repo:` no se usa a proposito: el tema lo renderiza como boton de estrellas de
-# GitHub y sections/projects.js carga entonces buttons.github.io/buttons.js, una
-# peticion a un tercero. `url:` produce un boton de detalles y ninguna peticion.
+# `repo:` no se usa: el tema lo renderiza como boton de estrellas de GitHub, y
+# todos estos proyectos son privados. `url:` da un boton de detalles.
+#
+# Correccion: elegir `url:` NO evitaba la peticion al tercero. El tema llama a
+# insertScript con buttons.github.io a nivel de modulo en
+# assets/scripts/sections/projects.js, y application.js importa './sections'
+# siempre, asi que la peticion salia en todas las paginas. Eso lo elimina ahora
+# la copia local de ese script.
 #
 # `tags` es FIXED *y* se renderiza como chips visibles, asi que sale sin traducir
 # en /es/ y /pt-br/. De ahi que sean nombres de tecnologia en minuscula.
