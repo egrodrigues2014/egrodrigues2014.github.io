@@ -25,9 +25,17 @@ const PATTERNS = [
   [/\b\d{8}[A-Z]\b/, 'possible DNI'],
   [/\b[XYZ]\d{7}[A-Z]\b/, 'possible NIE'],
   [/\b[A-Z]{2}\d{2}[\s]?(?:\d{4}[\s]?){3,5}\d{0,4}\b/, 'possible IBAN'],
-  // `c/` needs trailing whitespace: without it this matched the "C/" in
-  // "C/C++ programming" and reported a skill summary as a postal address.
-  [/\b(?:calle|avenida|avda|paseo|plaza|piso|portal|escalera|c[oó]digo postal)\b|\bc\/\s+\w/i, 'possible postal address'],
+  // Street-type words that do not occur in this site's prose, so they stand on
+  // their own. `c/` needs trailing whitespace: without it this matched the "C/"
+  // in "C/C++ programming" and reported a skill summary as a postal address.
+  [/\b(?:calle|avenida|avda|paseo|plaza|c[oó]digo postal)\b|\bc\/\s+\w/i, 'possible postal address'],
+  // These are ordinary words as well as address components — "another portal to
+  // log into", "el piso de arriba" — so they only count next to a number, which
+  // is the shape they take in an address ("portal 3", "piso 2"). Narrowed after
+  // all three language versions of a post about Slack and Telegram bots tripped
+  // the bare `portal`: a gate that is red on every build is a gate that gets
+  // ignored, which is worse than this pattern being slightly less sensitive.
+  [/\b(?:portal|piso|escalera|puerta)\s*(?:n[.ºo°]?\s*)?\d{1,4}\b/i, 'possible postal address'],
   [/\b(?:fecha de nacimiento|date of birth|data de nascimento)\b/i, 'date of birth'],
   [/\b\d{2}\/\d{2}\/(?:19[5-9]\d|20[01]\d)\b/, 'possible full date of birth']
 ]
