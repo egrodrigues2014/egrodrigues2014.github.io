@@ -37,9 +37,12 @@ languages:
   - "Spanish — full professional"
   - "English — professional working"
 
-# The CV lists six certifications, not the eleven the site does: on two pages the
-# other five dilute the ones that carry weight. This line points at the full set.
-certificationsNote: "Full list of eleven credentials, each with a verification link, at egrodrigues2014.github.io"
+# The CV lists six certifications, not the fourteen the site does: on two pages the
+# other eight dilute the ones that carry weight. This line points at the full set,
+# and its count has to be kept in step with accomplishments.yaml by hand — the six
+# the CV shows are named explicitly in scripts/make-cv.mjs, so adding a credential
+# to the site never silently changes what the CV claims.
+certificationsNote: "Full list of fourteen credentials, each with a verification link, at egrodrigues2014.github.io"
 
 # Printed once at the foot of the last page.
 footer: "Generated from egrodrigues2014.github.io — the site is the source of truth for this document."

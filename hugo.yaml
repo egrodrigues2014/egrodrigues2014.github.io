@@ -239,17 +239,36 @@ params:
 
           # Enable Analytics
     analytics:
-      enable: false
+      enable: true
       services:
+        # TWO flags are required, not one. analytics.html wraps everything in
+        # `{{ if or .enable .enabled }}` on THIS map as well as on analytics above,
+        # and in `hugo.IsProduction`. Setting only analytics.enable and the code
+        # renders nothing at all, silently — and `hugo server` never shows it either,
+        # so it has to be checked on a production build.
+        enable: true
+        # GoatCounter. Chosen over GA4 because it sets no cookies, does no
+        # fingerprinting and does not retain IPs — it derives the country and
+        # discards them. That is what keeps it out of consent-banner territory,
+        # which is why GA4 was ruled out.
+        #
+        # Accepted cost, stated plainly: this loads gc.zgo.at/count.js, the only
+        # third-party request the site makes. Removing buttons.github.io and jsDelivr
+        # got that count to zero, and this puts it back at one. Inherent to any
+        # hosted analytics; self-hosting is possible via `instance` instead of
+        # `code`, but needs a server, which GitHub Pages is not.
+        #
+        # It does NOT count CV downloads: the script fires on page load, and a PDF
+        # is not a page load. And ad blockers block gc.zgo.at, so the numbers are a
+        # floor rather than the truth.
+        goatCounter:
+          code: egrodrigues
         # # Google Analytics — needs a cookie consent banner under GDPR/AEPD.
         # google:
         #   id: <your google analytics id>
         # # CounterDev
         # counterDev:
         #   id: <your counterdev id>
-        # # GoatCounter
-        # goatCounter:
-        #   code: <your goat counter code>
         # # Matomo / Piwik
         # matomo:
         #   instance: matomo.example.com

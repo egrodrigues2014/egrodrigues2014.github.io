@@ -9,7 +9,7 @@ section:
   weight: 60                            # FIXED
   showOnNavbar: true                    # FIXED
 
-# Eleven credentials, every one with a working verification link. Each was
+# Fourteen credentials, every one with a working verification link. Each was
 # opened and identified, not inferred from its URL.
 #
 # Order is by relevance to a data engineering profile. The two SAS courses come
@@ -22,6 +22,18 @@ section:
 # DEA and AZ-900 also appear as visual badges in about.yaml. Deliberate: the
 # badge is proof at a glance, this entry carries the date, expiry, hours and
 # description that a badge image cannot show.
+#
+# The three GenAI Academy entries are NTT DATA's internal academy, issued through
+# Skillsoft. They are learning completions, not exam-based certifications, so they
+# belong in this list and NOT in the about.yaml badge grid — that grid is reserved
+# for vendor certifications with official square artwork, and mixing a "White Belt"
+# intro course in beside DEA and AZ-900 would read as equivalent when it is not.
+# Listed highest belt first, which here is also reverse-chronological.
+#
+# Their issuer mark is the generic fa-certificate, shared with SAS and
+# DeepLearning.AI: neither Simple Icons nor Font Awesome carries an NTT DATA or
+# Skillsoft brand (checked, both 404). Six of fourteen entries now show the same
+# mark — the alternative was an icon that misrepresents the issuer.
 accomplishments:
 - name: "Data Engineer Associate"
   organization:
@@ -64,7 +76,7 @@ accomplishments:
     name: "DataCamp"
     logo: icons/datacamp.svg               # FIXED
     url: "https://www.datacamp.com"
-  # timeline omitted: a DataCamp/DeepLearning.AI statement carries no date
+  timeline: "08/2025"
   courseOverview: "El itinerario de 40 horas y 18 cursos en Python: ingesta, data warehousing, orquestación con Airflow y streaming."
   certificateURL: "https://www.datacamp.com/completed/statement-of-accomplishment/track/bd00f7d0c090b0dfd4bf13084d18952482c666bc"
 
@@ -95,12 +107,38 @@ accomplishments:
   courseOverview: "Uso práctico de Claude para análisis y código, incluido dónde no conviene confiar sin verificar."
   certificateURL: "https://verify.skilljar.com/c/tfkyg59a9zkj"
 
+- name: "GenAI Academy: Yellow Belt Level 2 for Engineers"
+  organization:
+    name: "NTT DATA"
+    icon: "fas fa-certificate"               # FIXED
+    url: "https://www.nttdata.com"
+  timeline: "07/2025"
+  courseOverview: "GenAI aplicada al trabajo de ingeniería: generación de código, depuración, migración, tests unitarios y documentación con Copilot y herramientas internas, más prompting avanzado y seguridad de sistemas de IA."
+  certificateURL: "https://nttdatainc-emeal.digitalbadges-eu.skillsoft.com/c133380b-1d02-4074-b976-889dacca39dd"
+
+- name: "GenAI Academy: Yellow Belt Level 1"
+  organization:
+    name: "NTT DATA"
+    icon: "fas fa-certificate"               # FIXED
+    url: "https://www.nttdata.com"
+  timeline: "03/2025"
+  courseOverview: "Conceptos de IA aplicados a contextos de negocio: dónde ayuda un modelo, dónde no, y cómo plantear un problema para que pueda ayudar."
+  certificateURL: "https://nttdatainc-emeal.digitalbadges-eu.skillsoft.com/d9f37cfa-f390-4909-acde-e25a0b413664"
+
+- name: "GenAI Academy: White Belt"
+  organization:
+    name: "NTT DATA"
+    icon: "fas fa-certificate"               # FIXED
+    url: "https://www.nttdata.com"
+  timeline: "01/2025"
+  courseOverview: "El nivel de entrada de la academia: conceptos y vocabulario de IA, la base común sobre la que se apoyan los niveles siguientes."
+  certificateURL: "https://nttdatainc-emeal.digitalbadges-eu.skillsoft.com/db1ebb97-ad86-41bd-8570-b23aaf0df68f"
 - name: "ChatGPT Prompt Engineering for Developers"
   organization:
     name: "DeepLearning.AI"
     icon: "fas fa-certificate"               # FIXED
     url: "https://www.deeplearning.ai"
-  # timeline omitted: a DataCamp/DeepLearning.AI statement carries no date
+  timeline: "08/2024"
   courseOverview: "Estructurar prompts como parte de una aplicación, con iteración y evaluación en lugar de tanteo."
   certificateURL: "https://learn.deeplearning.ai/accomplishments/44b83620-4d6c-494d-be72-d8488efd6721"
 
