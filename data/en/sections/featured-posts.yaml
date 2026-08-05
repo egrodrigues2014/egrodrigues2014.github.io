@@ -1,12 +1,24 @@
+# section information
+#
+# Fields marked FIXED must be byte-identical in data/en, data/es and
+# data/pt-br. `mise run verify` enforces it.
+#
+# Deliberately left disabled even though there are now posts to feature. With
+# Recent Posts enabled directly above it, this section would show a subset of the
+# same six cards under a second heading. Kept rather than deleted because
+# creating a section file in one language only is exactly how the theme's own
+# Bengali tree drifted.
 section:
-  name: Featured Posts # Title of section (default: "")
-  id: featured-posts # url id/slug of section *Required*
-  enable: false # Boolean to determine if this section is enabled (default: false)
-  weight: 80 # Order to display section in (default: alphabetical followed by weight)
-  showOnNavbar: false # Boolean to determine if a link should be shown for this section on the navbar
-  hideTitle: false # Can optionally hide the title in sections (default: false)
+  name: Featured Posts
+  id: featured-posts                    # FIXED
+  enable: false                         # FIXED
+  weight: 80                            # FIXED
+  showOnNavbar: false                   # FIXED
+  hideTitle: false                      # FIXED
 
-# posts to feature
-# Empty until real posts exist. The list is language scoped: an entry
-# without a translation for this language vanishes without a warning.
+# The one list in data/ that may legitimately differ between languages: the
+# theme resolves each entry with site.GetPage inside a `with`, which is language
+# scoped, so an entry with no translation for this language disappears without a
+# warning. The checker asserts each slug has a content file for its own language
+# instead of asserting the lists match.
 posts: []

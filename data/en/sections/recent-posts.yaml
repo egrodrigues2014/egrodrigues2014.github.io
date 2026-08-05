@@ -1,11 +1,36 @@
 # section information
+#
+# Fields marked FIXED must be byte-identical in data/en, data/es and
+# data/pt-br. `mise run verify` enforces it.
+#
+# Enabled now that there are six posts in all three languages. It could not be
+# enabled before: sections/recent-posts.html selects with site.RegularPages,
+# which is language scoped, and section.enable is FIXED — so turning it on with
+# English-only posts would have rendered a heading above an empty row in /es/ and
+# /pt-br/. That is why each case study carries a summary in the other two
+# languages rather than existing only in English.
+#
+# showOnNavbar stays false: features.blog.enable already puts a "Posts" item in
+# the navbar, and that item is appended outside the maxVisibleSections budget.
 section:
   name: Recent Posts
-  id: recent-posts
-  enable: false
-  weight: 70
-  showOnNavbar: false
-  # Can optionally hide the title in sections
-  # hideTitle: true
-
-# no additional configuration is required
+  id: recent-posts                      # FIXED
+  enable: true                          # FIXED
+  weight: 70                            # FIXED
+  showOnNavbar: false                   # FIXED
+  # Both of these belong INSIDE the section block: the theme reads
+  # .section.numShow and .section.showMoreButton. Set at the document root they
+  # are silently ignored — numShow falls back to the theme's default of 3 and the
+  # button simply never renders, with nothing in the build to say why.
+  numShow: 3                            # FIXED — one full row of the grid
+  # Off, and not because it is unwanted. sections/recent-posts.html:34 hardcodes
+  # `href="/posts/"` with no relLangURL, so the button sends a reader of /es/ or
+  # /pt-br/ to the English index. Verified in the built output: the label is
+  # localised ("Ver más", "Ver Mais") and the target is not.
+  #
+  # Left false rather than fixed by override: the navbar's "Posts" item goes to
+  # the right index in every language, so the affordance already exists and the
+  # theme surface stays at two owned partials. Turning this on needs a one-line
+  # local copy of that section template — worth doing only if the navbar item
+  # ever stops covering it.
+  showMoreButton: false                 # FIXED

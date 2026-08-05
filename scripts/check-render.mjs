@@ -130,6 +130,34 @@ else {
   }
 }
 
+// --- the blog index carries posts in every language -----------------------
+// The theme selects posts with site.RegularPages, which is language scoped, and
+// section.enable for recent-posts is FIXED across languages. So a post written
+// only in English produces a populated /posts/ and two empty ones, plus a
+// "Recent Posts" heading above an empty row on two of the three home pages —
+// with a green build and no warning anywhere.
+//
+// The count is not compared across languages on purpose: posts are exempt from
+// parity, and requiring every post in three languages would kill the publishing
+// cadence. What must hold is that no language ends up with none.
+{
+  const cards = (html) => (html.match(/class=["']?card-title/g) ?? []).length
+  for (const lang of LANGS) {
+    const rel = lang === LANGS[0] ? 'posts/index.html' : `${lang}/posts/index.html`
+    const abs = path.join(PUBLIC, rel)
+    if (!fs.existsSync(abs)) {
+      r.error(`public/${rel} was not generated, but features.blog.enable puts a "Posts" item in the navbar ` +
+        'for every language — that link would 404')
+      continue
+    }
+    if (cards(fs.readFileSync(abs, 'utf8')) === 0) {
+      r.error(`public/${rel} lists no posts. The navbar links there in every language, and the enabled ` +
+        `recent-posts section renders its heading above an empty row. Give ${lang} at least a summary of ` +
+        'one post, or disable recent-posts in all three languages.')
+    }
+  }
+}
+
 // Client-side search needs the JSON output; losing it breaks the search box
 // with no visible error until someone types in it.
 if (!fs.existsSync(path.join(PUBLIC, 'index.json'))) {

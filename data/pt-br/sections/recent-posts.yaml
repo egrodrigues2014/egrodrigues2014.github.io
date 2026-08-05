@@ -1,11 +1,22 @@
 # section information
+#
+# Fields marked FIXED must be byte-identical in data/en, data/es and
+# data/pt-br. `mise run verify` enforces it.
+#
+# Enabled now that there are six posts in all three languages. It could not be
+# enabled before: sections/recent-posts.html selects with site.RegularPages,
+# which is language scoped, and section.enable is FIXED — so turning it on with
+# English-only posts would have rendered a heading above an empty row here.
 section:
-  name: Recent Posts
-  id: recent-posts
-  enable: false
-  weight: 70
-  showOnNavbar: false
-  # Can optionally hide the title in sections
-  # hideTitle: true
-
-# no additional configuration is required
+  name: Publicações recentes
+  id: recent-posts                      # FIXED
+  enable: true                          # FIXED
+  weight: 70                            # FIXED
+  showOnNavbar: false                   # FIXED
+  # Inside the section block: the theme reads .section.numShow and
+  # .section.showMoreButton. At the document root they are silently ignored.
+  numShow: 3                            # FIXED
+  # Off: the theme hardcodes href="/posts/" for this button with no relLangURL,
+  # so from here it would lead to the English index. The navbar "Posts" item does
+  # resolve per language. See the comment in data/en for the full reasoning.
+  showMoreButton: false                 # FIXED
