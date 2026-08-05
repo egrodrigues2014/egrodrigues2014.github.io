@@ -44,37 +44,11 @@ languages:
     label: Español
     title: "Elton Rodrigues — Ingeniero de Datos"
     weight: 2
-    # See the pt-br block below for the measurement method. Spanish fits four
-    # sections in one row at 1200px; five wrapped it to two. Formación moves to
-    # the "Más" dropdown.
-    params:
-      topNavbar:
-        maxVisibleSections: 5
   pt-br:
     locale: pt-BR
     label: Português
     title: "Elton Rodrigues — Engenheiro de Dados"
     weight: 3
-    # Portuguese has the longest section names, so it is the language that
-    # overflows the navbar. Measured against the built site at 1200px — the
-    # tightest width, since navbar-expand-xl collapses below it — waiting for
-    # document.fonts.ready and taking two stable readings.
-    #
-    # The reliable signal is the navbar HEIGHT, not arithmetic on item widths:
-    # 52px is one row, 78px means it wrapped. Summing widths ignores the flex
-    # margins and told me things fitted when they did not.
-    #
-    # Thresholds found this way, all with the shortened navBarTitle:
-    #   en     5 sections -> 52px      (fits, no override needed)
-    #   es     5 -> 78px,  4 -> 52px   (hence 5 below, in the es block)
-    #   pt-br  4 -> 78px,  3 -> 52px   (hence 4 here)
-    #
-    # site.Params resolves per language, so this applies only to Portuguese.
-    # Note the theme counts "Home" in the total, so 4 shows THREE sections;
-    # Projects, Formação and Certificações move into the "Mais" dropdown.
-    params:
-      topNavbar:
-        maxVisibleSections: 4
 # default language for the content; served at the site root
 defaultContentLanguage: en
 

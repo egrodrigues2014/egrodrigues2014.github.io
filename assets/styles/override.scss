@@ -1,0 +1,58 @@
+/* Local style overrides.
+ *
+ * This is the theme's own extension point — its copy of this file carries the
+ * comment "override this file for custom css" and application.template.scss
+ * imports it AFTER every other stylesheet, so rules here win the cascade at
+ * equal specificity. Using it means none of the changes below require owning a
+ * template.
+ */
+
+/* ---------------------------------------------------------------------------
+ * Navbar: no brand
+ *
+ * The name and role already appear as the hero heading immediately below, and
+ * the brand was consuming 335 of the 1185px container — 32% — which is what
+ * pushed the Spanish and Portuguese navbars onto a second row.
+ *
+ * Hiding the element is the only way: navBarTitle can't be blanked, because an
+ * empty string is falsy in Go templates and the theme falls back to site.Title
+ * (navigators/navbar.html:69-72).
+ *
+ * params.logo.main and .inverted are left in hugo.yaml deliberately — inert
+ * while this rule stands, so restoring the brand once real branding exists is
+ * one line. params.logo.favicon is unaffected; it is the browser favicon.
+ *
+ * Trade-off accepted: the navbar is sticky, so past the hero there is no name
+ * on screen any more.
+ * ------------------------------------------------------------------------- */
+#top-navbar .navbar-brand {
+  display: none;
+}
+
+/* ---------------------------------------------------------------------------
+ * About: centre the badge grid
+ *
+ * The badges sit in a plain .row inside a col-sm-6, and each one is
+ * col-6 col-lg-4. With two of them they filled two thirds of the column and
+ * sat hard against its left edge, leaving an odd gap.
+ *
+ * :has() targets that row precisely rather than by position, so adding another
+ * row to the section later cannot accidentally inherit this. Sizes are
+ * untouched — this only moves them.
+ * ------------------------------------------------------------------------- */
+.about-section {
+  /* Vertically centre the badge column against the taller text column. */
+  .row > [class*='col-']:has(.certificate-badge, .circular-progress) {
+    display: flex;
+    align-items: center;
+
+    > .row {
+      width: 100%;
+    }
+  }
+
+  /* Horizontally centre the tiles within that row. */
+  .row:has(> [class*='col-'] > .certificate-badge) {
+    justify-content: center;
+  }
+}
