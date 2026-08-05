@@ -70,6 +70,137 @@
 }
 
 /* ---------------------------------------------------------------------------
+ * Navbar: expand from 992px instead of 1200px
+ *
+ * The theme's class is `navbar-expand-xl`, so below 1200px the whole bar
+ * collapses to a hamburger — even though the widest language needs 936px and
+ * there is over 1170px available at 1199px. That covers 1024 and 1152px wide
+ * laptops and tablets in landscape.
+ *
+ * Two jobs in one media query.
+ *
+ * (a) Replicate what Bootstrap 5.3's `.navbar-expand-lg` would do, scoped to
+ *     this navbar. The `.nav-link` padding is not optional: outside an active
+ *     `navbar-expand-*` it is 0, so without it the links would sit flush against
+ *     each other.
+ *
+ * (b) Undo the theme's mobile treatment in the same range. `navbar.scss:149`
+ *     gates it on `<very-large`, which is 1280px — NOT on the expand breakpoint
+ *     of 1200px. So the theme already has an 80px band (1200-1279) where the bar
+ *     is horizontal but still styled as a menu: measured 37px tall instead of
+ *     50px, the 2px vertical divider replaced by a horizontal 1px rule
+ *     (`navbar.scss:167`), and the theme-selector panel stretched to 100%
+ *     (`navbar.scss:188`). Expanding from 992px would widen that band from 80px
+ *     to 288px, so it has to be closed — which also fixes it where it exists
+ *     today.
+ *
+ * Not touched: `navbar.scss:180` moves `.languageSelector` to a fixed box at the
+ * bottom right below 1280px. It never applied — the element carries
+ * `id="languageSelector"`, and that rule is a class selector. Theme dead code.
+ * ------------------------------------------------------------------------- */
+@media (min-width: 992px) {
+  #top-navbar {
+    /* (b) the desktop bar the theme drops below 1280px */
+    height: 50px;
+    padding-top: 0.4rem;
+
+    /* (a) navbar-expand-lg, by hand */
+    flex-wrap: nowrap;
+
+    > .container {
+      flex-wrap: nowrap;
+    }
+
+    #navbar-toggler {
+      display: none;
+    }
+
+    .navbar-collapse {
+      display: flex !important;
+      flex-basis: auto;
+    }
+
+    .navbar-nav {
+      flex-direction: row;
+
+      .dropdown-menu {
+        position: absolute;
+      }
+
+      .nav-link {
+        padding-left: var(--bs-navbar-nav-link-padding-x);
+        padding-right: var(--bs-navbar-nav-link-padding-x);
+      }
+    }
+
+    /* (b) continued: vertical divider, not a horizontal rule */
+    #top-navbar-divider {
+      height: 20px;
+      width: 2px;
+      margin-right: 0;
+      border-top: 0;
+    }
+
+    .dropdown-menu {
+      text-align: start;
+      margin-right: 0;
+    }
+
+    #themeMenu {
+      width: 25px;
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Navbar: buy the headroom that makes 992px viable
+ *
+ * With the bar expanded at 992px and Bootstrap's default link padding of .5rem,
+ * the widest language had 19px of headroom against 953px of content width
+ * (Portuguese row: 934px). Measured, not estimated — and 19px is not enough to
+ * survive a longer translation or a seventh section without wrapping to two rows.
+ *
+ * Tightening the link padding to .375rem in this band only recovers 40px across
+ * the 10 links (10 x 2 sides x 2px), taking the headroom to ~59px. Above 1199px
+ * the variable is left alone, so the roomier default returns exactly where there
+ * is room for it.
+ *
+ * Two alternatives rejected:
+ *
+ *   - Hiding the language label and keeping only the flag would have saved
+ *     70-90px, but the label is the link's accessible name, and a flag alone
+ *     does not identify a language.
+ *   - Expanding earlier in English than in Portuguese via `html[lang]` is
+ *     possible and tempting, but a navbar that behaves differently per language
+ *     is the exact defect check-i18n exists to prevent. The bar is sized to the
+ *     widest language and all three behave identically.
+ *
+ * Measured after the change. Row widths are Portuguese, the widest of the three;
+ * English runs 160px narrower and Spanish 40px narrower at every width. Content
+ * width is the container minus its 24px of gutter. Reload after resizing when
+ * re-measuring: this browser does not recompute the custom property on a bare
+ * resize, which made the 1200px column look like it was still on 6px padding.
+ *
+ *   vw     container  pt-br row  headroom  bar   rows  hamburger  link padding
+ *   900    -          stacked    -         -     10    yes        0
+ *   991    976        -          -         33    -     yes        0
+ *   992    977        897        56        50    1     no         6px
+ *   1024   1009       897        88        50    1     no         6px
+ *   1200   1185       937        224       50    1     no         8px
+ *   1280   1265       937        304       50    1     no         8px
+ *   1920   1905       936        945       50    1     no         8px
+ *
+ * 992px is the binding case at 56px of headroom — about half a nav item. An
+ * eighth navbar entry needs re-measuring there before it is added, and
+ * Portuguese is the language that decides it.
+ * ------------------------------------------------------------------------- */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  #top-navbar {
+    --bs-navbar-nav-link-padding-x: 0.375rem;
+  }
+}
+
+/* ---------------------------------------------------------------------------
  * About: centre the badge grid
  *
  * The badges sit in a plain .row inside a col-sm-6, and each one is
