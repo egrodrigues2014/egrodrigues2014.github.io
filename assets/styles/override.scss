@@ -1,10 +1,15 @@
 /* Local style overrides.
  *
  * This is the theme's own extension point — its copy of this file carries the
- * comment "override this file for custom css" and application.template.scss
- * imports it AFTER every other stylesheet, so rules here win the cascade at
- * equal specificity. Using it means none of the changes below require owning a
- * template.
+ * comment "override this file for custom css". Using it means none of the
+ * changes below require owning a template.
+ *
+ * Cascade position, corrected after checking application.template.scss: the
+ * import is at line 54, which is after every component, layout, section and
+ * navbar stylesheet but BEFORE the per-feature ones on lines 56-80 (KaTeX,
+ * Mermaid and anything else driven by hugo.Data.toha.styles). So a rule here
+ * beats theme structure at equal specificity, but would lose a tie against a
+ * feature stylesheet. Nothing below is in that position today.
  */
 
 /* ---------------------------------------------------------------------------
@@ -92,6 +97,21 @@
   }
 }
 
-html[data-theme='dark'] .skills-section .card-img-xs {
-  filter: invert(1);
+/* ---------------------------------------------------------------------------
+ * Dark theme: invert the monochrome card marks
+ *
+ * Both sections draw their marks from the same set of monochrome black SVGs in
+ * assets/images/sections/skills/ — the projects cards reuse them rather than
+ * introducing a second icon set. Served through <img>, so currentColor has
+ * nothing to inherit and they cannot follow the text colour; inverting is the
+ * cheap equivalent.
+ *
+ * NOTE: correct only while every mark is monochrome. A colour logo added to
+ * either section would render as its negative under the dark theme.
+ * ------------------------------------------------------------------------- */
+html[data-theme='dark'] {
+  .skills-section .card-img-xs,
+  .projects-section .card-img-xs {
+    filter: invert(1);
+  }
 }

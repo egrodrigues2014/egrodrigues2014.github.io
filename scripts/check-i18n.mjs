@@ -71,6 +71,7 @@ const RULES = [
   [/^buttons\[\]\.filter$/, 'fixed'], // CSS/JS token, not a label
   [/^skills\[\]\.categories\[\]$/, 'fixed'],
   [/^projects\[\]\.tags\[\]$/, 'fixed'], // doubles as filter token
+  [/^projects\[\]\.target$/, 'fixed'], // "self" or "blank": a link behaviour, not a label
   [/^badges\[\]\.(type|percentage|color)$/, 'fixed'],
   [/^socialLinks\[\]\.rel$/, 'fixed'], // HTML rel attribute
   [/^customMenus\[\]\.(hideFromNavbar|showOnFooter)$/, 'fixed'],

@@ -1,65 +1,112 @@
 # section information
+#
+# Fields marked FIXED must be byte-identical in data/en, data/es and
+# data/pt-br. `mise run verify` enforces it, including the number of projects —
+# a card missing from one language is invisible otherwise.
 section:
   name: Projects
-  id: projects
-  enable: true
-  weight: 40
-  showOnNavbar: true
-  # Can optionally hide the title in sections
-  # hideTitle: true
+  id: projects                          # FIXED
+  enable: true                          # FIXED
+  weight: 40                            # FIXED
+  showOnNavbar: true                    # FIXED
 
-# filter buttons
+# `filter` is a CSS/JS token the theme writes into data-category, never a label.
+# The checker asserts each button matches at least one project, because a button
+# with no match empties the section when clicked.
+#
+# Five buttons rather than three: with these tokens every project is reachable
+# from a tab other than All. A card that only All can reach is not a bug the
+# checker can see, but it is still a card nobody finds.
 buttons:
 - name: All
-  filter: "all"
-- name: Professional
-  filter: "professional"
-- name: Academic
-  filter: "academic"
-- name: Hobby
-  filter: "hobby"
+  filter: "all"                         # FIXED
+- name: Azure & Fabric
+  filter: "azure"                       # FIXED
+- name: Power BI
+  filter: "power-bi"                    # FIXED
+- name: Python & ML
+  filter: "python"                      # FIXED
+- name: SQL & ETL
+  filter: "sql"                         # FIXED
 
-# your projects
+# Every project is client work: private, under confidentiality, and with no
+# public repository. Rather than leave the section out or fill it with cards that
+# link nowhere, each one points at a case-study post — which is also what gives
+# the blog its content. The employer and the sector are named, the end client
+# never is, and every figure in the posts is relative.
+#
+# `repo:` is deliberately unused. cards/project.html renders it as a GitHub star
+# button, and sections/projects.js then loads buttons.github.io/buttons.js —
+# a third-party request, which is exactly what disabling the embedpdf feature
+# was meant to avoid. `url:` produces a plain "Details" button and no request.
+#
+# `url` is root-relative on purpose: the theme puts it straight into the href
+# without relURL, so a path without the leading slash resolves differently
+# depending on the page, and an absolute URL with the domain would break the
+# local preview.
+#
+# `target: "self"` because the destination is an internal post. The theme
+# defaults to "blank", which opens a new tab for a link within the same site.
+#
+# `tags` are FIXED *and* rendered as visible chips (cards/project.html:71), so
+# they show untranslated in /es/ and /pt-br/. That is why they are technology
+# names in lowercase rather than words like "professional" that would read as an
+# untranslated label.
+#
+# `logo` reuses the monochrome SVGs already in the skills section. Note the
+# dark-theme rule in assets/styles/override.scss that inverts them: it only
+# holds while every mark is monochrome.
 projects:
-- name: Kubernetes
-  logo: /images/sections/projects/kubernetes.png
-  role: Contributor
-  timeline: "March 2018 - Present"
-  repo: https://github.com/kubernetes/kubernetes # If your project is a public repo on GitHub, then provide this link. it will show star count.
-  #url: ""  # If your project is not a public repo but it has a website or any external details url then provide it here. don't provide "repo" and "url" simultaneously.
-  summary: Production-Grade Container Scheduling and Management.
-  tags: ["professional", "kubernetes", "cloud"]
+- name: Medallion lakehouse on Azure and Fabric
+  logo: /images/sections/skills/medallion.svg   # FIXED
+  role: Architect and lead developer
+  timeline: "02/2026"                   # FIXED
+  url: /posts/medallion-lakehouse-azure-fabric/ # FIXED
+  target: "self"                        # FIXED
+  summary: "Bronze, silver and gold layers over ADLS Gen2, Azure SQL and Microsoft Fabric, with dbt models, generated lineage and parameterised incremental loads. The refresh window went from a nightly batch that spilled into the morning to an hourly cycle."
+  tags: ["azure", "fabric", "dbt", "airflow"]   # FIXED
 
-- name: Tensorflow
-  logo: /images/sections/projects/tensorflow.png
-  role: Developer
-  timeline: "Jun 2018 - Present"
-  repo: https://github.com/tensorflow/tensorflow
-  #url: ""
-  summary: An Open Source Machine Learning Framework for Everyone.
-  tags: ["professional", "machine-learning"]
+- name: Enterprise Power BI semantic model
+  logo: /images/sections/skills/powerbi.svg     # FIXED
+  role: Semantic model owner
+  timeline: "02/2026"                   # FIXED
+  url: /posts/enterprise-power-bi-semantic-model/ # FIXED
+  target: "self"                        # FIXED
+  summary: "One shared model in place of several report files that disagreed about margin: composite Import plus DirectQuery split by period, row-level security driven by data rather than hardcoded DAX, and incremental refresh that folds into the source."
+  tags: ["power-bi", "dax", "azure"]    # FIXED
 
-- name: A sample academic paper
-  role: Team Lead
-  timeline: "Jan 2017 - Nov 2017"
-  url: "https://www.example.com"
-  summary: Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente eius reprehenderit animi suscipit autem eligendi esse amet aliquid error eum. Accusantium distinctio soluta aliquid quas placeat modi suscipit eligendi nisi.
-  tags: ["academic","iot"]
+- name: Natural-language analytics over the semantic model
+  logo: /images/sections/skills/llm.svg # FIXED
+  role: Design and implementation
+  timeline: "02/2026"                   # FIXED
+  url: /posts/natural-language-analytics-mcp/   # FIXED
+  target: "self"                        # FIXED
+  summary: "Questions in plain language answered against the Power BI semantic model through an MCP server and the Claude API, so the business definitions and row-level security stay inside the boundary instead of being rediscovered per question."
+  tags: ["python", "llm", "power-bi"]   # FIXED
 
-- name: Nocode
-  logo: /images/sections/projects/no-code.png
-  role: Nothing
-  timeline: "Oct 2019 - Dec 2019"
-  repo: https://github.com/kelseyhightower/nocode
-  #url: ""
-  summary: The best way to write secure and reliable applications. Write nothing; deploy nowhere.
-  tags: ["hobby", "fun"]
+- name: Demand forecasting and purchasing recommendations
+  logo: /images/sections/skills/forecasting.svg # FIXED
+  role: Modelling and productionisation
+  timeline: "02/2026"                   # FIXED
+  url: /posts/demand-forecasting-purchasing/    # FIXED
+  target: "self"                        # FIXED
+  summary: "Prophet and scikit-learn per series, scored against a seasonal-naive baseline on a rolling-origin backtest and horizoned to the supplier lead time, ending in a per-location purchasing recommendation rather than a chart."
+  tags: ["python", "forecasting", "power-bi"]   # FIXED
 
-- name: Toha
-  logo: /images/sections/projects/toha.png
-  image: /images/sections/projects/toha_website.png
-  role: Owner
-  timeline: "Jun 2019 - Present"
-  repo: https://github.com/hossainemruz/toha
-  summary: A Hugo theme for personal portfolio.
-  tags: ["hobby","hugo","theme","professional"]
+- name: Delivery, productivity and quality analytics
+  logo: /images/sections/skills/dashboards.svg  # FIXED
+  role: Data modeller
+  timeline: "01/2023 — 02/2026"         # FIXED
+  url: /posts/delivery-productivity-quality-model/ # FIXED
+  target: "self"                        # FIXED
+  summary: "A conformed star schema for effort, delivery, productivity and quality across consulting teams, with metrics defined as ratios and an explicit denominator — modelled so that it reports trends per team and cannot produce a league table."
+  tags: ["power-bi", "sql"]             # FIXED
+
+- name: Self-healing fraud-alert ETL
+  logo: /images/sections/skills/etl.svg # FIXED
+  role: Process owner
+  timeline: "01/2020 — 12/2022"         # FIXED
+  url: /posts/fraud-alert-etl-resilience/       # FIXED
+  target: "self"                        # FIXED
+  summary: "Fraud-alert generation for motor insurance claims, owned end to end. Idempotent steps, checkpoints at step boundaries and a watchdog that classifies transient failures from real ones turned a 3 a.m. phone call into a resumed run."
+  tags: ["sas", "sql", "linux"]         # FIXED
